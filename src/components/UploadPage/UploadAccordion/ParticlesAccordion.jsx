@@ -2,6 +2,7 @@ import React from 'react';
 import { Accordion, AccordionDetails} from '@mui/material'
 import { CSVReader } from 'react-papaparse';
 import CustomAccordionSummary from '../../reusable/CustomAccordionSummary';
+import CsvFieldsExample from '../../reusable/CsvFieldsExample';
 
 const ParticlesAccordion = () => {
     function handleOnDrop(data) {
@@ -23,6 +24,7 @@ const ParticlesAccordion = () => {
         <Accordion>
             <CustomAccordionSummary name="Particles"/>
             <AccordionDetails>
+                <CsvFieldsExample expectedColumns={["english", "arabic", "phonetic"]}/>
                 <CSVReader
                     onDrop={handleOnDrop}
                     onError={handleOnError}
