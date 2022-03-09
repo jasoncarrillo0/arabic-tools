@@ -1,0 +1,10 @@
+.wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+
+    h1 {
+        margin-bottom: 3rem;
+    }
+}
