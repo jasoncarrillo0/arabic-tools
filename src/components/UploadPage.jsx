@@ -1,6 +1,4 @@
 import React from "react";
-import { connect } from "react-redux";
-import { setAdjectives } from '../redux/dictionary/dictActions'
 import s from "./UploadPage.module.scss";
 import UploadAccordion from "./UploadPage/UploadAccordion";
 
@@ -13,8 +11,6 @@ const SentenceMaker = ({ setAdjectives }) => {
     )
 
 };
-const mapDispatch = {
-    setAdjectives: (arr) => setAdjectives(arr)
-};
 
-export default connect(null, mapDispatch)(SentenceMaker);
+
+export default SentenceMaker;

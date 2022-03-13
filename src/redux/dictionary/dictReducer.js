@@ -1,21 +1,6 @@
-import { ACTION_TYPES } from "./dictActions"
+import { combineReducers } from "redux";
+import { verbsReducer } from "./verbs/verbReducer";
 
-const INIT_STATE = {
-    adjectives: [],
-    nouns: [],
-    particles: [],
-    prepositions: []
-}
-export const dictionaryReducer = (state = INIT_STATE, action) => {
-    switch (action.type) {
-        case ACTION_TYPES.SET_ADJECTIVES:
-            return {
-                ...state,
-                adjectives: action.payload
-            }
-        default:
-            return {
-                ...state
-            }
-    }
-}
+export const dictionaryReducer = combineReducers({
+    verbs: verbsReducer
+});
