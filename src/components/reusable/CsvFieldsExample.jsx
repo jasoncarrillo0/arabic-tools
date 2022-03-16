@@ -10,7 +10,7 @@ const CsvFieldsExample = ({ expectedColumns }) => {
                 <hr/>
                 <div>
                 {
-                    expectedColumns.map(column => <h4>{column}</h4>)
+                    expectedColumns.map((column, idx) => <h4 key={idx}>{column}</h4>)
                 }
                 </div>
             

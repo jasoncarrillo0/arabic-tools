@@ -71,3 +71,20 @@ export const uploadAccordionSummaryProps = {
     },
     paddingRight: '1rem'
 }
+
+export const SUCCESS_SNACKBAR = {
+    variant: "success",
+    anchorOrigin: {
+        horizontal: "center",
+        vertical: "top"
+    }
+}
+
+export const ERR_SNACKBAR = {
+    variant: "error",
+    anchorOrigin: {
+        horizontal: "center",
+        vertical: "top"
+    }
+}
+
