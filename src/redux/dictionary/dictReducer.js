@@ -6,6 +6,7 @@ import { particlesReducer } from "./particles/particlesReducer";
 import { prepositionsReducer } from "./prepositions/prepositionReducer";
 import { verbsReducer } from "./verbs/verbReducer";
 
+
 export const dictionaryReducer = combineReducers({
     verbs: verbsReducer,
     nouns: nounsReducer,

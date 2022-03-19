@@ -35,13 +35,9 @@ const VerbsAccordion = ({ setAllVerbs }) => {
     };
 
     function handleOnError(err, file, inputElem, reason) {
-        console.log(err);
     };
 
     function handleOnRemoveFile(data) {
-        console.log("---------------------------");
-        console.log(data);
-        console.log("---------------------------");
     };
     return (
         <Accordion>
