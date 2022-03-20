@@ -5,31 +5,25 @@ import CustomAccordionSummary from '../../reusable/CustomAccordionSummary';
 import CsvFieldsExample from '../../reusable/CsvFieldsExample';
 import { setAllNouns } from '../../../redux/dictionary/nouns/nounActions';
 import { connect } from 'react-redux';
-import { ERR_SNACKBAR } from '../../../helpers/constants';
+import { ERR_SNACKBAR, NOUNS_COLS } from '../../../helpers/constants';
 import { useSnackbar } from 'notistack';
+import { hasExpectedCols } from '../../../helpers/utils';
 const NounsAccordion = ({ setAllNouns }) => {
 
     const { enqueueSnackbar } = useSnackbar();
-    const EXPECTED_COLS       = ["English", "Arabic", "Phonetic"];
     function handleOnDrop(data) {
-        // check if first row matches expected cols
-        for (let i = 0; i < data[0].data.length; i++) {
-            console.log(data[0])
-            if (EXPECTED_COLS[i] !== data[0].data[i]) {
-                return enqueueSnackbar("incorrect cols", ERR_SNACKBAR)
-            }
-        }
+        if (!hasExpectedCols(NOUNS_COLS, data[0])) return enqueueSnackbar("incorrect cols", ERR_SNACKBAR)
 
-        const nounEntries = [];
+        const entries = [];
         for (let i = 1; i < data.length; i++) {
             const dataArr = data[i].data;
-            nounEntries.push({
+            entries.push({
                 english: dataArr[0],
                 arabic: dataArr[1],
-                phonetic: dataArr[3]
+                phonetic: dataArr[2]
             });
         }
-        setAllNouns(nounEntries);
+        setAllNouns(entries);
     };
 
     function handleOnError(err, file, inputElem, reason) {
@@ -41,7 +35,7 @@ const NounsAccordion = ({ setAllNouns }) => {
         <Accordion>
             <CustomAccordionSummary name="Nouns"/>
             <AccordionDetails>
-                <CsvFieldsExample expectedColumns={EXPECTED_COLS}/>
+                <CsvFieldsExample expectedColumns={NOUNS_COLS}/>
                 <CSVReader
                     onDrop={handleOnDrop}
                     onError={handleOnError}

@@ -4,20 +4,16 @@ import { CSVReader } from 'react-papaparse';
 import CustomAccordionSummary from '../../reusable/CustomAccordionSummary';
 import CsvFieldsExample from '../../reusable/CsvFieldsExample';
 import { connect } from 'react-redux';
-import { ERR_SNACKBAR } from '../../../helpers/constants';
+import { CONNECTORS_COLS, ERR_SNACKBAR } from '../../../helpers/constants';
 import { useSnackbar } from 'notistack';
 import { setAllConnectors } from '../../../redux/dictionary/connectors/connectorsActions';
+import { hasExpectedCols } from '../../../helpers/utils';
 
 const ConnectorsAccordion = ({ setAllConnectors }) => {
     const { enqueueSnackbar } = useSnackbar();
-    const EXPECTED_COLS       = ["english", "arabic", "phonetic"];
 
     function handleOnDrop(data) {
-        for (let i = 0; i < data[0].data.length; i++) {
-            if (EXPECTED_COLS[i] !== data[0].data[i]) {
-                return enqueueSnackbar("incorrect cols", ERR_SNACKBAR)
-            }
-        }
+        if (!hasExpectedCols(CONNECTORS_COLS, data[0])) return enqueueSnackbar("incorrect cols", ERR_SNACKBAR)
 
         const entries = [];
         for (let i = 1; i < data.length; i++) {
@@ -25,7 +21,7 @@ const ConnectorsAccordion = ({ setAllConnectors }) => {
             entries.push({
                 english: dataArr[0],
                 arabic: dataArr[1],
-                phonetic: dataArr[3]
+                phonetic: dataArr[2]
             });
         }
         setAllConnectors(entries);
@@ -40,7 +36,7 @@ const ConnectorsAccordion = ({ setAllConnectors }) => {
         <Accordion>
             <CustomAccordionSummary name="Connectors"/>
             <AccordionDetails>
-                <CsvFieldsExample expectedColumns={EXPECTED_COLS}/>
+                <CsvFieldsExample expectedColumns={CONNECTORS_COLS}/>
                 <CSVReader
                     onDrop={handleOnDrop}
                     onError={handleOnError}

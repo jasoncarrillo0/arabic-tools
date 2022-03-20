@@ -4,17 +4,16 @@ import { CSVReader } from 'react-papaparse';
 import CustomAccordionSummary from '../../reusable/CustomAccordionSummary';
 import CsvFieldsExample from '../../reusable/CsvFieldsExample';
 import { connect } from 'react-redux';
-import { ERR_SNACKBAR } from '../../../helpers/constants';
+import { ERR_SNACKBAR, PARTICLES_COLS } from '../../../helpers/constants';
 import { useSnackbar } from 'notistack';
 import { setAllParticles } from '../../../redux/dictionary/particles/particlesActions';
 
 const ParticlesAccordion = ({ setAllParticles }) => {
     const { enqueueSnackbar } = useSnackbar();
-    const EXPECTED_COLS       = ["english", "arabic", "phonetic"];
 
     function handleOnDrop(data) {
         for (let i = 0; i < data[0].data.length; i++) {
-            if (EXPECTED_COLS[i] !== data[0].data[i]) {
+            if (PARTICLES_COLS[i] !== data[0].data[i]) {
                 return enqueueSnackbar("incorrect cols", ERR_SNACKBAR)
             }
         }
@@ -25,7 +24,7 @@ const ParticlesAccordion = ({ setAllParticles }) => {
             entries.push({
                 english: dataArr[0],
                 arabic: dataArr[1],
-                phonetic: dataArr[3]
+                phonetic: dataArr[2]
             });
         }
         setAllParticles(entries);
@@ -40,7 +39,7 @@ const ParticlesAccordion = ({ setAllParticles }) => {
         <Accordion>
             <CustomAccordionSummary name="Particles"/>
             <AccordionDetails>
-                <CsvFieldsExample expectedColumns={EXPECTED_COLS}/>
+                <CsvFieldsExample expectedColumns={PARTICLES_COLS}/>
                 <CSVReader
                     onDrop={handleOnDrop}
                     onError={handleOnError}

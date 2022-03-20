@@ -5,20 +5,16 @@ import CustomAccordionSummary from '../../reusable/CustomAccordionSummary';
 import CsvFieldsExample from '../../reusable/CsvFieldsExample';
 import { connect } from 'react-redux';
 import { useSnackbar } from 'notistack';
-import { ERR_SNACKBAR } from '../../../helpers/constants';
+import { ERR_SNACKBAR, PREPOSITIONS_COLS } from '../../../helpers/constants';
 import { setAllPrepositions } from '../../../redux/dictionary/prepositions/prepositionActions';
+import { hasExpectedCols } from '../../../helpers/utils';
 
 
 const PrepositionsAccordion = ({ setAllPrepositions }) => {
     const { enqueueSnackbar } = useSnackbar();
-    const EXPECTED_COLS       = ["english", "arabic", "phonetic"];
 
     function handleOnDrop(data) {
-        for (let i = 0; i < data[0].data.length; i++) {
-            if (EXPECTED_COLS[i] !== data[0].data[i]) {
-                return enqueueSnackbar("incorrect cols", ERR_SNACKBAR)
-            }
-        }
+        if (!hasExpectedCols(PREPOSITIONS_COLS, data[0])) return enqueueSnackbar("incorrect cols", ERR_SNACKBAR)
 
         const entries = [];
         for (let i = 1; i < data.length; i++) {
@@ -26,7 +22,7 @@ const PrepositionsAccordion = ({ setAllPrepositions }) => {
             entries.push({
                 english: dataArr[0],
                 arabic: dataArr[1],
-                phonetic: dataArr[3]
+                phonetic: dataArr[2]
             });
         }
         setAllPrepositions(entries);
@@ -40,7 +36,7 @@ const PrepositionsAccordion = ({ setAllPrepositions }) => {
         <Accordion>
             <CustomAccordionSummary name="Prepositions"/>
             <AccordionDetails>
-                <CsvFieldsExample expectedColumns={EXPECTED_COLS}/>
+                <CsvFieldsExample expectedColumns={PREPOSITIONS_COLS}/>
                 <CSVReader
                     onDrop={handleOnDrop}
                     onError={handleOnError}

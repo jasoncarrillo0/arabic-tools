@@ -4,20 +4,15 @@ import { CSVReader } from 'react-papaparse';
 import CustomAccordionSummary from '../../reusable/CustomAccordionSummary';
 import CsvFieldsExample from '../../reusable/CsvFieldsExample';
 import { useSnackbar } from 'notistack'
-import { ERR_SNACKBAR } from '../../../helpers/constants';
+import { ADJECTIVE_COLS, ERR_SNACKBAR } from '../../../helpers/constants';
 import { setAllAdjectives } from '../../../redux/dictionary/adjectives/adjectiveActions';
 import { connect } from 'react-redux';
+import { hasExpectedCols } from '../../../helpers/utils';
 const AdjectivesAccordion = ({ setAllAdjectives }) => {
-    const EXPECTED_COLS       = ["English Word", "Arabic Word", "Unique female", "Unique Plural"];
     const { enqueueSnackbar } = useSnackbar()
     function handleOnDrop(data) {
-        // check if first row matches expected cols
-        for (let i = 0; i < data[0].data.length; i++) {
-            console.log(data[0]);
-            if (EXPECTED_COLS[i] !== data[0].data[i]) {
-                return enqueueSnackbar("incorrect cols", ERR_SNACKBAR)
-            }
-        }
+        if (!hasExpectedCols(ADJECTIVE_COLS, data[0])) return enqueueSnackbar("incorrect cols", ERR_SNACKBAR)
+
 
         const adjEntries = [];
         for (let i = 1; i < data.length; i++) {
@@ -41,7 +36,7 @@ const AdjectivesAccordion = ({ setAllAdjectives }) => {
         <Accordion>
             <CustomAccordionSummary name="Adjectives"/>
             <AccordionDetails>
-                <CsvFieldsExample expectedColumns={EXPECTED_COLS}/>
+                <CsvFieldsExample expectedColumns={ADJECTIVE_COLS}/>
                 <CSVReader
                     onDrop={handleOnDrop}
                     onError={handleOnError}
