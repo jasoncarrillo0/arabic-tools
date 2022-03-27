@@ -13,7 +13,7 @@ const Header = () => {
           <Toolbar className={s.toolbar}>
             <Button sx={{color: "white"}} onClick={() => history.push("/create")}>Create</Button>
             <Button sx={{color: "white"}} onClick={() => history.push("/verbpractice")}>Verb Practice</Button>
-            <Button sx={{color: "white"}} onClick={() => history.push("/basicsentence")}>Basic Sentences</Button>
+            <Button sx={{color: "white"}} onClick={() => history.push("/createsentence")}>Create Sentences</Button>
             <Button sx={{color: "white"}} onClick={() => history.push("/longsentence")}>Longer Sentences</Button>
           </Toolbar>
         </AppBar>

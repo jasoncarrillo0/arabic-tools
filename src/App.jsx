@@ -5,6 +5,7 @@ import HomePage from "./components/HomePage";
 import Header from "./components/Header";
 import VerbsArea from "./components/verbs/VerbsArea";
 import UploadPage from "./components/UploadPage";
+import CreateSentencePage from "./components/CreateSentencesPage";
 function App() {
 
 
@@ -18,6 +19,7 @@ function App() {
                     <Route exact path="/" component={HomePage}/>
                     <Route exact path="/verbpractice" component={VerbsArea}/>
                     <Route exact path="/create" component={UploadPage}/>
+                    <Route exact path="/createsentence" component={CreateSentencePage}/>
                 </Switch>
             </div>
         </div>

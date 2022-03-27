@@ -27,3 +27,137 @@ export function hasExpectedCols(expectedCols, firstRow) {
     }
     return true;
 }
+
+/*
+
+arabic: "كان"
+english: "to be"
+phonetic: "kein"
+type: "IrregularVerb"
+uniqueIverb: ""
+
+*/
+export function getVerbChoices(verbsArr) {
+    const obj = {};
+    for (const entry of verbsArr) {
+        obj[entry.arabic] = {
+            english: entry.english,
+            type: entry.type,
+            uniqueIverb: entry.uniqueIverb,
+            timesUsed: 0
+        }
+    }
+    return obj;
+}
+
+
+/*
+arabic: "عَنْ"
+english: "about"
+*/
+export function getPrepositionsChoices(prepArr) {
+    const obj = {};
+    for (const entry of prepArr) {
+        obj[entry.arabic] = {
+            english: entry.english,
+            timesUsed: 0
+        }
+    }
+    return obj;
+}
+
+
+
+/*
+arabic: "عَنْ"
+english: "about"
+*/
+export function getParticlesChoices(particlesArr) {
+    const obj = {};
+    for (const entry of particlesArr) {
+        obj[entry.arabic] = {
+            english: entry.english,
+            timesUsed: 0
+        }
+    }
+    return obj;
+}
+
+
+
+
+
+/*
+arabic: "عَنْ"
+english: "about"
+*/
+export function getNounsChoices(nounsArr) {
+    const obj = {};
+    for (const entry of nounsArr) {
+        obj[entry.arabic] = {
+            english: entry.english,
+            timesUsed: 0
+        }
+    }
+    return obj;
+}
+
+
+
+/*
+arabic: "عَنْ"
+english: "about"
+*/
+export function getConnectorsChoices(connArr) {
+    const obj = {};
+    for (const entry of connArr) {
+        obj[entry.arabic] = {
+            english: entry.english,
+            timesUsed: 0
+        }
+    }
+    return obj;
+}
+
+
+
+
+/*
+arabic: "أكاديمي"
+english: "academic"
+uniqueFemale: ""
+uniquePlural: ""
+*/
+export function getAdjectivesChoices(adjArr) {
+    const obj = {};
+    for (const entry of adjArr) {
+        obj[entry.arabic] = {
+            english: entry.english,
+            timesUsed: 0
+        }
+        if (obj.uniqueFemale) {
+            obj[entry.uniqueFemale] = {
+                english: entry.english,
+                isFemale: true,
+                timesUsed: 0
+            }
+        }
+
+        if (obj.uniquePlural) {
+            obj[entry.uniquePlural] = {
+                english: entry.english,
+                isPlural: true,
+                timesUsed: 0
+            }
+        }
+    }
+    return obj;
+}
+
+
+export function getOptionsFrom(wordObj) {
+    return Object
+    .keys(wordObj)
+    .map(choice => `${choice} (${wordObj[choice].timesUsed})`)
+    .sort((a,b) => a.localeCompare(b))
+}

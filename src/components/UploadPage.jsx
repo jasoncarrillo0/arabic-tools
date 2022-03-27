@@ -2,7 +2,7 @@ import React from "react";
 import s from "./UploadPage.module.scss";
 import UploadAccordion from "./UploadPage/UploadAccordion";
 
-const SentenceMaker = ({ setAdjectives }) => {
+const SentenceMaker = () => {
 
     return (
         <div className={s.wrap}>
