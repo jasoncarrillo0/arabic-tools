@@ -5,14 +5,14 @@ import SentenceInput from '../reusable/SentenceInput';
 import s from './Sentence.module.scss';
 import { useSnackbar } from 'notistack'
 import { SUCCESS_SNACKBAR, ERR_SNACKBAR } from '../../helpers/constants'
-import { addLevelOneSentence } from '../../redux/create-sentence/createSentenceActions';
+import { addLevelTwoSentence } from '../../redux/create-sentence/createSentenceActions';
 import { getOptionsFrom } from '../../helpers/utils';
 const INIT_STATE = {
     sentence: "",
     verb: "",
     noun: ""
 }
-const LevelOneSentence = ({ verbChoices, nounChoices, addLevelOneSentence }) => {
+const LevelTwoSentence = ({ verbChoices, nounChoices, addLevelTwoSentence }) => {
     const [state, setState] = useState(INIT_STATE);
     const { enqueueSnackbar } = useSnackbar();
 
@@ -30,7 +30,7 @@ const LevelOneSentence = ({ verbChoices, nounChoices, addLevelOneSentence }) => 
             const noun = state.noun.split(" ")[0];
             const verb = state.verb.split(" ")[0];
             if (state.sentence.includes(noun) && state.sentence.includes(verb)) {
-                addLevelOneSentence(state.sentence);
+                addLevelTwoSentence(state.sentence);
                 enqueueSnackbar("Successfully added new sentence.", SUCCESS_SNACKBAR);
                 setState(INIT_STATE);
             } else {
@@ -84,11 +84,11 @@ const LevelOneSentence = ({ verbChoices, nounChoices, addLevelOneSentence }) => 
 
 
 const mapDispatch = {
-    addLevelOneSentence: (sentence) => addLevelOneSentence(sentence)
+    addLevelTwoSentence: (sentence) => addLevelTwoSentence(sentence)
 }
 const mapStateToProps = (rootState) => {
     const { verbChoices, nounChoices } = rootState.createSentence;
     return { verbChoices, nounChoices }
 }
 
-export default connect(mapStateToProps, mapDispatch)(LevelOneSentence);
+export default connect(mapStateToProps, mapDispatch)(LevelTwoSentence);

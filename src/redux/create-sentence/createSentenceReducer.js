@@ -8,7 +8,12 @@ const INIT_STATE = {
     particleChoices: {},
     prepositionChoices: {},
     connectorChoices: {},
-    levelOneSentences: []
+    levelOneSentences: [],
+    levelTwoSentences: [],
+    levelThreeSentences: [],
+    levelFourSentences: [],
+    levelFiveSentences: [],
+    levelSixSentences: []
 }
 export const createSentenceReducer = (state = INIT_STATE, action) => {
     switch (action.type) {
@@ -25,6 +30,16 @@ export const createSentenceReducer = (state = INIT_STATE, action) => {
             return {
                 ...state,
                 levelOneSentences: [...state.levelOneSentences, action.payload]
+            }
+        case ACTIONS.ADD_LEVEL_TWO_SENTENCE:
+            return {
+                ...state,
+                levelTwoSentences: [...state.levelTwoSentences, action.payload]
+            }
+        case ACTIONS.ADD_LEVEL_THREE_SENTENCE:
+            return {
+                ...state,
+                levelThreeSentences: [...state.levelThreeSentences, action.payload]
             }
         default:
             return { ...state }
