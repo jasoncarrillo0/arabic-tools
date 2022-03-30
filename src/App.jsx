@@ -8,7 +8,7 @@ import UploadPage from "./components/UploadPage";
 import CreateSentencePage from "./components/CreateSentencesPage";
 function App() {
 
-
+    
 
     return (
         <div className={s.wrap}>
