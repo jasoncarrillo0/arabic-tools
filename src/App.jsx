@@ -31,7 +31,7 @@ function App() {
                         <Route exact path="/" render={() => authed ? <Redirect to="/home"/> : <Redirect to="/login"/>}/>
                         <Route exact path="/signup" component={SignupPage}/>
                         <Route exact path="/login" component={LoginPage}/>
-                        <PrivateRoute exact path="/home" authed={authed} component={AuthedApp}/>
+                        <PrivateRoute path="/home" authed={authed} component={AuthedApp}/>
                     </Switch>
                 )
             }

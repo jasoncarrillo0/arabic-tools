@@ -3,6 +3,7 @@ import VerbsArea from "./components/verbs/VerbsArea";
 import UploadPage from "./components/UploadPage";
 import CreateSentencePage from "./components/CreateSentencesPage";
 import HomePage from "./components/HomePage";
+import ProfileInfo from "./components/ProfileInfo";
 
 function AuthedApp() {
     return (
@@ -11,6 +12,7 @@ function AuthedApp() {
             <Route exact path="/home/verbpractice" component={VerbsArea}/>
             <Route exact path="/home/create" component={UploadPage}/>
             <Route exact path="/home/createsentence" component={CreateSentencePage}/>
+            <Route exact path="/home/profile" component={ProfileInfo}/>
         </Switch>
     );
 }
