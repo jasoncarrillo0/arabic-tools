@@ -1,25 +1,21 @@
 import { CssBaseline } from "@mui/material";
 import { Route, Switch } from "react-router-dom";
+import { useAuth } from './contexts/AuthContext'
 import s from './App.module.scss'
-import HomePage from "./components/HomePage";
 import Header from "./components/Header";
-import VerbsArea from "./components/verbs/VerbsArea";
-import UploadPage from "./components/UploadPage";
-import CreateSentencePage from "./components/CreateSentencesPage";
+import SignupPage from "./components/SignupPage";
+import PrivateRoute from './components/reusable/PrivateRoute'
+import AuthedApp from './AuthedApp';
 function App() {
-
-    
-
+    const { currUser } = useAuth();
     return (
         <div className={s.wrap}>
             <CssBaseline/>
             <Header/>
             <div style={{margin: '2rem'}}>
                 <Switch>
-                    <Route exact path="/" component={HomePage}/>
-                    <Route exact path="/verbpractice" component={VerbsArea}/>
-                    <Route exact path="/create" component={UploadPage}/>
-                    <Route exact path="/createsentence" component={CreateSentencePage}/>
+                    <Route exact path="/signup" component={SignupPage}/>
+                    <PrivateRoute path="/home" authed={currUser ? true : false} component={AuthedApp}/> 
                 </Switch>
             </div>
         </div>

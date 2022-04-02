@@ -11,10 +11,10 @@ const Header = () => {
         <AppBar position="static" className={s.toolbarWrap}>
             <h2 onClick={() => history.push("/")}>Arabic Tools</h2>
           <Toolbar className={s.toolbar}>
-            <Button sx={{color: "white"}} onClick={() => history.push("/create")}>Create</Button>
-            <Button sx={{color: "white"}} onClick={() => history.push("/verbpractice")}>Verb Practice</Button>
-            <Button sx={{color: "white"}} onClick={() => history.push("/createsentence")}>Create Sentences</Button>
-            <Button sx={{color: "white"}} onClick={() => history.push("/longsentence")}>Longer Sentences</Button>
+            <Button sx={{color: "white"}} onClick={() => history.push("/home/create")}>Create</Button>
+            <Button sx={{color: "white"}} onClick={() => history.push("/home/verbpractice")}>Verb Practice</Button>
+            <Button sx={{color: "white"}} onClick={() => history.push("/home/createsentence")}>Create Sentences</Button>
+            <Button sx={{color: "white"}} onClick={() => history.push("/home/longsentence")}>Longer Sentences</Button>
           </Toolbar>
         </AppBar>
       </Box>

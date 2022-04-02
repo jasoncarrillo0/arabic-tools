@@ -16,7 +16,7 @@ export default function AuthProvider({ children }) {
     const [currUser, setCurrUser] = useState(null);
 
     function signup(email, pass) {
-        return createUserWithEmailAndPassword(email, pass);
+        return createUserWithEmailAndPassword(auth, email, pass);
     }
 
     useEffect(() => {
