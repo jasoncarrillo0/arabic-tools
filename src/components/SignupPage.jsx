@@ -4,19 +4,19 @@ import React, { useEffect, useState } from 'react';
 import s from './SignupPage.module.scss';
 import { useSnackbar } from 'notistack'
 import { ERR_SNACKBAR } from '../helpers/constants'
-import { useHistory } from 'react-router-dom'
+import { useHistory, Link } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
 
 
 
 const SignupPage = () => {
-    const [email, setEmail] = useState("");
-    const [pass, setPass]   = useState("");
+    const [email, setEmail]               = useState("");
+    const [pass, setPass]                 = useState("");
     const [confirmPass, setConfirmPass]   = useState("");
-    const [loading, setLoading] = useState(false);
-    const { enqueueSnackbar } = useSnackbar();
-    const { signup } = useAuth()
-    const history               = useHistory();
+    const [loading, setLoading]           = useState(false);
+    const { enqueueSnackbar }             = useSnackbar();
+    const { signup }                      = useAuth()
+    const history                         = useHistory();
 
     useEffect(() => {
         return () => {
@@ -90,6 +90,11 @@ const SignupPage = () => {
                 <section>
                     <LoadingButton loading={loading} onClick={handleClick} variant="contained" disabled={!email || !pass || !confirmPass}>Sign Up</LoadingButton>
                 </section>
+
+                <div className={s.btmMsg}>
+                    <div>Already have an account?</div>
+                    <Link to="/login">Login here.</Link>
+                </div>
             </div>
         </Paper>
     );

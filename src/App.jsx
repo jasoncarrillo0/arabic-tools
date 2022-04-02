@@ -1,22 +1,40 @@
-import { CssBaseline } from "@mui/material";
-import { Route, Switch } from "react-router-dom";
+import { CircularProgress, CssBaseline } from "@mui/material";
+import { Route, Switch, Redirect } from "react-router-dom";
 import { useAuth } from './contexts/AuthContext'
 import s from './App.module.scss'
 import Header from "./components/Header";
 import SignupPage from "./components/SignupPage";
 import PrivateRoute from './components/reusable/PrivateRoute'
+import LoginPage from './components/LoginPage';
 import AuthedApp from './AuthedApp';
+import { useEffect, useState } from "react";
 function App() {
-    const { currUser } = useAuth();
+    const { currUser, userCheckLoading } = useAuth();
+    const [authed, setAuthed] = useState(false);
+    useEffect(() => {
+        if (currUser) {
+            setAuthed(true);
+        } else {
+            setAuthed(false);
+        }
+    }, [currUser])
     return (
         <div className={s.wrap}>
             <CssBaseline/>
             <Header/>
             <div style={{margin: '2rem'}}>
-                <Switch>
-                    <Route exact path="/signup" component={SignupPage}/>
-                    <PrivateRoute path="/home" authed={currUser ? true : false} component={AuthedApp}/> 
-                </Switch>
+            {
+                userCheckLoading ? (
+                    <CircularProgress/>
+                ) : (
+                    <Switch>
+                        <Route exact path="/" render={() => authed ? <Redirect to="/home"/> : <Redirect to="/login"/>}/>
+                        <Route exact path="/signup" component={SignupPage}/>
+                        <Route exact path="/login" component={LoginPage}/>
+                        <PrivateRoute exact path="/home" authed={authed} component={AuthedApp}/>
+                    </Switch>
+                )
+            }
             </div>
         </div>
     );
