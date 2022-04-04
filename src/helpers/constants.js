@@ -94,4 +94,5 @@ export const PREPOSITIONS_COLS = ["english", "arabic", "phonetic"];
 export const VERBS_COLS        = ["english", "arabic", "type", "phonetic", "unique I Verb"];
 export const NOUNS_COLS        = ["English", "Arabic", "Phonetic"];
 export const ADJECTIVE_COLS    = ["English Word", "Arabic Word", "Unique female", "Unique Plural"];
+export const AUTHORIZED_EMAILS = [process.env.REACT_APP_SPECIAL_EMAIL_ONE, process.env.REACT_APP_SPECIAL_EMAIL_TWO];
 
