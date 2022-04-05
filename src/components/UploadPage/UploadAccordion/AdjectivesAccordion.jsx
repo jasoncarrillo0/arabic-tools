@@ -1,6 +1,6 @@
 import React from 'react';
-import { Accordion, AccordionDetails} from '@mui/material'
-import { CSVReader } from 'react-papaparse';
+import { Accordion, AccordionDetails, Button} from '@mui/material'
+import { useCSVReader } from 'react-papaparse';
 import CustomAccordionSummary from '../../reusable/CustomAccordionSummary';
 import CsvFieldsExample from '../../reusable/CsvFieldsExample';
 import { useSnackbar } from 'notistack'
@@ -10,6 +10,7 @@ import { connect } from 'react-redux';
 import { hasExpectedCols } from '../../../helpers/utils';
 const AdjectivesAccordion = ({ setAllAdjectives }) => {
     const { enqueueSnackbar } = useSnackbar()
+    const { CSVReader }       = useCSVReader();
     function handleOnDrop(data) {
         if (!hasExpectedCols(ADJECTIVE_COLS, data[0])) return enqueueSnackbar("incorrect cols", ERR_SNACKBAR)
 
@@ -27,24 +28,23 @@ const AdjectivesAccordion = ({ setAllAdjectives }) => {
         setAllAdjectives(adjEntries);
     };
 
-    function handleOnError(err, file, inputElem, reason) {
-    };
-
-    function handleOnRemoveFile(data) {
-    };
     return (
         <Accordion>
             <CustomAccordionSummary name="Adjectives"/>
             <AccordionDetails>
                 <CsvFieldsExample expectedColumns={ADJECTIVE_COLS}/>
-                <CSVReader
-                    onDrop={handleOnDrop}
-                    onError={handleOnError}
-                    noDrag
-                    addRemoveButton
-                    onRemoveFile={handleOnRemoveFile}
-                >
-                    <span>Upload Adjectives Sheet Here</span>
+                <CSVReader onUploadAccepted={handleOnDrop}>
+                    {({
+                        getRootProps,
+                        acceptedFile
+                    }) => (
+                        <div>
+                            <Button {...getRootProps()}>
+                                Browse file
+                            </Button>
+                            <div>{acceptedFile && acceptedFile.name}</div>
+                        </div>
+                    )}
                 </CSVReader>
             </AccordionDetails>
         </Accordion>
