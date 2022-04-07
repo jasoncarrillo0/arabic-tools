@@ -1,3 +1,6 @@
+import { collection, getDocs, query } from "firebase/firestore";
+import { db } from "../firebase/firebase";
+
 export function getVerbsObj(verbs) {
     let split = verbs.split(",");
     let cleanedSplit = split.map(verb => verb.replace(/\t/g, " "));
@@ -160,4 +163,36 @@ export function getOptionsFrom(wordObj) {
     .keys(wordObj)
     .map(choice => `${choice} (${wordObj[choice].timesUsed})`)
     .sort((a,b) => a.localeCompare(b))
+}
+
+
+export async function getDocsFromCollection(dictionaryId, collectionName) {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const dbQuery = query(collection(db, 'dictionary', dictionaryId, collectionName));
+            const snapshot = await getDocs(dbQuery);
+            const documentsArr = [];
+            for (const document of snapshot.docs) {
+                documentsArr.push({
+                    ...document.data(),
+                    id: document.id
+                });
+            } 
+            resolve(documentsArr);
+        } catch (e) {
+            reject(e.message)
+        }
+    })
+}
+
+export async function getDictionaryId() {
+    return new Promise(async(resolve, reject) => {
+        try {
+            const dbQuery = query(collection(db, 'dictionary'));
+            const snapshot = await getDocs(dbQuery);
+            resolve(snapshot.docs[0].id);
+        } catch (e) {
+            reject(e.message);
+        }
+    })
 }
