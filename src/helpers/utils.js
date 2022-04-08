@@ -1,5 +1,6 @@
-import { collection, getDocs, query } from "firebase/firestore";
+import { addDoc, collection, getDocs, query, setDoc } from "firebase/firestore";
 import { db } from "../firebase/firebase";
+import { DICT_FIREBASE_ID } from "./constants";
 
 export function getVerbsObj(verbs) {
     let split = verbs.split(",");
@@ -166,10 +167,10 @@ export function getOptionsFrom(wordObj) {
 }
 
 
-export async function getDocsFromCollection(dictionaryId, collectionName) {
+export async function getDocsFromCollection(collectionName) {
     return new Promise(async (resolve, reject) => {
         try {
-            const dbQuery = query(collection(db, 'dictionary', dictionaryId, collectionName));
+            const dbQuery = query(collection(db, 'dictionary', DICT_FIREBASE_ID, collectionName));
             const snapshot = await getDocs(dbQuery);
             const documentsArr = [];
             for (const document of snapshot.docs) {
@@ -185,14 +186,28 @@ export async function getDocsFromCollection(dictionaryId, collectionName) {
     })
 }
 
-export async function getDictionaryId() {
-    return new Promise(async(resolve, reject) => {
+
+function hasDuplicates(words) {
+    const all = {};
+    for (const word of words) {
+        if (word.english in all) return true
+        all[word.english] = '';
+    }
+    return false;
+}
+
+export async function addAllToCollection(collectionName, words) {
+    return new Promise(async (resolve, reject) => {
         try {
-            const dbQuery = query(collection(db, 'dictionary'));
-            const snapshot = await getDocs(dbQuery);
-            resolve(snapshot.docs[0].id);
+            if (hasDuplicates(words)) return reject("duplicate english words found.");
+            const coll = collection(db, 'dictionary', DICT_FIREBASE_ID, collectionName);
+            for (const word of words) {
+                await addDoc(coll, word);
+            }
+            resolve(true);
         } catch (e) {
-            reject(e.message);
+            reject(e.message)
         }
     })
 }
+

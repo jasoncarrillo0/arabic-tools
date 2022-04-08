@@ -1,21 +1,20 @@
 import React from 'react';
 import s from './UploadAccordion.module.scss';
-import VerbsAccordion from './UploadAccordion/VerbsAccordion';
-import NounsAccordion from './UploadAccordion/NounsAccordion';
-import AdjectivesAccordion from './UploadAccordion/AdjectivesAccordion';
-import PrepositionsAccordion from './UploadAccordion/PrepositionsAccordion';
-import ParticlesAccordion from './UploadAccordion/ParticlesAccordion';
-import ConnectorsAccordion from './UploadAccordion/ConnectorsAccordion';
+import { UPLOAD_WORDS } from '../../helpers/constants';
+import UploadWordsCard from '../reusable/UploadWordsCard';
 
 const UploadAccordion = () => {
     return (
         <div className={s.wrap}>
-            <VerbsAccordion/>
-            <NounsAccordion/>
-            <AdjectivesAccordion/>
-            <PrepositionsAccordion/>
-            <ParticlesAccordion/>
-            <ConnectorsAccordion/>
+        {
+            Object.keys(UPLOAD_WORDS).map((word, idx) => (
+                <UploadWordsCard 
+                    key={idx} 
+                    wordType={word} 
+                    expectedCols={UPLOAD_WORDS[word]}
+                />
+            ))
+        }
         </div>
     );
 };

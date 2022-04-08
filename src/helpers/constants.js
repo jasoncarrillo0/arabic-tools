@@ -95,4 +95,12 @@ export const VERBS_COLS        = ["English", "Arabic", "Type", "Phonetic", "Uniq
 export const NOUNS_COLS        = ["English", "Arabic", "Phonetic"];
 export const ADJECTIVE_COLS    = ["English", "Arabic", "Unique Female", "Unique Plural"];
 export const AUTHORIZED_EMAILS = [process.env.REACT_APP_SPECIAL_EMAIL_ONE, process.env.REACT_APP_SPECIAL_EMAIL_TWO];
-
+export const DICT_FIREBASE_ID  = "LQfFjOUM7OpbHrpnanQB";
+export const UPLOAD_WORDS      = {
+    "adjectives": ADJECTIVE_COLS,
+    "verbs": VERBS_COLS,
+    "particles": PARTICLES_COLS,
+    "connectors": CONNECTORS_COLS,
+    "nouns": NOUNS_COLS,
+    "prepositions": PREPOSITIONS_COLS
+}

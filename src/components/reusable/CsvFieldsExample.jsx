@@ -6,7 +6,7 @@ const CsvFieldsExample = ({ expectedColumns }) => {
     return (
         <Paper className={s.wrap}>
             <div className={s.innerWrap}>
-                <h3>Sheet must contain these columns, with the first row of the sheet including the column name:</h3>
+                <h3>The first row of the sheet must contains these columns:</h3>
                 <hr/>
                 <div>
                 {
