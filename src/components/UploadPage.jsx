@@ -1,16 +1,22 @@
-import React from "react";
-import s from "./UploadPage.module.scss";
-import UploadAccordion from "./UploadPage/UploadAccordion";
+import React from 'react';
+import s from './UploadPage.module.scss';
+import { UPLOAD_WORDS } from '../helpers/constants';
+import UploadWordsCard from './reusable/UploadWordsCard';
 
-const SentenceMaker = () => {
-
+const UploadPage = () => {
     return (
         <div className={s.wrap}>
-            <UploadAccordion/>
+        {
+            Object.keys(UPLOAD_WORDS).map((word, idx) => (
+                <UploadWordsCard 
+                    key={idx} 
+                    wordType={word} 
+                    expectedCols={UPLOAD_WORDS[word]}
+                />
+            ))
+        }
         </div>
-    )
-
+    );
 };
 
-
-export default SentenceMaker;
+export default UploadPage;
