@@ -1,7 +1,14 @@
-import { addDoc, collection, getDocs, query, setDoc } from "firebase/firestore";
+import { addDoc, collection, getDocs, query } from "firebase/firestore";
 import { db } from "../firebase/firebase";
 import { DICT_FIREBASE_ID } from "./constants";
-
+import to from 'await-to-js';
+import { store } from '../redux/store'
+import { setAllAdjectives } from "../redux/dictionary/adjectives/adjectiveActions";
+import { setAllVerbs } from "../redux/dictionary/verbs/verbActions";
+import { setAllParticles } from "../redux/dictionary/particles/particlesActions";
+import { setAllConnectors } from "../redux/dictionary/connectors/connectorsActions";
+import { setAllPrepositions } from "../redux/dictionary/prepositions/prepositionActions";
+import { setAllNouns } from "../redux/dictionary/nouns/nounActions";
 export function getVerbsObj(verbs) {
     let split = verbs.split(",");
     let cleanedSplit = split.map(verb => verb.replace(/\t/g, " "));
@@ -196,6 +203,12 @@ function hasDuplicates(words) {
     return false;
 }
 
+
+/* 
+    uploads all to collection, 
+    retrieves added docs from firebase to ensure we are using firebase docs
+    adds to redux state
+*/
 export async function addAllToCollection(collectionName, words) {
     return new Promise(async (resolve, reject) => {
         try {
@@ -204,6 +217,10 @@ export async function addAllToCollection(collectionName, words) {
             for (const word of words) {
                 await addDoc(coll, word);
             }
+            const [e1, newlyAddedDocs] = await to(getDocsFromCollection(collectionName));
+            if (e1) throw new Error(e1);
+            if (!newlyAddedDocs) throw new Error("No documents returned from firebase query.");
+            handleNewDocs(newlyAddedDocs, collectionName);
             resolve(true);
         } catch (e) {
             reject(e.message)
@@ -211,3 +228,60 @@ export async function addAllToCollection(collectionName, words) {
     })
 }
 
+
+function handleNewDocs(newlyAddedDocs, collectionName) {
+    const {dispatch} = store;
+    switch (collectionName) {
+        case "adjectives":
+            dispatch(setAllAdjectives(newlyAddedDocs))
+            break;
+        case "verbs":
+            dispatch(setAllVerbs(newlyAddedDocs))
+            break;
+        case "particles":
+            dispatch(setAllParticles(newlyAddedDocs))
+            break;
+        case "connectors":
+            dispatch(setAllConnectors(newlyAddedDocs))
+            break;
+        case "nouns":
+            dispatch(setAllNouns(newlyAddedDocs))
+            break;
+        case "prepositions":
+            dispatch(setAllPrepositions(newlyAddedDocs))
+            break;
+        default:
+            break;
+    }
+}
+
+
+
+export function getWord(wordType, data) {
+    switch (wordType) {
+        case "adjectives":
+            return {
+                english: data[0],
+                arabic: data[1],
+                uniqueFemale: data[2],
+                uniquePlural: data[3],
+                timesUsed: 0
+            }
+        case "verbs":
+            return {
+                english: data[0],
+                arabic: data[1],
+                type: data[2],
+                phonetic: data[3],
+                uniqueIverb: data[4],
+                timesUsed: 0
+            }
+        default:
+            return {
+                english: data[0],
+                arabic: data[1], 
+                phonetic: data[2],
+                timesUsed: 0
+            }
+    }
+}
