@@ -104,3 +104,11 @@ export const UPLOAD_WORDS      = {
     "nouns": NOUNS_COLS,
     "prepositions": PREPOSITIONS_COLS
 }
+
+// must follow the rules: each entry contains only one colon
+export const SENTENCE_LEVELS = {
+    "Level One": ["verb only"], 
+    "Level Two": ["verb", "noun w/ taa marbutah"],
+    "Level Three": ["verb", "noun w/ taa marbutah + sun/moon letter"],
+    "Level Four": ["verb", "noun w/ taa marbutah or sun/moon letter", "adjective"]
+}

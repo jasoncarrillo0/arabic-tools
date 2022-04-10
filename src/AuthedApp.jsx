@@ -14,7 +14,8 @@ import { useSnackbar } from "notistack";
 import { setDictionary } from "./redux/dictionary/dictActionCreators";
 import { connect } from "react-redux";
 import { CircularProgress } from "@mui/material";
-
+import LevelOneSentence from './components/CreateSentencePage/LevelOneSentence'
+import LevelTwoSentence from './components/CreateSentencePage/LevelTwoSentence'
 
 
 function AuthedApp({ setDictionary }) {
@@ -46,6 +47,7 @@ function AuthedApp({ setDictionary }) {
             }
             setLoading(false);
         }
+        
         loadDictionary();
         return () => {
             setLoading(false);
@@ -57,13 +59,15 @@ function AuthedApp({ setDictionary }) {
             loading ? (
                 <CircularProgress/>
             ) : (
-                <Switch>
+                <>
                     <Route exact path="/home" component={HomePage}/>
                     <Route exact path="/home/verbpractice" component={VerbsArea}/>
                     <PrivateRoute exact path="/home/upload" component={UploadPage} authed={authed}/>
                     <PrivateRoute exact path="/home/create" component={CreateSentencePage} authed={authed}/>
+                    <PrivateRoute exact path="/home/create/levelone" component={LevelOneSentence} authed={authed}/>
+                    <PrivateRoute exact path="/home/create/leveltwo" component={LevelTwoSentence} authed={authed}/>
                     <Route exact path="/home/profile" component={ProfileInfo}/>
-                </Switch>
+                </>
             )
         }
         </>

@@ -19,12 +19,12 @@ export const createSentenceReducer = (state = INIT_STATE, action) => {
     switch (action.type) {
         case ACTIONS.INIT_WORD_CHOICE_TBLS:
             return {
-                verbChoices: getVerbChoices(action.payload.verbs.allVerbs),
-                nounChoices: getNounsChoices(action.payload.nouns.allNouns),
-                adjectiveChoices: getAdjectivesChoices(action.payload.adjectives.allAdjectives),
-                particleChoices: getParticlesChoices(action.payload.particles.allParticles),
-                prepositionChoices: getPrepositionsChoices(action.payload.prepositions.allPrepositions),
-                connectorChoices: getConnectorsChoices(action.payload.connectors.allConnectors)
+                verbChoices: getVerbChoices(action.payload.verbs),
+                nounChoices: getNounsChoices(action.payload.nouns),
+                adjectiveChoices: getAdjectivesChoices(action.payload.adjectives),
+                particleChoices: getParticlesChoices(action.payload.particles),
+                prepositionChoices: getPrepositionsChoices(action.payload.prepositions),
+                connectorChoices: getConnectorsChoices(action.payload.connectors)
             }
         case ACTIONS.ADD_LEVEL_ONE_SENTENCE:
             return {

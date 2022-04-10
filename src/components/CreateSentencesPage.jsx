@@ -1,8 +1,10 @@
 import React, { useEffect } from "react";
 import s from "./CreateSentencePage.module.scss";
-import LevelOneSentence from "./CreateSentencePage/LevelOneSentence";
 import { initWordChoiceTbls } from '../redux/create-sentence/createSentenceActions'
 import { connect } from "react-redux";
+import { SENTENCE_LEVELS } from "../helpers/constants";
+import CreateSentenceCard from "./reusable/CreateSentenceCard";
+
 const CreateSentencePage = ({ initWordChoiceTbls, dictionary }) => {
 
     useEffect(() => {
@@ -11,8 +13,12 @@ const CreateSentencePage = ({ initWordChoiceTbls, dictionary }) => {
     }, []);
 
     return (
-        <div className={s.wrap} dir="rtl">
-            <LevelOneSentence/>
+        <div className={s.wrap}>
+        {
+            Object.keys(SENTENCE_LEVELS).map((level, idx) => (
+                <CreateSentenceCard key={idx} level={level} elements={SENTENCE_LEVELS[level]}/>
+            ))
+        }
         </div>
     )
 

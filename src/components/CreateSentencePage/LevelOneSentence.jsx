@@ -12,8 +12,14 @@ const INIT_STATE = {
     verb: "",
     noun: ""
 }
+export const LEVEL_ONE_INIT_STATE = {
+    sentence: "",
+    verb: "",
+    noun: ""
+}
+
 const LevelOneSentence = ({ verbChoices, nounChoices, addLevelOneSentence }) => {
-    const [state, setState] = useState(INIT_STATE);
+    const [state, setState]   = useState(INIT_STATE);
     const { enqueueSnackbar } = useSnackbar();
 
     function handleChange({ target }) {

@@ -55,7 +55,7 @@ export function getVerbChoices(verbsArr) {
             english: entry.english,
             type: entry.type,
             uniqueIverb: entry.uniqueIverb,
-            timesUsed: 0
+            timesUsed: entry.timesUsed
         }
     }
     return obj;
@@ -71,7 +71,7 @@ export function getPrepositionsChoices(prepArr) {
     for (const entry of prepArr) {
         obj[entry.arabic] = {
             english: entry.english,
-            timesUsed: 0
+            timesUsed: entry.timesUsed
         }
     }
     return obj;
@@ -88,7 +88,7 @@ export function getParticlesChoices(particlesArr) {
     for (const entry of particlesArr) {
         obj[entry.arabic] = {
             english: entry.english,
-            timesUsed: 0
+            timesUsed: entry.timesUsed
         }
     }
     return obj;
@@ -107,7 +107,7 @@ export function getNounsChoices(nounsArr) {
     for (const entry of nounsArr) {
         obj[entry.arabic] = {
             english: entry.english,
-            timesUsed: 0
+            timesUsed: entry.timesUsed
         }
     }
     return obj;
@@ -124,7 +124,7 @@ export function getConnectorsChoices(connArr) {
     for (const entry of connArr) {
         obj[entry.arabic] = {
             english: entry.english,
-            timesUsed: 0
+            timesUsed: entry.timesUsed
         }
     }
     return obj;
@@ -144,13 +144,12 @@ export function getAdjectivesChoices(adjArr) {
     for (const entry of adjArr) {
         obj[entry.arabic] = {
             english: entry.english,
-            timesUsed: 0
+            timesUsed: entry.timesUsed
         }
         if (obj.uniqueFemale) {
             obj[entry.uniqueFemale] = {
                 english: entry.english,
                 isFemale: true,
-                timesUsed: 0
             }
         }
 
@@ -158,7 +157,6 @@ export function getAdjectivesChoices(adjArr) {
             obj[entry.uniquePlural] = {
                 english: entry.english,
                 isPlural: true,
-                timesUsed: 0
             }
         }
     }
