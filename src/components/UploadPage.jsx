@@ -3,9 +3,8 @@ import s from './UploadPage.module.scss';
 import { UPLOAD_WORDS } from '../helpers/constants';
 import UploadWordsCard from './reusable/UploadWordsCard';
 import { connect } from 'react-redux';
-import { selectAllWords } from '../redux/dictionary/dictSelectors';
 
-const UploadPage = ({ extractedDictionary }) => {
+const UploadPage = ({ dictionary }) => {
 
     return (
         <div className={s.wrap}>
@@ -15,7 +14,7 @@ const UploadPage = ({ extractedDictionary }) => {
                     key={idx} 
                     wordType={word} 
                     expectedCols={UPLOAD_WORDS[word]}
-                    wordsInState={extractedDictionary[word].length > 0}
+                    wordsInState={dictionary[word].length > 0}
                 />
             ))
         }
@@ -23,5 +22,8 @@ const UploadPage = ({ extractedDictionary }) => {
     );
 };
 
-
-export default connect(selectAllWords)(UploadPage);
+const mapStateToProps = (rootState) => {
+    const { dictionary } = rootState;
+    return { dictionary }
+}
+export default connect(mapStateToProps)(UploadPage);

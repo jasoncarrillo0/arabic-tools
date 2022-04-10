@@ -7,14 +7,24 @@ import ProfileInfo from "./components/ProfileInfo";
 import PrivateRoute from './components/reusable/PrivateRoute'
 import { useAuth } from "./contexts/AuthContext";
 import { AUTHORIZED_EMAILS, DICT_FIREBASE_ID, ERR_SNACKBAR, UPLOAD_WORDS } from "./helpers/constants";
-import { useEffect } from "react";
-import { doc, getDocFromServer, query, collection, getDocsFromServer } from "firebase/firestore";
+import { useEffect, useState } from "react";
+import { query, collection, getDocsFromServer } from "firebase/firestore";
 import { db } from "./firebase/firebase";
 import { useSnackbar } from "notistack";
-function AuthedApp() {
-    const { currUser } = useAuth();
-    const authed       = AUTHORIZED_EMAILS.includes(currUser.email);
-    const { enqueueSnackbar } = useSnackbar();
+import { setDictionary } from "./redux/dictionary/dictActionCreators";
+import { connect } from "react-redux";
+import { CircularProgress } from "@mui/material";
+
+
+
+function AuthedApp({ setDictionary }) {
+
+    const { currUser }          = useAuth();
+    const authed                = AUTHORIZED_EMAILS.includes(currUser.email);
+    const { enqueueSnackbar }   = useSnackbar();
+    const [loading, setLoading] = useState(true);
+
+
     useEffect(() => {
         async function loadDictionary() {
             try {
@@ -29,23 +39,39 @@ function AuthedApp() {
                     }
                     dict[collectionName] = wordDocs;
                 }
-                console.log(dict);
+                setDictionary(dict);
             } catch (e) {
                 console.log(e);
                 enqueueSnackbar(e.message, ERR_SNACKBAR)
             }
+            setLoading(false);
         }
         loadDictionary();
-    }, [])
+        return () => {
+            setLoading(false);
+        }
+    }, []);
     return (
-        <Switch>
-            <Route exact path="/home" component={HomePage}/>
-            <Route exact path="/home/verbpractice" component={VerbsArea}/>
-            <PrivateRoute exact path="/home/upload" component={UploadPage} authed={authed}/>
-            <PrivateRoute exact path="/home/create" component={CreateSentencePage} authed={authed}/>
-            <Route exact path="/home/profile" component={ProfileInfo}/>
-        </Switch>
+        <>
+        {
+            loading ? (
+                <CircularProgress/>
+            ) : (
+                <Switch>
+                    <Route exact path="/home" component={HomePage}/>
+                    <Route exact path="/home/verbpractice" component={VerbsArea}/>
+                    <PrivateRoute exact path="/home/upload" component={UploadPage} authed={authed}/>
+                    <PrivateRoute exact path="/home/create" component={CreateSentencePage} authed={authed}/>
+                    <Route exact path="/home/profile" component={ProfileInfo}/>
+                </Switch>
+            )
+        }
+        </>
     );
 }
 
-export default AuthedApp;
+const mapDispatchToProps = {
+    setDictionary: (dictObj) => setDictionary(dictObj)
+}
+
+export default connect(null, mapDispatchToProps)(AuthedApp);

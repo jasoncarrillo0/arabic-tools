@@ -3,12 +3,12 @@ import { db } from "../firebase/firebase";
 import { DICT_FIREBASE_ID } from "./constants";
 import to from 'await-to-js';
 import { store } from '../redux/store'
-import { setAllAdjectives } from "../redux/dictionary/adjectives/adjectiveActions";
-import { setAllVerbs } from "../redux/dictionary/verbs/verbActions";
-import { setAllParticles } from "../redux/dictionary/particles/particlesActions";
-import { setAllConnectors } from "../redux/dictionary/connectors/connectorsActions";
-import { setAllPrepositions } from "../redux/dictionary/prepositions/prepositionActions";
-import { setAllNouns } from "../redux/dictionary/nouns/nounActions";
+import { setAllAdjectives } from "../redux/dictionary/dictActionCreators";
+import { setAllVerbs } from "../redux/dictionary/dictActionCreators";
+import { setAllParticles } from "../redux/dictionary/dictActionCreators";
+import { setAllConnectors } from "../redux/dictionary/dictActionCreators";
+import { setAllPrepositions } from "../redux/dictionary/dictActionCreators";
+import { setAllNouns } from "../redux/dictionary/dictActionCreators";
 export function getVerbsObj(verbs) {
     let split = verbs.split(",");
     let cleanedSplit = split.map(verb => verb.replace(/\t/g, " "));

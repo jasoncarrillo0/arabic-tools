@@ -1,17 +1,14 @@
-import { combineReducers } from "redux";
-import { adjectivesReducer } from "./adjectives/adjectiveReducer";
-import { connectorsReducer } from "./connectors/connectorsReducer";
-import { nounsReducer } from "./nouns/nounReducer";
-import { particlesReducer } from "./particles/particlesReducer";
-import { prepositionsReducer } from "./prepositions/prepositionReducer";
-import { verbsReducer } from "./verbs/verbReducer";
+import { DICT_ACTION_TYPES } from './dictActionTypes'
 
-
-export const dictionaryReducer = combineReducers({
-    verbs: verbsReducer,
-    nouns: nounsReducer,
-    adjectives: adjectivesReducer,
-    prepositions: prepositionsReducer,
-    connectors: connectorsReducer,
-    particles: particlesReducer
-});
+export const dictionaryReducer = (state = {}, action) => {
+    switch (action.type) {
+        case DICT_ACTION_TYPES.SET_DICTIONARY:
+            return {
+                ...action.payload
+            }
+        default:
+            return {
+                ...state
+            }
+    }
+}
