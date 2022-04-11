@@ -47,7 +47,7 @@ const LevelOneSentence = ({ verbChoices, nounChoices, addLevelOneSentence }) => 
     }
     return (
         <RtlProvider>
-            <div className={s.wrap} dir="rtl">
+            <div className={s.wrap}>
                 <h3>Verb + Noun</h3>
                 <hr/>
                 <SentenceInput
@@ -88,7 +88,6 @@ const LevelOneSentence = ({ verbChoices, nounChoices, addLevelOneSentence }) => 
                 </div>
             </div>
         </RtlProvider>
-        
     );
 };
 
