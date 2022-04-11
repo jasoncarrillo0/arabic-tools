@@ -3,6 +3,8 @@ import React from 'react';
 
 import s from './SentenceInput.module.scss';
 const SentenceInput = ({ handleChange, sentence, handleAddSentence }) => {
+
+
     return (
         <div className={s.wrap}>
             <TextField
@@ -12,7 +14,6 @@ const SentenceInput = ({ handleChange, sentence, handleAddSentence }) => {
                 value={sentence}
                 label="full sentence"
                 dir="rtl"
-                
             />
             <Button variant="contained" onClick={handleAddSentence}>Add Sentence</Button>
         </div>

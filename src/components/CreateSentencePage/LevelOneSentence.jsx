@@ -7,6 +7,7 @@ import { useSnackbar } from 'notistack'
 import { SUCCESS_SNACKBAR, ERR_SNACKBAR } from '../../helpers/constants'
 import { addLevelOneSentence } from '../../redux/create-sentence/createSentenceActions';
 import { getOptionsFrom } from '../../helpers/utils';
+import RtlProvider from '../reusable/RtlProvider';
 const INIT_STATE = {
     sentence: "",
     verb: "",
@@ -45,46 +46,49 @@ const LevelOneSentence = ({ verbChoices, nounChoices, addLevelOneSentence }) => 
         }
     }
     return (
-        <div className={s.wrap}>
-            <h3>Verb + Noun</h3>
-            <hr/>
-            <SentenceInput
-                handleChange={handleChange}
-                handleAddSentence={handleAddSentence}
-                sentence={state.sentence}
-            />
-            <div className={s.dropdownWrap}>
-                <Autocomplete
-                    options={getOptionsFrom(verbChoices)}
-                    renderInput={(params => (
-                        <TextField
-                            {...params}
-                            label="verb"
-                            value={state.verb}
-                            name="verb"
-                            required
-                        />
-                    ))}
-                    onChange={(e, val) => setState(prev => ({...prev, verb: val ? val.split(' ')[0] : ""}))}
-                    sx={{width: '140px'}}
+        <RtlProvider>
+            <div className={s.wrap} dir="rtl">
+                <h3>Verb + Noun</h3>
+                <hr/>
+                <SentenceInput
+                    handleChange={handleChange}
+                    handleAddSentence={handleAddSentence}
+                    sentence={state.sentence}
                 />
-                <Autocomplete
-                    options={getOptionsFrom(nounChoices)}
-                    renderInput={(params => (
-                        <TextField
-                            {...params}
-                            label="noun"
-                            value={state.noun}
-                            name="noun"
-                            required
-                        />
-                    ))}
-                    sx={{width: '170px'}}
-                    onChange={(e, val) => setState(prev => ({...prev, noun: val ? val.split(' ')[0] : ""}))}
+                <div className={s.dropdownWrap}>
+                    <Autocomplete
+                        options={getOptionsFrom(verbChoices)}
+                        renderInput={(params => (
+                            <TextField
+                                {...params}
+                                label="verb"
+                                value={state.verb}
+                                name="verb"
+                                required
+                            />
+                        ))}
+                        onChange={(e, val) => setState(prev => ({...prev, verb: val ? val.split(' ')[0] : ""}))}
+                        sx={{width: '140px'}}
+                    />
+                    <Autocomplete
+                        options={getOptionsFrom(nounChoices)}
+                        renderInput={(params => (
+                            <TextField
+                                {...params}
+                                label="noun"
+                                value={state.noun}
+                                name="noun"
+                                required
+                            />
+                        ))}
+                        sx={{width: '170px'}}
+                        onChange={(e, val) => setState(prev => ({...prev, noun: val ? val.split(' ')[0] : ""}))}
 
-                />
+                    />
+                </div>
             </div>
-        </div>
+        </RtlProvider>
+        
     );
 };
 
