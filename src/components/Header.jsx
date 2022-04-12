@@ -5,11 +5,10 @@ import { useHistory } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import s from './Header.module.scss';
 import ProfileButton from './Header/ProfileButton';
-import { AUTHORIZED_EMAILS } from '../helpers/constants';
 import AuthedUsersButton from './Header/AuthedUsersButton'
 const Header = () => {
     const history = useHistory();
-    const { currUser } = useAuth()
+    const { currUser, isAdminUser } = useAuth()
 
     return (
         <Box sx={{ flexGrow: 1 }}>
@@ -24,7 +23,7 @@ const Header = () => {
                 )
             }
             {
-                currUser && AUTHORIZED_EMAILS.includes(currUser.email) && (
+                currUser && isAdminUser && (
                     <AuthedUsersButton/>
                 )
             }

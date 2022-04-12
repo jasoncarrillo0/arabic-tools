@@ -1,4 +1,4 @@
-import { Route, Switch } from "react-router-dom";
+import { Route } from "react-router-dom";
 import VerbsArea from "./components/verbs/VerbsArea";
 import UploadPage from "./components/UploadPage";
 import CreateSentencePage from "./components/CreateSentencesPage";
@@ -6,7 +6,7 @@ import HomePage from "./components/HomePage";
 import ProfileInfo from "./components/ProfileInfo";
 import PrivateRoute from './components/reusable/PrivateRoute'
 import { useAuth } from "./contexts/AuthContext";
-import { AUTHORIZED_EMAILS, DICT_FIREBASE_ID, ERR_SNACKBAR, UPLOAD_WORDS } from "./helpers/constants";
+import { DICT_FIREBASE_ID, ERR_SNACKBAR, UPLOAD_WORDS } from "./helpers/constants";
 import { useEffect, useState } from "react";
 import { query, collection, getDocsFromServer } from "firebase/firestore";
 import { db } from "./firebase/firebase";
@@ -20,10 +20,9 @@ import LevelTwoSentence from './components/CreateSentencePage/LevelTwoSentence'
 
 function AuthedApp({ setDictionary }) {
 
-    const { currUser }          = useAuth();
-    const authed                = AUTHORIZED_EMAILS.includes(currUser.email);
+    const { isAdminUser }       = useAuth();
     const { enqueueSnackbar }   = useSnackbar();
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
 
 
     useEffect(() => {
@@ -48,7 +47,7 @@ function AuthedApp({ setDictionary }) {
             setLoading(false);
         }
         
-        loadDictionary();
+        //loadDictionary();
         return () => {
             setLoading(false);
         }
@@ -62,10 +61,10 @@ function AuthedApp({ setDictionary }) {
                 <>
                     <Route exact path="/home" component={HomePage}/>
                     <Route exact path="/home/verbpractice" component={VerbsArea}/>
-                    <PrivateRoute exact path="/home/upload" component={UploadPage} authed={authed}/>
-                    <PrivateRoute exact path="/home/create" component={CreateSentencePage} authed={authed}/>
-                    <PrivateRoute exact path="/home/create/levelone" component={LevelOneSentence} authed={authed}/>
-                    <PrivateRoute exact path="/home/create/leveltwo" component={LevelTwoSentence} authed={authed}/>
+                    <PrivateRoute exact path="/home/upload" component={UploadPage} authed={isAdminUser}/>
+                    <PrivateRoute exact path="/home/create" component={CreateSentencePage} authed={isAdminUser}/>
+                    <PrivateRoute exact path="/home/create/levelone" component={LevelOneSentence} authed={isAdminUser}/>
+                    <PrivateRoute exact path="/home/create/leveltwo" component={LevelTwoSentence} authed={isAdminUser}/>
                     <Route exact path="/home/profile" component={ProfileInfo}/>
                 </>
             )

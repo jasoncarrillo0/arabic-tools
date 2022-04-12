@@ -12,7 +12,7 @@ const SentenceInput = ({ handleChange, sentence, handleAddSentence }) => {
                 onChange={handleChange}
                 name="sentence"
                 value={sentence}
-                label="full sentence"
+                label="enter full sentence here"
                 dir="rtl"
             />
             <Button variant="contained" onClick={handleAddSentence}>Add Sentence</Button>

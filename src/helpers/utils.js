@@ -165,9 +165,8 @@ export function getAdjectivesChoices(adjArr) {
 
 
 export function getOptionsFrom(wordObj) {
-    return Object
-    .keys(wordObj)
-    .map(choice => `${choice} (${wordObj[choice].timesUsed})`)
+    return wordObj
+    .map(choice => `${choice.arabic} (${choice.timesUsed})`)
     .sort((a,b) => a.localeCompare(b))
 }
 
@@ -282,4 +281,15 @@ export function getWord(wordType, data) {
                 timesUsed: 0
             }
     }
+}
+
+export function getColsFromRows(rows) {
+    const colArr = Object.keys(rows[0]).filter(key => key !== "id");
+    return colArr
+    .map(col => ({
+        field: col,
+        headerName: col,
+        width: 150
+    }))
+    .sort((a,b) => a.field.localeCompare(b.field))
 }

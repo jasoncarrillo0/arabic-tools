@@ -5,4 +5,12 @@
         flex-wrap: wrap;
         gap: 1rem;
     }
+
+}
+
+.tblWrap {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+    margin-top: 3rem;
 }
