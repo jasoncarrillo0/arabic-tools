@@ -12,14 +12,20 @@ const WordPicker = ({ rows, wordType, setState, state }) => {
         boxShadow: 24,
         height: '80vh',
         p: 4,
-      };
+    };
     const [open, setOpen] = useState(false);
     return (
 
         <div>
             <Button onClick={() => setOpen(true)}>{`Choose ${wordType}`}</Button>
             {
-                state[wordType] && <Chip label={state[wordType]}/>
+                state[wordType] && (
+                    <Chip 
+                        sx={{fontWeight: 'bold', fontSize: '15px'}} 
+                        label={state[wordType]}
+                        onDelete={() => setState(prev => ({ ...prev, [wordType]: ""}))}   
+                    />
+                )
             }
             <Modal open={open} onClose={() => setOpen(false)}>
                 <Paper sx={style}>
