@@ -164,8 +164,10 @@ export function getAdjectivesChoices(adjArr) {
 }
 
 
-export function getOptionsFrom(wordObj) {
-    return wordObj
+export function getOptionsFrom(wordsArr) {
+    return wordsArr
+    .filter(choice => choice.arabic !== "")
+    .map(choice => choice)
     .map(choice => `${choice.arabic} (${choice.timesUsed})`)
     .sort((a,b) => a.localeCompare(b))
 }
@@ -289,7 +291,7 @@ export function getColsFromRows(rows) {
     .map(col => ({
         field: col,
         headerName: col,
-        width: 150
+        width: col === "arabic" ? 90 : 110
     }))
     .sort((a,b) => a.field.localeCompare(b.field))
 }

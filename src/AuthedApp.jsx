@@ -47,7 +47,7 @@ function AuthedApp({ setDictionary }) {
             setLoading(false);
         }
         
-        //loadDictionary();
+        loadDictionary();
         return () => {
             setLoading(false);
         }

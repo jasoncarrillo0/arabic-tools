@@ -1,14 +1,11 @@
-import { Autocomplete, TextField } from '@mui/material';
+import { Button, Paper, TextField } from '@mui/material';
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import SentenceInput from '../reusable/SentenceInput';
-import DataTable from '../reusable/DataTable';
 import s from './Sentence.module.scss';
 import { useSnackbar } from 'notistack'
-import { SUCCESS_SNACKBAR, ERR_SNACKBAR } from '../../helpers/constants'
-import { addLevelOneSentence } from '../../redux/create-sentence/createSentenceActions';
-import { getOptionsFrom } from '../../helpers/utils';
 import RtlProvider from '../reusable/RtlProvider';
+import { handleAddLevelOneSentence } from '../../helpers/sentence-utils';
+import WordPicker from '../reusable/WordPicker';
 
 const INIT_STATE = {
     sentence: "",
@@ -21,7 +18,7 @@ export const LEVEL_ONE_INIT_STATE = {
     noun: ""
 }
 
-const LevelOneSentence = ({ verbs, nouns, addLevelOneSentence }) => {
+const LevelOneSentence = ({ verbs, nouns }) => {
     const [state, setState]   = useState(INIT_STATE);
     const { enqueueSnackbar } = useSnackbar();
     function handleChange({ target }) {
@@ -30,89 +27,47 @@ const LevelOneSentence = ({ verbs, nouns, addLevelOneSentence }) => {
     }
 
     function handleAddSentence() {
-        if (!state.sentence) {
-            enqueueSnackbar("Sentence must not be empty", ERR_SNACKBAR);
-        } else if (!state.noun || !state.verb) {
-            enqueueSnackbar("noun and verb must be filled out", ERR_SNACKBAR);
-        } else {
-            const noun = state.noun.split(" ")[0];
-            const verb = state.verb.split(" ")[0];
-            if (state.sentence.includes(noun) && state.sentence.includes(verb)) {
-                addLevelOneSentence(state.sentence);
-                enqueueSnackbar("Successfully added new sentence.", SUCCESS_SNACKBAR);
-                setState(INIT_STATE);
-            } else {
-                enqueueSnackbar("noun and verb must be in sentence", ERR_SNACKBAR);
-            }
-        }
+        handleAddLevelOneSentence(state, setState, enqueueSnackbar, INIT_STATE);
     }
     return (
-        
-        <>
-            <RtlProvider>
-                <div className={s.wrap}>
-                    <h3>Verb + Noun</h3>
-                    <hr/>
-                    <SentenceInput
-                        handleChange={handleChange}
-                        handleAddSentence={handleAddSentence}
-                        sentence={state.sentence}
-                    />
-                    <div className={s.dropdownWrap}>
-                        <Autocomplete
-                            options={getOptionsFrom(verbs)}
-                            renderInput={(params => (
-                                <TextField
-                                    {...params}
-                                    label="verb"
-                                    value={state.verb}
-                                    name="verb"
-                                    required
-                                />
-                            ))}
-                            onChange={(e, val) => setState(prev => ({...prev, verb: val ? val.split(' ')[0] : ""}))}
-                            sx={{width: '140px'}}
-                        />
-                        <Autocomplete
-                            options={getOptionsFrom(nouns)}
-                            renderInput={(params => (
-                                <TextField
-                                    {...params}
-                                    label="noun"
-                                    value={state.noun}
-                                    name="noun"
-                                    required
-                                />
-                            ))}
-                            sx={{width: '170px'}}
-                            onChange={(e, val) => setState(prev => ({...prev, noun: val ? val.split(' ')[0] : ""}))}
-
-                        />
-                    </div>
-                    
+        <RtlProvider>
+            <Paper className={s.wrap}>
+                <div>
+                    <span className={s.title}>Verb + Noun <span className={s.example}>(Example: "he eats meat")</span> </span>
                 </div>
-            </RtlProvider>
-            <div>
-            {
-                verbs.length > 0 && nouns.length > 0 && (
-                    <div className={s.tblWrap}>
-                        <DataTable rows={verbs} title="Verbs"/>
-                        <DataTable rows={nouns} title="Nouns"/>
-                    </div>
-                )
-            }
-            </div>
-        </>
+                <div className={s.dropdownWrap}>
+                    <WordPicker 
+                        rows={verbs} 
+                        wordType="verb" 
+                        setState={setState} 
+                        state={state}
+                    />
+
+                    <WordPicker
+                        rows={nouns}
+                        wordType="noun"
+                        setState={setState}
+                        state={state}
+                    />
+                </div>
+                <TextField
+                    fullWidth
+                    onChange={handleChange}
+                    name="sentence"
+                    value={state.sentence}
+                    label="enter full sentence here"
+                    dir="rtl"
+                />
+                <Button variant="contained" sx={{marginTop: "1rem"}} onClick={handleAddSentence}>Create Sentence</Button>
+            </Paper>
+        </RtlProvider>
     );
 };
 
 
-const mapDispatch = {
-    addLevelOneSentence: (sentence) => addLevelOneSentence(sentence)
-}
 const mapStateToProps = (rootState) => {
     const { verbs, nouns } = rootState.dictionary;
     return { verbs, nouns }
 }
 
-export default connect(mapStateToProps, mapDispatch)(LevelOneSentence);
+export default connect(mapStateToProps)(LevelOneSentence);

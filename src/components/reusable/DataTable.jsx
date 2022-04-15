@@ -1,17 +1,32 @@
 import React from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import { getColsFromRows } from '../../helpers/utils';
+import s from './DataTable.module.scss';
 
-
-const DataTable = ({ rows, title }) => {
+const DataTable = ({ rows, title, handleClose=null, setState=null }) => {
     const styles = {
         height: "400px",
         width: '100%'
     }
+
+    // setState and Handleclose will be functions if used in a modal
+    function handleRowClick(params) {
+        if (typeof(setState === 'function')) {
+            setState(prev => ({...prev, [title]: params.row.arabic}))
+            handleClose();
+        }
+    }
+    
     return (
         <div style={styles}>
-            <h2>{title}</h2>
-            <DataGrid rows={rows} columns={getColsFromRows(rows)}/>
+            <h2>{"Select " + title}</h2>
+            <DataGrid 
+                rows={rows} 
+                columns={getColsFromRows(rows)}
+                onRowClick={handleRowClick}
+                disableSelectionOnClick
+                classes={{row: s.row}}
+            />
         </div>
 
     );

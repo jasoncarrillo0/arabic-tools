@@ -1,18 +1,19 @@
-import { Autocomplete, TextField } from '@mui/material';
+import { Button, Paper, TextField } from '@mui/material';
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import SentenceInput from '../reusable/SentenceInput';
 import s from './Sentence.module.scss';
 import { useSnackbar } from 'notistack'
-import { SUCCESS_SNACKBAR, ERR_SNACKBAR } from '../../helpers/constants'
 import { addLevelTwoSentence } from '../../redux/create-sentence/createSentenceActions';
-import { getOptionsFrom } from '../../helpers/utils';
+import RtlProvider from '../reusable/RtlProvider';
+import WordPicker from '../reusable/WordPicker';
+
 const INIT_STATE = {
     sentence: "",
     verb: "",
     noun: ""
 }
-const LevelTwoSentence = ({ verbChoices, nounChoices, addLevelTwoSentence }) => {
+
+const LevelTwoSentence = ({ verbs, nouns }) => {
     const [state, setState] = useState(INIT_STATE);
     const { enqueueSnackbar } = useSnackbar();
 
@@ -22,73 +23,49 @@ const LevelTwoSentence = ({ verbChoices, nounChoices, addLevelTwoSentence }) => 
     }
 
     function handleAddSentence() {
-        if (!state.sentence) {
-            enqueueSnackbar("Sentence must not be empty", ERR_SNACKBAR);
-        } else if (!state.noun || !state.verb) {
-            enqueueSnackbar("noun and verb must be filled out", ERR_SNACKBAR);
-        } else {
-            const noun = state.noun.split(" ")[0];
-            const verb = state.verb.split(" ")[0];
-            if (state.sentence.includes(noun) && state.sentence.includes(verb)) {
-                addLevelTwoSentence(state.sentence);
-                enqueueSnackbar("Successfully added new sentence.", SUCCESS_SNACKBAR);
-                setState(INIT_STATE);
-            } else {
-                enqueueSnackbar("noun and verb must be in sentence", ERR_SNACKBAR);
-            }
-        }
+        addLevelTwoSentence(state, setState, enqueueSnackbar, INIT_STATE);
     }
+    
     return (
-        <div className={s.wrap}>
-            <h3>Verb + Noun</h3>
-            <hr/>
-            <SentenceInput
-                handleChange={handleChange}
-                handleAddSentence={handleAddSentence}
-                sentence={state.sentence}
-            />
-            <div className={s.dropdownWrap}>
-                <Autocomplete
-                    options={getOptionsFrom(verbChoices)}
-                    renderInput={(params => (
-                        <TextField
-                            {...params}
-                            label="verb"
-                            value={state.verb}
-                            name="verb"
-                            required
-                        />
-                    ))}
-                    onChange={(e, val) => setState(prev => ({...prev, verb: val ? val.split(' ')[0] : ""}))}
-                    sx={{width: '140px'}}
-                />
-                <Autocomplete
-                    options={getOptionsFrom(nounChoices)}
-                    renderInput={(params => (
-                        <TextField
-                            {...params}
-                            label="noun"
-                            value={state.noun}
-                            name="noun"
-                            required
-                        />
-                    ))}
-                    sx={{width: '170px'}}
-                    onChange={(e, val) => setState(prev => ({...prev, noun: val ? val.split(' ')[0] : ""}))}
+        <RtlProvider>
+            <Paper className={s.wrap}>
+                <div>
+                    <span className={s.title}>Verb + Noun <span className={s.example}>(Example: "he eats meat")</span> </span>
+                </div>
+                <div className={s.dropdownWrap}>
+                    <WordPicker 
+                        rows={verbs} 
+                        wordType="verb" 
+                        setState={setState} 
+                        state={state}
+                    />
 
+                    <WordPicker
+                        rows={nouns}
+                        wordType="noun"
+                        setState={setState}
+                        state={state}
+                    />
+                </div>
+                <TextField
+                    fullWidth
+                    onChange={handleChange}
+                    name="sentence"
+                    value={state.sentence}
+                    label="enter full sentence here"
+                    dir="rtl"
                 />
-            </div>
-        </div>
+                <Button variant="contained" sx={{marginTop: "1rem"}} onClick={handleAddSentence}>Create Sentence</Button>
+            </Paper>
+        </RtlProvider>
     );
 };
 
 
-const mapDispatch = {
-    addLevelTwoSentence: (sentence) => addLevelTwoSentence(sentence)
-}
+
 const mapStateToProps = (rootState) => {
-    const { verbChoices, nounChoices } = rootState.createSentence;
-    return { verbChoices, nounChoices }
+    const { verbs, nouns } = rootState.dictionary;
+    return { verbs, nouns }
 }
 
-export default connect(mapStateToProps, mapDispatch)(LevelTwoSentence);
+export default connect(mapStateToProps)(LevelTwoSentence);
