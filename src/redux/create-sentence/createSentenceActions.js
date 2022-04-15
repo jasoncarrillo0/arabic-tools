@@ -32,10 +32,10 @@ export function initWordChoiceTbls(dictionary) {
     }
 }
 
-export function addLevelOneSentence(sentence) {
+export function addLevelOneSentence(sentence, verbId, nounId) {
     return {
         type: ACTIONS.ADD_LEVEL_ONE_SENTENCE,
-        payload: sentence
+        payload: {sentence, verbId, nounId}
     }
 }
 export function delLevelOneSentence(sentence, idx) {

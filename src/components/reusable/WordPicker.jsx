@@ -19,11 +19,11 @@ const WordPicker = ({ rows, wordType, setState, state }) => {
         <div>
             <Button onClick={() => setOpen(true)}>{`Choose ${wordType}`}</Button>
             {
-                state[wordType] && (
+                state[wordType].word && (
                     <Chip 
                         sx={{fontWeight: 'bold', fontSize: '15px'}} 
-                        label={state[wordType]}
-                        onDelete={() => setState(prev => ({ ...prev, [wordType]: ""}))}   
+                        label={state[wordType].word}
+                        onDelete={() => setState(prev => ({ ...prev, [wordType]: {word: "", id: ""}}))}   
                     />
                 )
             }

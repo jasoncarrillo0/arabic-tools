@@ -9,8 +9,8 @@ import WordPicker from '../reusable/WordPicker';
 
 const INIT_STATE = {
     sentence: "",
-    verb: "",
-    noun: ""
+    verb: {word: "", id: ""},
+    noun: {word: "", id: ""}
 }
 export const LEVEL_ONE_INIT_STATE = {
     sentence: "",
@@ -21,7 +21,7 @@ export const LEVEL_ONE_INIT_STATE = {
 const LevelOneSentence = ({ verbs, nouns }) => {
     const [state, setState]   = useState(INIT_STATE);
     const { enqueueSnackbar } = useSnackbar();
-    function handleChange({ target }) {
+    function handleSentenceChange({ target }) {
         const { value, name } = target;
         setState(prev => ({...prev, [name]: value}));
     }
@@ -52,7 +52,7 @@ const LevelOneSentence = ({ verbs, nouns }) => {
                 </div>
                 <TextField
                     fullWidth
-                    onChange={handleChange}
+                    onChange={handleSentenceChange}
                     name="sentence"
                     value={state.sentence}
                     label="enter full sentence here"

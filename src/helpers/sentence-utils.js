@@ -10,15 +10,9 @@ export function handleAddLevelTwoSentence(state, setState, enqueueSnackbar, INIT
     } else if (!state.noun || !state.verb) {
         enqueueSnackbar("noun and verb must be filled out", ERR_SNACKBAR);
     } else {
-        const noun = state.noun.split(" ")[0];
-        const verb = state.verb.split(" ")[0];
-        if (state.sentence.includes(noun) && state.sentence.includes(verb)) {
-            dispatch(addLevelTwoSentence(state.sentence));
-            enqueueSnackbar("Successfully added new sentence.", SUCCESS_SNACKBAR);
-            setState(INIT_STATE);
-        } else {
-            enqueueSnackbar("noun and verb must be in sentence", ERR_SNACKBAR);
-        }
+        dispatch(addLevelTwoSentence(state.sentence));
+        enqueueSnackbar("Successfully added new sentence.", SUCCESS_SNACKBAR);
+        setState(INIT_STATE);
     }
 }
 
@@ -28,15 +22,9 @@ export function handleAddLevelOneSentence(state, setState, enqueueSnackbar, INIT
     } else if (!state.noun || !state.verb) {
         enqueueSnackbar("noun and verb must be filled out", ERR_SNACKBAR);
     } else {
-        const noun = state.noun.split(" ")[0];
-        const verb = state.verb.split(" ")[0];
-        if (state.sentence.includes(noun) && state.sentence.includes(verb)) {
-            dispatch(addLevelOneSentence(state.sentence));
-            enqueueSnackbar("Successfully added new sentence.", SUCCESS_SNACKBAR);
-            setState(INIT_STATE);
-        } else {
-            enqueueSnackbar("noun and verb must be in sentence", ERR_SNACKBAR);
-        }
+        dispatch(addLevelOneSentence(state.sentence, state.verb.id, state.noun.id));
+        enqueueSnackbar("Successfully added new sentence.", SUCCESS_SNACKBAR);
+        setState(INIT_STATE);
     }
 }
 
