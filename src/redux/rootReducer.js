@@ -1,9 +1,9 @@
 import { combineReducers } from 'redux';
-import { createSentenceReducer } from './create-sentence/createSentenceReducer';
+import { sentenceReducer } from './sentence/sentenceReducer';
 import { dictionaryReducer } from './dictionary/dictReducer';
 
 
 export const rootReducer = combineReducers({
     dictionary: dictionaryReducer,
-    createSentence: createSentenceReducer
+    sentence: sentenceReducer
 });

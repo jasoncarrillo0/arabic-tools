@@ -1,6 +1,6 @@
 import { ERR_SNACKBAR, SENTENCES_FIREBASE_ID, SENTENCE_COLLECTION_NAMES, SUCCESS_SNACKBAR } from "./constants";
 import { store } from '../redux/store'
-import { addLevelTwoSentence, addLevelOneSentence } from "../redux/create-sentence/createSentenceActions";
+import { addLevelTwoSentence, addLevelOneSentence } from "../redux/sentence/sentenceActions";
 import { addDoc, collection, getDoc } from "firebase/firestore";
 import { db } from "../firebase/firebase";
 import to from 'await-to-js';
@@ -66,7 +66,7 @@ async function postSentenceToFirestore(sentenceObj, collectionName) {
             const coll = collection(db, 'sentences', SENTENCES_FIREBASE_ID, collectionName);
             const docRef = await addDoc(coll, sentenceObj);
             const newDoc = await getDoc(docRef);
-            return resolve(newDoc.data())
+            return resolve({id: newDoc.id, ...newDoc.data()})
         } catch (e) {
             console.log(e);
             return reject(e.message)

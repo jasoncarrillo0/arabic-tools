@@ -1,5 +1,4 @@
 export const ACTIONS = {
-    INIT_WORD_CHOICE_TBLS: "INIT_WORD_CHOICE_TBLS",
     ADD_LEVEL_ONE_SENTENCE: "ADD_LEVEL_ONE_SENTENCE",
     ADD_LEVEL_TWO_SENTENCE: "ADD_LEVEL_TWO_SENTENCE",
     ADD_LEVEL_THREE_SENTENCE: "ADD_LEVEL_THREE_SENTENCE",
@@ -21,16 +20,9 @@ export const ACTIONS = {
     REPLACE_LEVEL_FOUR_SENTENCE: "REPLACE_LEVEL_FOUR_SENTENCE",
     REPLACE_LEVEL_FIVE_SENTENCE: "REPLACE_LEVEL_FIVE_SENTENCE",
     REPLACE_LEVEL_SIX_SENTENCE: "REPLACE_LEVEL_SIX_SENTENCE",
-
-
 }
 
-export function initWordChoiceTbls(dictionary) {
-    return {
-        type: ACTIONS.INIT_WORD_CHOICE_TBLS,
-        payload: dictionary
-    }
-}
+
 
 export function addLevelOneSentence(sentence, verbId, nounId) {
     return {

@@ -123,3 +123,8 @@ export const SENTENCE_COLLECTION_NAMES = {
     LEVEL_SEVEN: "levelSeven",
     LEVEL_EIGHT: "levelEight"
 }
+
+export const SENTENCE_INIT_STATE = {
+    arabic: "",
+    english: ""
+}
