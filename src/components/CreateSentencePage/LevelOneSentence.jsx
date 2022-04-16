@@ -1,4 +1,4 @@
-import { Button, Paper, TextField } from '@mui/material';
+import { Paper, TextField } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import s from './Sentence.module.scss';
@@ -7,7 +7,8 @@ import RtlProvider from '../reusable/RtlProvider';
 import { handleAddLevelOneSentence } from '../../helpers/sentence-utils';
 import WordPicker from '../reusable/WordPicker';
 import { LoadingButton } from '@mui/lab';
-import { SENTENCE_INIT_STATE } from '../../helpers/constants';
+import { ERR_SNACKBAR, SENTENCE_INIT_STATE } from '../../helpers/constants';
+import SentenceTable from './SentenceTable';
 
 const INIT_STATE = {
     sentence: SENTENCE_INIT_STATE,
@@ -22,11 +23,10 @@ const INIT_STATE = {
     }
 */
 
-const LevelOneSentence = ({ verbs, nouns }) => {
+const LevelOneSentence = ({ verbs, nouns, levelOneSentences }) => {
     const [state, setState]             = useState(INIT_STATE);
     const [loading, setLoading]         = useState(false);
     const [readyToPost, setReadyToPost] = useState(false);
-
     const { enqueueSnackbar } = useSnackbar();
     function handleSentenceChange({ target }) {
         const { value, name } = target;
@@ -65,6 +65,7 @@ const LevelOneSentence = ({ verbs, nouns }) => {
         }
 
     }, [state])
+
 
 
     return (
@@ -116,6 +117,8 @@ const LevelOneSentence = ({ verbs, nouns }) => {
                     Create Sentence
                 </LoadingButton>
             </Paper>
+
+            <SentenceTable wordTypes={["noun", "verb"]} sentences={levelOneSentences}/>
         </RtlProvider>
     );
 };
@@ -123,7 +126,8 @@ const LevelOneSentence = ({ verbs, nouns }) => {
 
 const mapStateToProps = (rootState) => {
     const { verbs, nouns } = rootState.dictionary;
-    return { verbs, nouns }
+    const { levelOneSentences } = rootState.sentence;
+    return { verbs, nouns, levelOneSentences }
 }
 
 export default connect(mapStateToProps)(LevelOneSentence);

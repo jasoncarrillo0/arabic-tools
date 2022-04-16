@@ -20,14 +20,23 @@ export const ACTIONS = {
     REPLACE_LEVEL_FOUR_SENTENCE: "REPLACE_LEVEL_FOUR_SENTENCE",
     REPLACE_LEVEL_FIVE_SENTENCE: "REPLACE_LEVEL_FIVE_SENTENCE",
     REPLACE_LEVEL_SIX_SENTENCE: "REPLACE_LEVEL_SIX_SENTENCE",
+
+    SET_ALL_SENTENCES: "SET_ALL_SENTENCES"
 }
 
 
+export function setAllSentences(all) {
+    return {
+        type: ACTIONS.SET_ALL_SENTENCES,
+        payload: all
+    }
+}
 
-export function addLevelOneSentence(sentence, verbId, nounId) {
+
+export function addLevelOneSentence(sentenceObj) {
     return {
         type: ACTIONS.ADD_LEVEL_ONE_SENTENCE,
-        payload: {sentence, verbId, nounId}
+        payload: sentenceObj
     }
 }
 export function delLevelOneSentence(sentence, idx) {

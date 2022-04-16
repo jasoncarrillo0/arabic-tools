@@ -114,14 +114,12 @@ export const SENTENCE_LEVELS = {
 }
 
 export const SENTENCE_COLLECTION_NAMES = {
-    LEVEL_ONE: "levelOne",
-    LEVEL_TWO: "levelTwo",
-    LEVEL_THREE: "levelThree",
-    LEVEL_FOUR: "levelFour",
-    LEVEL_FIVE: "levelFive",
-    LEVEL_SIX: "levelSix",
-    LEVEL_SEVEN: "levelSeven",
-    LEVEL_EIGHT: "levelEight"
+    LEVEL_ONE: "levelOneSentences",
+    LEVEL_TWO: "levelTwoSentences",
+    LEVEL_THREE: "levelThreeSentences",
+    LEVEL_FOUR: "levelFourSentences",
+    LEVEL_FIVE: "levelFiveSentences",
+    LEVEL_SIX: "levelSixSentences"
 }
 
 export const SENTENCE_INIT_STATE = {

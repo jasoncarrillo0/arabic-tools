@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import s from './Sentence.module.scss';
 import { useSnackbar } from 'notistack'
-import { addLevelTwoSentence } from '../../redux/create-sentence/createSentenceActions';
+import { addLevelTwoSentence } from '../../redux/sentence/sentenceActions';
 import RtlProvider from '../reusable/RtlProvider';
 import WordPicker from '../reusable/WordPicker';
 

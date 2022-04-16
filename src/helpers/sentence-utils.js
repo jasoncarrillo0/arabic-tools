@@ -33,9 +33,11 @@ export async function handleAddLevelOneSentence(state, setState, enqueueSnackbar
 
         const sentenceObj = {
             sentence: state.sentence,
-            words: [state.noun, state.verb]
+            words: {
+                noun: state.noun,
+                verb: state.verb
+            }
         }
-        console.log(sentenceObj);
         const [e1, sentenceDoc] = await to(postSentenceToFirestore(sentenceObj, SENTENCE_COLLECTION_NAMES.LEVEL_ONE));
         if (e1) {
             const msg = `Couldn't create sentence: ${e1}`;
@@ -45,10 +47,9 @@ export async function handleAddLevelOneSentence(state, setState, enqueueSnackbar
             enqueueSnackbar(msg, ERR_SNACKBAR);
         } else {
             // add to redux store, notify user, reset init state
-            //dispatch(addLevelOneSentence(state.sentence, state.verb.id, state.noun.id))
-            console.log(sentenceDoc);
+            dispatch(addLevelOneSentence(sentenceDoc))
             enqueueSnackbar("Successfully added new sentence.", SUCCESS_SNACKBAR);
-            //setState(INIT_STATE);
+            setState(INIT_STATE);
         }
     }
 }

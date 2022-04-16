@@ -25,6 +25,10 @@ export const sentenceReducer = (state = INIT_STATE, action) => {
                 ...state,
                 levelThreeSentences: [...state.levelThreeSentences, action.payload]
             }
+        case ACTIONS.SET_ALL_SENTENCES: 
+            return {
+                ...action.payload
+            }
         default:
             return { ...state }
     }

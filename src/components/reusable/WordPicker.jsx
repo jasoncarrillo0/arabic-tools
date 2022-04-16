@@ -1,6 +1,6 @@
 import { Button, Chip, Modal, Paper } from '@mui/material';
 import React, { useState } from 'react';
-import DataTable from './DataTable';
+import WordsDataTable from './WordsDataTable';
 
 const WordPicker = ({ rows, wordType, setState, state }) => {
     const style = {
@@ -29,7 +29,7 @@ const WordPicker = ({ rows, wordType, setState, state }) => {
             }
             <Modal open={open} onClose={() => setOpen(false)}>
                 <Paper sx={style}>
-                    <DataTable 
+                    <WordsDataTable 
                         rows={rows} 
                         title={wordType} 
                         setState={setState}

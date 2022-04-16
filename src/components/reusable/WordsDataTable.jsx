@@ -1,9 +1,9 @@
 import React from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import { getColsFromRows } from '../../helpers/utils';
-import s from './DataTable.module.scss';
+import s from './WordsDataTable.module.scss';
 
-const DataTable = ({ rows, title, handleClose=null, setState=null }) => {
+const WordsDataTable = ({ rows, title, handleClose=null, setState=null }) => {
     const styles = {
         height: "400px",
         width: '100%'
@@ -38,4 +38,4 @@ const DataTable = ({ rows, title, handleClose=null, setState=null }) => {
     );
 };
 
-export default DataTable;
+export default WordsDataTable;
