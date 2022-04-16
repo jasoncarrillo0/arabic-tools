@@ -1,34 +1,50 @@
 import { Button, Paper, TextField } from '@mui/material';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import s from './Sentence.module.scss';
 import { useSnackbar } from 'notistack'
 import RtlProvider from '../reusable/RtlProvider';
 import { handleAddLevelOneSentence } from '../../helpers/sentence-utils';
 import WordPicker from '../reusable/WordPicker';
+import { LoadingButton } from '@mui/lab';
 
 const INIT_STATE = {
     sentence: "",
     verb: {word: "", id: ""},
     noun: {word: "", id: ""}
 }
-export const LEVEL_ONE_INIT_STATE = {
-    sentence: "",
-    verb: "",
-    noun: ""
-}
+
+/*
+    {
+        sentence: string
+        words: [{ word: "eiei", id: "eiweie"}]
+    }
+*/
 
 const LevelOneSentence = ({ verbs, nouns }) => {
     const [state, setState]   = useState(INIT_STATE);
+    const [loading, setLoading] = useState(false);
+
     const { enqueueSnackbar } = useSnackbar();
     function handleSentenceChange({ target }) {
         const { value, name } = target;
         setState(prev => ({...prev, [name]: value}));
     }
 
-    function handleAddSentence() {
-        handleAddLevelOneSentence(state, setState, enqueueSnackbar, INIT_STATE);
+    async function handleAddSentence() {
+        setLoading(true)
+        await handleAddLevelOneSentence(state, setState, enqueueSnackbar, INIT_STATE);
+        setLoading(false);
     }
+
+    // cleanup
+    useEffect(() => {
+        return () => {
+            setLoading(false);
+        }
+    }, []);
+
+
     return (
         <RtlProvider>
             <Paper className={s.wrap}>
@@ -58,7 +74,7 @@ const LevelOneSentence = ({ verbs, nouns }) => {
                     label="enter full sentence here"
                     dir="rtl"
                 />
-                <Button variant="contained" sx={{marginTop: "1rem"}} onClick={handleAddSentence}>Create Sentence</Button>
+                <LoadingButton loading={loading} variant="contained" sx={{marginTop: "1rem"}} onClick={handleAddSentence}>Create Sentence</LoadingButton>
             </Paper>
         </RtlProvider>
     );

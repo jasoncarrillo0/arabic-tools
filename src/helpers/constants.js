@@ -95,6 +95,7 @@ export const VERBS_COLS        = ["English", "Arabic", "Type", "Phonetic", "Uniq
 export const NOUNS_COLS        = ["English", "Arabic", "Phonetic"];
 export const ADJECTIVE_COLS    = ["English", "Arabic", "Unique Female", "Unique Plural"];
 export const DICT_FIREBASE_ID  = "LQfFjOUM7OpbHrpnanQB";
+export const SENTENCES_FIREBASE_ID = "R0PrMISyj24V56pqddmg";
 export const UPLOAD_WORDS      = {
     "adjectives": ADJECTIVE_COLS,
     "verbs": VERBS_COLS,
@@ -110,4 +111,15 @@ export const SENTENCE_LEVELS = {
     "Level Two": ["verb", "noun w/ taa marbutah"],
     "Level Three": ["verb", "noun w/ taa marbutah + sun/moon letter"],
     "Level Four": ["verb", "noun w/ taa marbutah or sun/moon letter", "adjective"]
+}
+
+export const SENTENCE_COLLECTION_NAMES = {
+    LEVEL_ONE: "levelOne",
+    LEVEL_TWO: "levelTwo",
+    LEVEL_THREE: "levelThree",
+    LEVEL_FOUR: "levelFour",
+    LEVEL_FIVE: "levelFive",
+    LEVEL_SIX: "levelSix",
+    LEVEL_SEVEN: "levelSeven",
+    LEVEL_EIGHT: "levelEight"
 }
