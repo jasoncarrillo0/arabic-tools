@@ -1,4 +1,24 @@
 import { DICT_ACTION_TYPES } from './dictActionTypes'
+
+
+export function replaceVerb(id, newVerb) {
+    return {
+        type: DICT_ACTION_TYPES.REPLACE_VERB,
+        payload: { id, newVerb }
+    }
+}
+
+
+export function replaceNoun(id, newNoun) {
+    return {
+        type: DICT_ACTION_TYPES.REPLACE_NOUN,
+        payload: { id, newNoun }
+    }
+}
+
+
+
+
 export function setAllVerbs(verbsObject) {
     return {
         type: DICT_ACTION_TYPES.SET_ALL_VERBS,

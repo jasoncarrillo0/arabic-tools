@@ -27,6 +27,8 @@ const LevelOneSentence = ({ verbs, nouns, levelOneSentences }) => {
     const [state, setState]             = useState(INIT_STATE);
     const [loading, setLoading]         = useState(false);
     const [readyToPost, setReadyToPost] = useState(false);
+
+    
     const { enqueueSnackbar } = useSnackbar();
     function handleSentenceChange({ target }) {
         const { value, name } = target;
