@@ -1,15 +1,15 @@
-import { TableCell, TableRow } from '@mui/material';
+import { TableCell, TableRow, Button } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useSnackbar } from "notistack";
-import { LoadingButton } from '@mui/lab';
 import { handleDeleteLevelOneSentence } from '../../../helpers/sentence-utils';
-
+import BasicAlertConfirm from '../../reusable/BasicAlertConfirm';
 const SentenceTableRow = ({ row, collectionName, wordTypes }) => {
 
     const [deleteLoading, setDeleteLoading] = useState(false);
     const [editLoading, setEditLoading]     = useState(false);
     const { enqueueSnackbar }               = useSnackbar();
     const fontStyle                         = {fontSize: '20px'};
+    const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
 
     // clean up
     useEffect(() => {
@@ -18,6 +18,8 @@ const SentenceTableRow = ({ row, collectionName, wordTypes }) => {
             setEditLoading(false);
         }
     },[])
+
+
 
     async function deleteSentence() {
         setDeleteLoading(true);
@@ -42,12 +44,23 @@ const SentenceTableRow = ({ row, collectionName, wordTypes }) => {
                 wordTypes.map((type, idx) => <TableCell sx={fontStyle} key={idx}>{row.words[type].word}</TableCell>)
             }
             <TableCell>
-                <LoadingButton onClick={deleteSentence} variant="outlined" color="error" loading={deleteLoading}>Delete Sentence</LoadingButton>
+                <Button 
+                    onClick={() => setDeleteDialogOpen(true)} 
+                    variant="outlined" 
+                    color="error" 
+                >Delete Sentence</Button>
             </TableCell>
             <TableCell>
-                <LoadingButton variant="outlined" color="warning" loading={editLoading}>Edit Sentence</LoadingButton>
+                <Button variant="outlined" color="warning">Edit Sentence</Button>
             </TableCell>
-
+            <BasicAlertConfirm
+                open={deleteDialogOpen}
+                title="Are you sure you want to delete this sentence?"
+                content="This action is permanent and cannot be undone."
+                handleClose={() => setDeleteDialogOpen(false)}
+                handleConfirm={deleteSentence}
+                loading={deleteLoading}
+            />
         </TableRow>
     );
 };
