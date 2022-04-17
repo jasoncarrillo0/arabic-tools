@@ -11,7 +11,7 @@ import SentenceTableRow from "./SentenceTable/SentenceTableRow";
 //    }
 // }
 
-const SentenceTable = ({ sentences, wordTypes }) => {
+const SentenceTable = ({ sentences, wordTypes, collectionName }) => {
     return (
         <TableContainer component={Paper} sx={{marginTop: '2rem'}}>
             <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -29,7 +29,14 @@ const SentenceTable = ({ sentences, wordTypes }) => {
                 <TableBody>
                 {
                     sentences.length > 0 && (
-                        sentences.map((row, idx) => <SentenceTableRow key={idx} row={row} wordTypes={wordTypes}/>)
+                        sentences.map((row, idx) => (
+                            <SentenceTableRow 
+                                key={idx} 
+                                row={row} 
+                                wordTypes={wordTypes} 
+                                collectionName={collectionName}
+                            />
+                        ))
                     )
                 }
                 </TableBody>

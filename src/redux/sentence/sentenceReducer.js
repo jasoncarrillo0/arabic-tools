@@ -29,6 +29,11 @@ export const sentenceReducer = (state = INIT_STATE, action) => {
             return {
                 ...action.payload
             }
+        case ACTIONS.DEL_LEVEL_ONE_SENTENCE:
+            return {
+                ...state,
+                levelOneSentences: state.levelOneSentences.filter(s => s.id !== action.payload)
+            }
         default:
             return { ...state }
     }

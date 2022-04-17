@@ -39,10 +39,10 @@ export function addLevelOneSentence(sentenceObj) {
         payload: sentenceObj
     }
 }
-export function delLevelOneSentence(sentence, idx) {
+export function delLevelOneSentence(id) {
     return {
         type: ACTIONS.DEL_LEVEL_ONE_SENTENCE,
-        payload: { sentence, idx }
+        payload: id
     }
 }
 export function replaceLevelOneSentence(sentence, idx) {

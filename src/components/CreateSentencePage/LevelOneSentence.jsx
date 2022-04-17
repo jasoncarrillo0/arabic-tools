@@ -7,7 +7,7 @@ import RtlProvider from '../reusable/RtlProvider';
 import { handleAddLevelOneSentence } from '../../helpers/sentence-utils';
 import WordPicker from '../reusable/WordPicker';
 import { LoadingButton } from '@mui/lab';
-import { ERR_SNACKBAR, SENTENCE_INIT_STATE } from '../../helpers/constants';
+import { SENTENCE_COLLECTION_NAMES, SENTENCE_INIT_STATE } from '../../helpers/constants';
 import SentenceTable from './SentenceTable';
 
 const INIT_STATE = {
@@ -16,12 +16,7 @@ const INIT_STATE = {
     noun: {word: "", id: ""}
 }
 
-/*
-    {
-        sentence: string
-        words: [{ word: "eiei", id: "eiweie"}]
-    }
-*/
+
 
 const LevelOneSentence = ({ verbs, nouns, levelOneSentences }) => {
     const [state, setState]             = useState(INIT_STATE);
@@ -120,7 +115,11 @@ const LevelOneSentence = ({ verbs, nouns, levelOneSentences }) => {
                 </LoadingButton>
             </Paper>
 
-            <SentenceTable wordTypes={["noun", "verb"]} sentences={levelOneSentences}/>
+            <SentenceTable 
+                wordTypes={["noun", "verb"]} 
+                collectionName={SENTENCE_COLLECTION_NAMES.LEVEL_ONE} 
+                sentences={levelOneSentences}
+            />
         </RtlProvider>
     );
 };

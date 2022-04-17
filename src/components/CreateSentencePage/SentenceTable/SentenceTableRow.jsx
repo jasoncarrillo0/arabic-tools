@@ -1,25 +1,31 @@
 import { TableCell, TableRow } from '@mui/material';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSnackbar } from "notistack";
-import { ERR_SNACKBAR } from '../../../helpers/constants';
 import { LoadingButton } from '@mui/lab';
+import { handleDeleteLevelOneSentence } from '../../../helpers/sentence-utils';
 
-const SentenceTableRow = ({ row, wordTypes }) => {
+const SentenceTableRow = ({ row, collectionName, wordTypes }) => {
 
     const [deleteLoading, setDeleteLoading] = useState(false);
     const [editLoading, setEditLoading]     = useState(false);
     const { enqueueSnackbar }               = useSnackbar();
-    const fontStyle = {fontSize: '20px'};
+    const fontStyle                         = {fontSize: '20px'};
+
+    // clean up
+    useEffect(() => {
+        return () => {
+            setDeleteLoading(false);
+            setEditLoading(false);
+        }
+    },[])
 
     async function deleteSentence() {
         setDeleteLoading(true);
-        try {
-            
-        } catch (e) {
-            enqueueSnackbar(e.message, ERR_SNACKBAR)
-        }
+        await handleDeleteLevelOneSentence(row, collectionName, enqueueSnackbar);
         setDeleteLoading(false);
     }
+
+
     return (
         <TableRow
             sx={{
@@ -36,7 +42,7 @@ const SentenceTableRow = ({ row, wordTypes }) => {
                 wordTypes.map((type, idx) => <TableCell sx={fontStyle} key={idx}>{row.words[type].word}</TableCell>)
             }
             <TableCell>
-                <LoadingButton variant="outlined" color="error" loading={deleteLoading}>Delete Sentence</LoadingButton>
+                <LoadingButton onClick={deleteSentence} variant="outlined" color="error" loading={deleteLoading}>Delete Sentence</LoadingButton>
             </TableCell>
             <TableCell>
                 <LoadingButton variant="outlined" color="warning" loading={editLoading}>Edit Sentence</LoadingButton>

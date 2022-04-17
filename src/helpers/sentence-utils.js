@@ -1,7 +1,7 @@
 import { DICT_FIREBASE_ID, ERR_SNACKBAR, SENTENCES_FIREBASE_ID, SENTENCE_COLLECTION_NAMES, SUCCESS_SNACKBAR, UPLOAD_WORDS } from "./constants";
 import { store } from '../redux/store'
-import { addLevelTwoSentence, addLevelOneSentence } from "../redux/sentence/sentenceActions";
-import { addDoc, collection, doc, getDoc, setDoc } from "firebase/firestore";
+import { addLevelTwoSentence, addLevelOneSentence, delLevelOneSentence } from "../redux/sentence/sentenceActions";
+import { addDoc, collection, deleteDoc, doc, getDoc, setDoc } from "firebase/firestore";
 import { db } from "../firebase/firebase";
 import to from 'await-to-js';
 import { replaceNoun, replaceVerb } from "../redux/dictionary/dictActionCreators";
@@ -45,18 +45,16 @@ export async function handleAddLevelOneSentence(state, setState, enqueueSnackbar
         } 
     
         // update "timesUsed" field in each of the noun and verb documents
-        const updatedNoun = getUpdatedWord("nouns", state.noun.id, "increment");
-        const updatedVerb = getUpdatedWord("verbs", state.verb.id, "increment");
-        const [e2, updatedNounDoc] = await to(updateWordInFirestore(state.noun.id, 'nouns', updatedNoun)) 
+        const [e2, updatedNounDoc] = await to(applyPermanentUpdate(state.noun.id, 'nouns', "increment")) 
         if (e2) throw new Error(e2)
         if (!updatedNounDoc) throw new Error("No noun returned from updatedWordInFirestore");
 
-        const [e3, updatedVerbDoc] = await to(updateWordInFirestore(state.verb.id, 'verbs', updatedVerb)); 
+        const [e3, updatedVerbDoc] = await to(applyPermanentUpdate(state.verb.id, 'verbs', "increment")); 
         if (e3) throw new Error(e3)
         if (!updatedVerbDoc) throw new Error("No verb returned from updatedWordInFirestore");
 
 
-        // updateß redux store, notify user, reset init state
+        // update redux store, notify user, reset init state
         dispatch(replaceNoun(updatedNounDoc.id, updatedNounDoc));
         dispatch(replaceVerb(updatedVerbDoc.id, updatedVerbDoc));
         dispatch(addLevelOneSentence(sentenceDoc))
@@ -66,37 +64,7 @@ export async function handleAddLevelOneSentence(state, setState, enqueueSnackbar
         enqueueSnackbar(e.message, ERR_SNACKBAR)
     }
 }
-
-
-/*
-    Gets a word from redux store, with an update
-    third arg is meant to be left out if we just want to increment timesUsed
-*/
-function getUpdatedWord(collection, id, update="increment") {
-    if (!Object.keys(UPLOAD_WORDS).includes(collection)) throw new Error("collection not found in redux store.");
-    const rdxWord = getState().dictionary[collection].find(word => word.id === id);
-    if (!rdxWord) throw new Error("Could not find word in redux store.");
-    console.log('\n\nRDX WORD: ', rdxWord);
-    if (update === "increment") {
-        return {
-            ...rdxWord,
-            timesUsed: rdxWord.timesUsed + 1
-        }
-    } else {
-        return {
-            ...rdxWord,
-            ...update
-        }
-    }
-}
-
-
-
-
-
-
-
-export async function postSentenceToFirestore(sentenceObj, collectionName) {
+async function postSentenceToFirestore(sentenceObj, collectionName) {
     return new Promise(async (resolve, reject) => {
         try {
             if (!Object.values(SENTENCE_COLLECTION_NAMES).includes(collectionName)) throw new Error("wrong collection name.");
@@ -111,18 +79,27 @@ export async function postSentenceToFirestore(sentenceObj, collectionName) {
         }
     })
 };
-
-
-
-
-
-
-export async function updateWordInFirestore(id, collection, updatedWord) {
+async function applyPermanentUpdate(id, collection, update="increment") {
     return new Promise(async (resolve, reject) => {
         try {
+            if (!Object.keys(UPLOAD_WORDS).includes(collection)) throw new Error("collection not found in redux store.");
+            const rdxWord = getState().dictionary[collection].find(word => word.id === id);
+            if (!rdxWord) throw new Error("Could not find word in redux store.");
+            let updatedWord = { ...rdxWord };
+            if (update === "increment") {
+                updatedWord.timesUsed = updatedWord.timesUsed + 1;
+            } else if (update === "decrement") {
+                updatedWord.timesUsed = updatedWord.timesUsed > 0 ? updatedWord.timesUsed - 1 : updatedWord.timesUsed;
+            } else if (typeof(update) === "object") {
+                updatedWord = {
+                    ...rdxWord,
+                    ...update
+                }
+            } else {
+                throw new Error("Incorrect update argument supplied to applyPermanentUpdate");
+            }
+
             const wordRef = doc(db, "dictionary", DICT_FIREBASE_ID, collection, id);
-            const beforeDoc = await getDoc(wordRef);
-            console.log("before firestore update: ", beforeDoc.data());
             await setDoc(wordRef, updatedWord, { merge: true });
             const updatedDoc = await getDoc(wordRef);
             resolve({id: updatedDoc.id, ...updatedDoc.data()});
@@ -130,4 +107,48 @@ export async function updateWordInFirestore(id, collection, updatedWord) {
             reject(e.message);
         }
     })
+}
+
+
+
+/*
+    row: {
+        id: string,
+        sentence: {
+            arabic: string
+            english: string
+        },
+        words: {
+            verb: {
+                id: string
+                word: string
+            },
+            noun: {
+                id: string
+                word: string
+            }
+        }
+    }
+*/
+
+export async function handleDeleteLevelOneSentence(row, collectionName, enqueueSnackbar) {
+    try {
+        if (!Object.values(SENTENCE_COLLECTION_NAMES).includes(collectionName)) throw new Error("invalid collection name supplied.");
+        const sentenceRef = doc(db, 'sentences', SENTENCES_FIREBASE_ID, collectionName, row.id);
+        await deleteDoc(sentenceRef);
+        const [e1, updatedVerb] = await to(applyPermanentUpdate(row.words.verb.id, 'verbs', 'decrement'));
+        if (e1) throw new Error(e1)
+        if (!updatedVerb) throw new Error("No updated Verb returned from applyPermanentUpdate");
+
+        const [e2, updatedNoun] = await to(applyPermanentUpdate(row.words.noun.id, 'nouns', 'decrement'));
+        if (e2) throw new Error(e2)
+        if (!updatedNoun) throw new Error("No updated Verb returned from applyPermanentUpdate");
+
+        // update rdx store
+        dispatch(delLevelOneSentence(row.id))
+        dispatch(replaceVerb(updatedVerb.id, updatedVerb));
+        dispatch(replaceNoun(updatedNoun.id, updatedNoun));
+    } catch (e) {
+        enqueueSnackbar(e.message, ERR_SNACKBAR)
+    }
 }
