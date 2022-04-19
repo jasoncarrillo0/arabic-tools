@@ -1,0 +1,20 @@
+tbody {
+    tr {
+        td, th {
+            cursor: pointer;
+
+            &:hover {
+                background-color: #eeeeee;
+            }
+        }
+
+        td {
+            &:last-child {
+                &:hover {
+                    background-color: inherit;
+                    cursor: inherit;
+                }
+            }
+        }
+    }
+}

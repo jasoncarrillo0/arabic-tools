@@ -1,8 +1,11 @@
-import { TableCell, TableRow, Button } from '@mui/material';
+import { TableCell, TableRow, Button, Tooltip } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useSnackbar } from "notistack";
 import { handleDeleteLevelOneSentence } from '../../../helpers/sentence-utils';
+import EditFieldForm from './SentenceTableRow/EditFieldForm';
 import BasicAlertConfirm from '../../reusable/BasicAlertConfirm';
+import s from './SentenceTableRow.module.scss';
+
 const SentenceTableRow = ({ row, collectionName, wordTypes }) => {
 
     const [deleteLoading, setDeleteLoading] = useState(false);
@@ -10,7 +13,17 @@ const SentenceTableRow = ({ row, collectionName, wordTypes }) => {
     const { enqueueSnackbar }               = useSnackbar();
     const fontStyle                         = {fontSize: '20px'};
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+    const INIT_EDIT_FORM_OPEN_STATE = Object.assign(
+        {}, 
+        {
+            arabic: false,
+            english: false
+        },
+        ...wordTypes.map(word => ({[word]: false}))
+    );
+    const [editFormOpenState, setEditFormOpenState] = useState(INIT_EDIT_FORM_OPEN_STATE);
 
+        console.log(row);
     // clean up
     useEffect(() => {
         return () => {
@@ -19,7 +32,12 @@ const SentenceTableRow = ({ row, collectionName, wordTypes }) => {
         }
     },[])
 
-
+    function setDynamicFieldOpen(wordType, boolean) {
+        setEditFormOpenState(prev => ({
+            ...prev,
+            [wordType]: boolean
+        }))
+    }
 
     async function deleteSentence() {
         setDeleteLoading(true);
@@ -33,25 +51,38 @@ const SentenceTableRow = ({ row, collectionName, wordTypes }) => {
             sx={{
                 "&:last-child td, &:last-child th": {
                     border: 0,
-                },
+                }
             }}
         >
-            <TableCell sx={fontStyle} component="th" scope="row">
-                {row.sentence.arabic}
-            </TableCell>
-            <TableCell>{row.sentence.english}</TableCell>
+            <Tooltip title="edit" arrow>
+                <TableCell onClick={() => setDynamicFieldOpen("arabic", true)} sx={fontStyle} component="th" scope="row">
+                    {row.sentence.arabic}
+                </TableCell>
+            </Tooltip>
+            
+            <Tooltip title="edit" arrow>
+                <TableCell onClick={() => setDynamicFieldOpen("english", true)}>
+                    {row.sentence.english}
+                </TableCell>
+            </Tooltip>
+            
             {
-                wordTypes.map((type, idx) => <TableCell sx={fontStyle} key={idx}>{row.words[type].word}</TableCell>)
+                wordTypes.map((type, idx) => (
+                    <Tooltip title="edit" arrow>
+                        <TableCell
+                            sx={fontStyle}
+                            key={idx}
+                            onClick={() => setDynamicFieldOpen(type, true)}
+                        >{row.words[type].word}</TableCell>
+                    </Tooltip>
+                ))
             }
-            <TableCell>
+            <TableCell sx={{width: "195px"}}>
                 <Button 
                     onClick={() => setDeleteDialogOpen(true)} 
                     variant="outlined" 
                     color="error" 
                 >Delete Sentence</Button>
-            </TableCell>
-            <TableCell>
-                <Button variant="outlined" color="warning">Edit Sentence</Button>
             </TableCell>
             <BasicAlertConfirm
                 open={deleteDialogOpen}
@@ -61,6 +92,35 @@ const SentenceTableRow = ({ row, collectionName, wordTypes }) => {
                 handleConfirm={deleteSentence}
                 loading={deleteLoading}
             />
+            <EditFieldForm
+                docId={row.id}
+                field="arabic"
+                fieldVal={row.sentence.arabic}
+                open={editFormOpenState.arabic}
+                handleClose={() => setDynamicFieldOpen("arabic", false)}
+                title="Edit sentence"
+            />
+            <EditFieldForm
+                docId={row.id}
+                field="english"
+                fieldVal={row.sentence.english}
+                open={editFormOpenState.english}
+                handleClose={() => setDynamicFieldOpen("english", false)}
+                title="Edit sentence"
+            />
+            {
+                wordTypes.map((type, idx) => (
+                    <EditFieldForm
+                        key={idx}
+                        docId={row.words[type].id}
+                        field={type}
+                        fieldVal={row.words[type].word}
+                        open={editFormOpenState[type]}
+                        handleClose={() => setDynamicFieldOpen(type, false)}
+                    />
+                ))
+            }
+
         </TableRow>
     );
 };

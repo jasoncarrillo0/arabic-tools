@@ -23,7 +23,6 @@ const SentenceTable = ({ sentences, wordTypes, collectionName }) => {
                             wordTypes.map((type, idx) => <TableCell key={idx}>{type}</TableCell>)
                         }
                         <TableCell></TableCell>
-                        <TableCell></TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>

@@ -16,7 +16,7 @@ const WordPicker = ({ rows, wordType, setState, state }) => {
     const [open, setOpen] = useState(false);
     return (
 
-        <div>
+        <div dir="rtl">
             <Button onClick={() => setOpen(true)}>{`Choose ${wordType}`}</Button>
             {
                 state[wordType].word && (
