@@ -23,7 +23,6 @@ const SentenceTableRow = ({ row, collectionName, wordTypes }) => {
     );
     const [editFormOpenState, setEditFormOpenState] = useState(INIT_EDIT_FORM_OPEN_STATE);
 
-        console.log(row);
     // clean up
     useEffect(() => {
         return () => {
@@ -68,10 +67,9 @@ const SentenceTableRow = ({ row, collectionName, wordTypes }) => {
             
             {
                 wordTypes.map((type, idx) => (
-                    <Tooltip title="edit" arrow>
+                    <Tooltip key={idx} title="edit" arrow>
                         <TableCell
                             sx={fontStyle}
-                            key={idx}
                             onClick={() => setDynamicFieldOpen(type, true)}
                         >{row.words[type].word}</TableCell>
                     </Tooltip>
@@ -99,6 +97,8 @@ const SentenceTableRow = ({ row, collectionName, wordTypes }) => {
                 open={editFormOpenState.arabic}
                 handleClose={() => setDynamicFieldOpen("arabic", false)}
                 title="Edit sentence"
+                sentenceLevel={collectionName}
+                key={235}
             />
             <EditFieldForm
                 docId={row.id}
@@ -107,11 +107,13 @@ const SentenceTableRow = ({ row, collectionName, wordTypes }) => {
                 open={editFormOpenState.english}
                 handleClose={() => setDynamicFieldOpen("english", false)}
                 title="Edit sentence"
+                sentenceLevel={collectionName}
+                key={234}
             />
             {
                 wordTypes.map((type, idx) => (
                     <EditFieldForm
-                        key={idx}
+                        key={idx*20}
                         docId={row.words[type].id}
                         field={type}
                         fieldVal={row.words[type].word}

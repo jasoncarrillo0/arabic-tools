@@ -34,6 +34,16 @@ export const sentenceReducer = (state = INIT_STATE, action) => {
                 ...state,
                 levelOneSentences: state.levelOneSentences.filter(s => s.id !== action.payload)
             }
+        case ACTIONS.REPLACE_LEVEL_ONE_SENTENCE:
+            return {
+                ...state,
+                levelOneSentences: [...state.levelOneSentences.filter(s => s.id !== action.payload.id), action.payload]
+            }
+        case ACTIONS.REPLACE_LEVEL_TWO_SENTENCE:
+            return {
+                ...state,
+                levelTwoSentences: [...state.levelTwoSentences.filter(s => s.id !== action.payload.id), action.payload]
+            }
         default:
             return { ...state }
     }

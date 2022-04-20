@@ -45,10 +45,10 @@ export function delLevelOneSentence(id) {
         payload: id
     }
 }
-export function replaceLevelOneSentence(sentence, idx) {
+export function replaceLevelOneSentence(sentence) {
     return {
         type: ACTIONS.REPLACE_LEVEL_ONE_SENTENCE,
-        payload: { sentence, idx }
+        payload: sentence
     }
 }
 
@@ -72,10 +72,10 @@ export function delLevelTwoSentence(sentence, idx) {
         payload: { sentence, idx }
     }
 }
-export function replaceLevelTwoSentence(sentence, idx) {
+export function replaceLevelTwoSentence(sentence) {
     return {
         type: ACTIONS.REPLACE_LEVEL_TWO_SENTENCE,
-        payload: { sentence, idx }
+        payload: sentence
     }
 }
 

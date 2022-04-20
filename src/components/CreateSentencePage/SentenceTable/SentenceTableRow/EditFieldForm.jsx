@@ -4,6 +4,9 @@ import { Modal, Paper, TextField } from '@mui/material';
 import WordPicker from '../../../reusable/WordPicker';
 import { useSelector } from 'react-redux';
 import { LoadingButton } from '@mui/lab';
+import to from 'await-to-js';
+import { applyDocumentUpdate, replaceSentence } from '../../../../helpers/sentence-utils'
+import { ERR_SNACKBAR, SENTENCE_COLLECTION_NAMES } from '../../../../helpers/constants';
 
 const editFields = ["arabic", "english", "noun", "verb", "connector", "preposition", "particle", "adjective"];
 const style = {
@@ -21,7 +24,17 @@ const style = {
     fieldVal:
     {id: string, word: arabic string }
 */
-const EditFieldForm = ({ docId, field, fieldVal, open, handleClose, title="" }) => {
+
+const sentenceLevels = Object.values(SENTENCE_COLLECTION_NAMES);
+const EditFieldForm = ({ 
+    docId, 
+    field, 
+    fieldVal, 
+    open, 
+    handleClose, 
+    title="", 
+    sentenceLevel="" 
+}) => {
     const NEW_FIELD_INIT_STATE = {[field]: { id: docId, word: fieldVal}};
     const {enqueueSnackbar} = useSnackbar()
     const [sentenceVal, setSentenceVal] = useState(fieldVal);
@@ -46,8 +59,18 @@ const EditFieldForm = ({ docId, field, fieldVal, open, handleClose, title="" }) 
     }
 
     async function updateSentence() {
-        
-    }   
+        setLoading(true);
+        const [e1, newDoc] = await to(applyDocumentUpdate(docId, sentenceLevel, "sentences", sentenceVal, field))
+        if (e1) {
+            enqueueSnackbar(e1.message, ERR_SNACKBAR);
+        } else if (!newDoc) {
+            enqueueSnackbar("No updated document returned from applyDocumentUpdate")
+        } else {
+            replaceSentence(newDoc, sentenceLevel);
+        }
+        setLoading(false);
+        handleClose();
+    }
 
 
     
