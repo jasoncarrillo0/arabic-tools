@@ -9,7 +9,6 @@ import s from './SentenceTableRow.module.scss';
 const SentenceTableRow = ({ row, collectionName, wordTypes }) => {
 
     const [deleteLoading, setDeleteLoading] = useState(false);
-    const [editLoading, setEditLoading]     = useState(false);
     const { enqueueSnackbar }               = useSnackbar();
     const fontStyle                         = {fontSize: '20px'};
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
@@ -27,7 +26,6 @@ const SentenceTableRow = ({ row, collectionName, wordTypes }) => {
     useEffect(() => {
         return () => {
             setDeleteLoading(false);
-            setEditLoading(false);
         }
     },[])
 
@@ -97,7 +95,7 @@ const SentenceTableRow = ({ row, collectionName, wordTypes }) => {
                 open={editFormOpenState.arabic}
                 handleClose={() => setDynamicFieldOpen("arabic", false)}
                 title="Edit sentence"
-                sentenceLevel={collectionName}
+                collectionName={collectionName}
                 key={235}
             />
             <EditFieldForm
@@ -107,7 +105,7 @@ const SentenceTableRow = ({ row, collectionName, wordTypes }) => {
                 open={editFormOpenState.english}
                 handleClose={() => setDynamicFieldOpen("english", false)}
                 title="Edit sentence"
-                sentenceLevel={collectionName}
+                collectionName={collectionName}
                 key={234}
             />
             {
@@ -119,7 +117,7 @@ const SentenceTableRow = ({ row, collectionName, wordTypes }) => {
                         fieldVal={row.words[type].word}
                         open={editFormOpenState[type]}
                         handleClose={() => setDynamicFieldOpen(type, false)}
-                        sentenceLevel={collectionName}
+                        collectionName={collectionName}
                     />
                 ))
             }
