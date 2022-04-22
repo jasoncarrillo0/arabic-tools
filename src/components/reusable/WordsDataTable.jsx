@@ -11,7 +11,6 @@ const WordsDataTable = ({ rows, title, handleClose=null, setState=null }) => {
 
     // setState and Handleclose will be functions if used in a modal
     function handleRowClick(params) {
-        console.log(params);
         if (typeof(setState === 'function')) {
             setState(prev => ({
                 ...prev, [title]: { 

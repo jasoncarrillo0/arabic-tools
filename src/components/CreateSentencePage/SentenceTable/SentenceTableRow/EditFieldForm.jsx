@@ -5,7 +5,7 @@ import WordPicker from '../../../reusable/WordPicker';
 import { useSelector } from 'react-redux';
 import { LoadingButton } from '@mui/lab';
 import to from 'await-to-js';
-import { applyDocumentUpdate, replaceSentence } from '../../../../helpers/sentence-utils'
+import { applyDocumentUpdate, replaceSentence, replaceWord } from '../../../../helpers/sentence-utils'
 import { ERR_SNACKBAR, SENTENCE_COLLECTION_NAMES } from '../../../../helpers/constants';
 
 const editFields = ["arabic", "english", "noun", "verb", "connector", "preposition", "particle", "adjective"];
@@ -35,11 +35,12 @@ const EditFieldForm = ({
     title="", 
     sentenceLevel="" 
 }) => {
-    const NEW_FIELD_INIT_STATE = {[field]: { id: docId, word: fieldVal}};
+    const NEW_FIELD_INIT_STATE = {[field]: { id: "", word: fieldVal}};
     const {enqueueSnackbar} = useSnackbar()
     const [sentenceVal, setSentenceVal] = useState(fieldVal);
     const [newFieldVal, setNewFieldVal] = useState(NEW_FIELD_INIT_STATE);
     const [loading, setLoading]         = useState(false);
+    const isSentenceUpdate              = ["arabic", "english"].includes(field);
     const wordRows = useSelector((rootState) => {
         const rows = rootState.dictionary[`${field}s`];
         return rows;
@@ -53,20 +54,27 @@ const EditFieldForm = ({
         }
     }, [open])
 
-    if (!wordRows && !["arabic", "english"].includes(field)) return enqueueSnackbar("Could not get dictionary rows from state in edit sentence field component");
+    if (!wordRows && !isSentenceUpdate) return enqueueSnackbar("Could not get dictionary rows from state in edit sentence field component");
     if (!editFields.includes(field)) {
         return enqueueSnackbar("Incorrect field applied to edit field component");
     }
 
     async function updateSentence() {
         setLoading(true);
-        const [e1, newDoc] = await to(applyDocumentUpdate(docId, sentenceLevel, "sentences", sentenceVal, field))
+
+        let e1, newDoc, update;
+        if (isSentenceUpdate) {
+            update     = sentenceVal;
+        } else {
+            update = newFieldVal;
+        }
+        [e1, newDoc] = await to(applyDocumentUpdate(docId, sentenceLevel, "sentences", update, field))
         if (e1) {
-            enqueueSnackbar(e1.message, ERR_SNACKBAR);
+            enqueueSnackbar(e1, ERR_SNACKBAR);
         } else if (!newDoc) {
             enqueueSnackbar("No updated document returned from applyDocumentUpdate")
-        } else {
-            replaceSentence(newDoc, sentenceLevel);
+        } else if (isSentenceUpdate) {
+            replaceSentence(newDoc, sentenceLevel)
         }
         setLoading(false);
         handleClose();

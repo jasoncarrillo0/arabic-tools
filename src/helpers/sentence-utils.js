@@ -82,7 +82,9 @@ async function postSentenceToFirestore(sentenceObj, collectionName) {
 
 const locations = ["dictionary", "sentences"]
 const sentences = ["arabic", "english"];
-export async function applyDocumentUpdate(id, collection, location, update="increment", sentenceType="arabic") {
+const wordsTypes = ["verb", "noun", "particle", "adjective"];
+
+export async function applyDocumentUpdate(id, collection, location, update="increment", sentenceUpdateType="arabic") {
     return new Promise(async (resolve, reject) => {
         try {
             if (!locations.includes(location)) throw new Error("Incorrect location argument supplied to applyDocumentUpdate");
@@ -109,26 +111,62 @@ export async function applyDocumentUpdate(id, collection, location, update="incr
                 const updatedDoc = await getDoc(wordRef);
                 return resolve({id: updatedDoc.id, ...updatedDoc.data()});
             } else {
-
+                let updatingWordInSentence = false;
                 // validate argument fields
-                if (!Object.values(SENTENCE_COLLECTION_NAMES).includes(collection)) throw new Error("Incorrect collection supplied to applyDocumentUpdate")
-                if (!sentences.includes(sentenceType)) throw new Error("Incorrect update arg supplied to ApplyDocumentUpdate");
+                if (!sentences.includes(sentenceUpdateType)) {
+                    updatingWordInSentence = true;
+                    if (!wordsTypes.includes(sentenceUpdateType)) {
+                        throw new Error("incorrect sentence update type supplied to applyDocumentUpdate");
+                    }
+                } else if (!Object.values(SENTENCE_COLLECTION_NAMES).includes(collection)){
+                    throw new Error("Incorrect collection supplied to applyDocumentUpdate")
+                }
+
 
                 // get redux state, make copy, merge change
                 const rdxSentence = getState().sentence[collection].find(sentence => sentence.id === id);
                 if (!rdxSentence) throw new Error("Could not find sentence in redux store.");
-                let updatedSentence = { ...rdxSentence };
-                if (sentenceType === "arabic") {
-                    updatedSentence.sentence.arabic = update;
-                } else if (sentenceType === "english") {
-                    updatedSentence.sentence.english = update;
-                }
 
-                // update document in db
+
+
+                // format sentence update
+                let updatedSentence = { ...rdxSentence };
+                let e1, e2, updatedOldWord, updatedNewWord;
+                console.log("rdxSentence", rdxSentence);
+                if (updatingWordInSentence) {
+                    // decrement times used for the existing word
+                    [e1, updatedOldWord] = await to(applyDocumentUpdate(rdxSentence.words[sentenceUpdateType].id, `${sentenceUpdateType}s`, "dictionary", "decrement"));
+                    if (e1) throw new Error(e1);
+                    if (!updatedOldWord) throw new Error("Word to decrement was undefined on update.");
+
+                    // replace sentence word with update
+                    updatedSentence.words[sentenceUpdateType] = update[sentenceUpdateType];
+                } else if (sentenceUpdateType === "arabic") {
+                    updatedSentence.sentence.arabic = update;
+                } else if (sentenceUpdateType === "english") {
+                    updatedSentence.sentence.english = update;
+                } 
+
+
+                // update sentence in db
                 const sentenceRef = doc(db, "sentences", SENTENCES_FIREBASE_ID, collection, id);
                 await setDoc(sentenceRef, updatedSentence, { merge: true});
-                const updatedDoc = await getDoc(sentenceRef);                
-                resolve({id: updatedDoc.id, ...updatedDoc.data()});
+                const updatedDoc = await getDoc(sentenceRef);      
+                const finalDoc   = {id: updatedDoc.id, ...updatedDoc.data()};
+                if (updatingWordInSentence) {
+                    // increment times used for new word
+                    [e2, updatedNewWord] = await to(applyDocumentUpdate(finalDoc.words[sentenceUpdateType].id, `${sentenceUpdateType}s`, "dictionary", "increment"));
+                    if (e2) throw new Error(e2);
+                    if (!updatedNewWord) throw new Error("Word to increment was undefined on update.");
+
+                    // update rdx state for both
+                    console.log("updatedOldWord", updatedOldWord)
+                    console.log("updatedNewWord", updatedNewWord)
+                    replaceWord(updatedOldWord, `${sentenceUpdateType}s`);
+                    replaceWord(updatedNewWord, `${sentenceUpdateType}s`);
+                }
+                console.log("finalDoc", finalDoc);
+                resolve(finalDoc);
             }
             
         } catch (e) {
@@ -207,6 +245,21 @@ export function replaceSentence(sentenceDoc, sentenceType) {
             break;
         default:
             console.log("replace sentence err")
+            break;
+    }
+}
+
+
+export function replaceWord(wordDoc, collection) {
+    switch (collection) {
+        case 'nouns':
+            dispatch(replaceNoun(wordDoc.id, wordDoc))
+            break;
+        case 'verbs':
+            dispatch(replaceVerb(wordDoc.id, wordDoc))
+            break;
+        default:
+            console.log("replace word error")
             break;
     }
 }

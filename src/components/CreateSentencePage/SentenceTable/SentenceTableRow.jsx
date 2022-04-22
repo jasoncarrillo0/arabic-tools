@@ -114,11 +114,12 @@ const SentenceTableRow = ({ row, collectionName, wordTypes }) => {
                 wordTypes.map((type, idx) => (
                     <EditFieldForm
                         key={idx*20}
-                        docId={row.words[type].id}
+                        docId={row.id}
                         field={type}
                         fieldVal={row.words[type].word}
                         open={editFormOpenState[type]}
                         handleClose={() => setDynamicFieldOpen(type, false)}
+                        sentenceLevel={collectionName}
                     />
                 ))
             }
