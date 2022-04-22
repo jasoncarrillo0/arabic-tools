@@ -15,8 +15,7 @@ import { setDictionary } from "./redux/dictionary/dictActionCreators";
 import { connect } from "react-redux";
 import { CircularProgress } from "@mui/material";
 import LevelOneSentence from './components/CreateSentencePage/LevelOneSentence'
-import LevelTwoSentence from './components/CreateSentencePage/LevelTwoSentence'
-import { setAllSentences } from './redux/sentence/sentenceActions';
+import { setAllSentences } from './redux/sentence/sentenceActionCreators';
 
 
 function AuthedApp({ setDictionary, setAllSentences }) {
@@ -79,7 +78,6 @@ function AuthedApp({ setDictionary, setAllSentences }) {
                     <PrivateRoute exact path="/home/upload" component={UploadPage} authed={isAdminUser}/>
                     <PrivateRoute exact path="/home/create" component={CreateSentencePage} authed={isAdminUser}/>
                     <PrivateRoute exact path="/home/create/levelone" component={LevelOneSentence} authed={isAdminUser}/>
-                    <PrivateRoute exact path="/home/create/leveltwo" component={LevelTwoSentence} authed={isAdminUser}/>
                     <Route exact path="/home/profile" component={ProfileInfo}/>
                 </>
             )

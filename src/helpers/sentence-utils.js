@@ -126,16 +126,18 @@ const SENTENCE_COLLECTIONS = Object.values(SENTENCE_COLLECTION_NAMES);
 export async function applySentenceUpdate(id, collection, update, sentencePart, notUpdatingWord) {
     return new Promise(async (resolve, reject) => {
         try {
-            
+            let wordCollection;
             // validate argument fields
             if (!SENTENCE_TRANSLATIONS.includes(sentencePart)) {
-                if (!WORD_COLLECTIONS.includes(sentencePart)) {
+                wordCollection = `${sentencePart}s`;
+                if (!WORD_COLLECTIONS.includes(wordCollection)) {
                     throw new Error(`Incorrect sentence update type ${sentencePart} supplied to applySentenceUpdate`);;
                 }
             } else if (!SENTENCE_COLLECTIONS.includes(collection)){
                 throw new Error(`Incorrect collection ${collection} supplied to applySentenceUpdate`)
             }
 
+            const updatingWordOnly = wordCollection !== undefined && !notUpdatingWord;
 
             // get redux state, make copy, merge change
             const currSentence = getState().sentence[collection].find(sentence => sentence.id === id);
@@ -145,12 +147,11 @@ export async function applySentenceUpdate(id, collection, update, sentencePart, 
 
             // format sentence update
             let updatedSentence = { ...currSentence };
-            let e1, e2, updatedOldWord, updatedNewWord, wordCollection;
+            let e1, e2, updatedOldWord, updatedNewWord;
 
 
-            if (notUpdatingWord) {
+            if (updatingWordOnly) {
                 // decrement timesUsed for the existing word
-                wordCollection = `${sentencePart}s`;
                 [e1, updatedOldWord] = await to(applyWordDocUpdate(currSentence.words[sentencePart].id, wordCollection, "decrement"));
                 if (e1) throw new Error(e1);
                 if (!updatedOldWord) throw new Error("Word to decrement was undefined on update.");
@@ -172,7 +173,7 @@ export async function applySentenceUpdate(id, collection, update, sentencePart, 
 
 
             //increment timesUsed field in new word 
-            if (notUpdatingWord) {
+            if (updatingWordOnly) {
                 [e2, updatedNewWord] = await to(applyWordDocUpdate(finalDoc.words[sentencePart].id, wordCollection, "increment"));
                 if (e2) throw new Error(e2);
                 if (!updatedNewWord) throw new Error("Word to increment was undefined on update.");
@@ -257,11 +258,11 @@ export async function handleDeleteLevelOneSentence(row, collectionName, enqueueS
         if (!Object.values(SENTENCE_COLLECTION_NAMES).includes(collectionName)) throw new Error("invalid collection name supplied.");
         const sentenceRef = doc(db, PARENT_COLLECTIONS.SENTENCES, SENTENCES_FIREBASE_ID, collectionName, row.id);
         await deleteDoc(sentenceRef);
-        const [e1, updatedVerb] = await to(applySentenceUpdate(row.words.verb.id, 'verbs', 'decrement'));
+        const [e1, updatedVerb] = await to(applyWordDocUpdate(row.words.verb.id, 'verbs', 'decrement'));
         if (e1) throw new Error(e1)
         if (!updatedVerb) throw new Error("No updated Verb returned from applySentenceUpdate");
 
-        const [e2, updatedNoun] = await to(applySentenceUpdate(row.words.noun.id, 'nouns', 'decrement'));
+        const [e2, updatedNoun] = await to(applyWordDocUpdate(row.words.noun.id, 'nouns', 'decrement'));
         if (e2) throw new Error(e2)
         if (!updatedNoun) throw new Error("No updated Verb returned from applySentenceUpdate");
 
