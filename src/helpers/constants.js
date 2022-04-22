@@ -64,14 +64,6 @@ export const ALL_VERBS = "to be	كان\
 ,to work	شتغل\
 ";
 
-export const uploadAccordionSummaryProps = {
-    flexDirection: 'row-reverse',
-    '& .MuiAccordionSummary-expandIconWrapper.Mui-expanded': {
-        transform: 'rotate(90deg)',
-    },
-    paddingRight: '1rem'
-}
-
 export const SUCCESS_SNACKBAR = {
     variant: "success",
     anchorOrigin: {
@@ -88,22 +80,17 @@ export const ERR_SNACKBAR = {
     }
 }
 
-export const CONNECTORS_COLS   = ["English", "Arabic", "Phonetic"];
-export const PARTICLES_COLS    = ["English", "Arabic", "Phonetic"];
-export const PREPOSITIONS_COLS = ["English", "Arabic", "Phonetic"];
-export const VERBS_COLS        = ["English", "Arabic", "Type", "Phonetic", "Unique I Verb"];
-export const NOUNS_COLS        = ["English", "Arabic", "Phonetic"];
-export const ADJECTIVE_COLS    = ["English", "Arabic", "Unique Female", "Unique Plural"];
-export const DICT_FIREBASE_ID  = "LQfFjOUM7OpbHrpnanQB";
+
+
+export const CONNECTORS_COLS       = ["English", "Arabic", "Phonetic"];
+export const PARTICLES_COLS        = ["English", "Arabic", "Phonetic"];
+export const PREPOSITIONS_COLS     = ["English", "Arabic", "Phonetic"];
+export const VERBS_COLS            = ["English", "Arabic", "Type", "Phonetic", "Unique I Verb"];
+export const NOUNS_COLS            = ["English", "Arabic", "Phonetic"];
+export const ADJECTIVE_COLS        = ["English", "Arabic", "Unique Female", "Unique Plural"];
+export const DICT_FIREBASE_ID      = "LQfFjOUM7OpbHrpnanQB";
 export const SENTENCES_FIREBASE_ID = "R0PrMISyj24V56pqddmg";
-export const UPLOAD_WORDS      = {
-    "adjectives": ADJECTIVE_COLS,
-    "verbs": VERBS_COLS,
-    "particles": PARTICLES_COLS,
-    "connectors": CONNECTORS_COLS,
-    "nouns": NOUNS_COLS,
-    "prepositions": PREPOSITIONS_COLS
-}
+
 
 // must follow the rules: each entry contains only one colon
 export const SENTENCE_LEVELS = {
@@ -113,6 +100,8 @@ export const SENTENCE_LEVELS = {
     "Level Four": ["verb", "noun w/ taa marbutah or sun/moon letter", "adjective"]
 }
 
+
+// firebase collection names (sentence/SENTENCES_FIREBASE_ID/levelOneSentences)
 export const SENTENCE_COLLECTION_NAMES = {
     LEVEL_ONE: "levelOneSentences",
     LEVEL_TWO: "levelTwoSentences",
@@ -122,6 +111,32 @@ export const SENTENCE_COLLECTION_NAMES = {
     LEVEL_SIX: "levelSixSentences"
 }
 
+// firebase collection names (dictionary/DICT_FIREBASE_ID/verbs)
+export const WORD_COLLECTION_NAMES = {
+    ADJECTIVES: "adjectives",
+    VERBS: "verbs",
+    PARTICLES: "particles",
+    CONNECTORS: "connectors",
+    NOUNS: "nouns",
+    PREPOSITIONS: "prepositions"
+}
+
+// based off of firebase collection names for word types
+export const WORD_TYPE_COLS = {
+    "adjectives": ADJECTIVE_COLS,
+    "verbs": VERBS_COLS,
+    "particles": PARTICLES_COLS,
+    "connectors": CONNECTORS_COLS,
+    "nouns": NOUNS_COLS,
+    "prepositions": PREPOSITIONS_COLS
+}
+
+export const SENTENCE_TRANSLATIONS  = ["arabic", "english"]
+export const SENTENCE_OBJ_FIELDS = [...SENTENCE_TRANSLATIONS, "adjective", "verb", "particle", "connector", "noun", "preposition"];
+export const PARENT_COLLECTIONS = {
+    SENTENCES: "sentences", 
+    DICTIONARY: "dictionary"
+}
 export const SENTENCE_INIT_STATE = {
     arabic: "",
     english: ""

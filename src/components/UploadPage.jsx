@@ -1,19 +1,19 @@
 import React from 'react';
 import s from './UploadPage.module.scss';
-import { UPLOAD_WORDS } from '../helpers/constants';
+import { WORD_TYPE_COLS } from '../helpers/constants';
 import UploadWordsCard from './reusable/UploadWordsCard';
 import { connect } from 'react-redux';
 
 const UploadPage = ({ dictionary }) => {
-
+    const wordTypes = Object.keys(WORD_TYPE_COLS);
     return (
         <div className={s.wrap}>
         {
-            Object.keys(UPLOAD_WORDS).map((word, idx) => (
+            wordTypes.map((word, idx) => (
                 <UploadWordsCard 
                     key={idx} 
                     wordType={word} 
-                    expectedCols={UPLOAD_WORDS[word]}
+                    expectedCols={WORD_TYPE_COLS[word]}
                     wordsInState={dictionary[word].length > 0}
                 />
             ))

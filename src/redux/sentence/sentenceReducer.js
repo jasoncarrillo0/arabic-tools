@@ -1,4 +1,4 @@
-import { ACTIONS } from './sentenceActions'
+import { ACTIONS } from './sentenceActionTypes'
 
 const INIT_STATE = {
     levelOneSentences: [],

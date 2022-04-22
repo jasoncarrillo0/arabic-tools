@@ -6,7 +6,7 @@ import HomePage from "./components/HomePage";
 import ProfileInfo from "./components/ProfileInfo";
 import PrivateRoute from './components/reusable/PrivateRoute'
 import { useAuth } from "./contexts/AuthContext";
-import { DICT_FIREBASE_ID, ERR_SNACKBAR, UPLOAD_WORDS, SENTENCE_COLLECTION_NAMES, SENTENCES_FIREBASE_ID } from "./helpers/constants";
+import { DICT_FIREBASE_ID, ERR_SNACKBAR, SENTENCE_COLLECTION_NAMES, SENTENCES_FIREBASE_ID, WORD_COLLECTION_NAMES } from "./helpers/constants";
 import { useEffect, useState } from "react";
 import { query, collection, getDocsFromServer } from "firebase/firestore";
 import { db } from "./firebase/firebase";
@@ -31,7 +31,7 @@ function AuthedApp({ setDictionary, setAllSentences }) {
             try {
                 // -------------- load dictionary -----------------
                 const dict = {};
-                for (const collectionName of Object.keys(UPLOAD_WORDS)) {
+                for (const collectionName of Object.values(WORD_COLLECTION_NAMES)) {
                     const dbQuery  = query(collection(db, 'dictionary', DICT_FIREBASE_ID, collectionName));
                     const snapshot = await getDocsFromServer(dbQuery);
                     const wordDocs = [];

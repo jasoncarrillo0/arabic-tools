@@ -5,10 +5,9 @@ import WordPicker from '../../../reusable/WordPicker';
 import { useSelector } from 'react-redux';
 import { LoadingButton } from '@mui/lab';
 import to from 'await-to-js';
-import { applyDocumentUpdate, replaceSentence, replaceWord } from '../../../../helpers/sentence-utils'
-import { ERR_SNACKBAR, SENTENCE_COLLECTION_NAMES } from '../../../../helpers/constants';
+import { applySentenceUpdate, replaceSentence } from '../../../../helpers/sentence-utils'
+import { SENTENCE_TRANSLATIONS, ERR_SNACKBAR, SENTENCE_OBJ_FIELDS } from '../../../../helpers/constants';
 
-const editFields = ["arabic", "english", "noun", "verb", "connector", "preposition", "particle", "adjective"];
 const style = {
     position: 'absolute',
     top: '50%',
@@ -21,41 +20,63 @@ const style = {
 
 
 /*
-    fieldVal:
-    {id: string, word: arabic string }
+    docId: firebase doc id
+    field: must be within SENTENCE_OBJ_FIELDS ([arabic, english, ...all other singular word types (noun, verb, etc)])
+    fieldVal: string (arabic word, or sentence (english or arabic))
+    open: boolean
+    handleClose: closes modal
+    collectionName: must be in SENTENCE_COLLECTIONS
+    title: title of modal
+
+
+    In this component we edit either the arabic sentence, the english sentence, or the words used in the sentence
+    The db stores a "sentence" object as 
+    { 
+        id: string
+        sentence {
+            arabic: string
+            english: string
+        },
+        words: {
+            [wordType]: {
+                word: arabic string
+                id: document id
+            }
+        }
+    }
 */
 
-const sentenceLevels = Object.values(SENTENCE_COLLECTION_NAMES);
 const EditFieldForm = ({ 
     docId, 
     field, 
     fieldVal, 
     open, 
-    handleClose, 
+    handleClose,
+    collectionName,
     title="", 
-    sentenceLevel="" 
 }) => {
-    const NEW_FIELD_INIT_STATE = {[field]: { id: "", word: fieldVal}};
-    const {enqueueSnackbar} = useSnackbar()
+    const NEW_WORD_INIT_STATE           = {[field]: { id: "", word: fieldVal}};
+    const {enqueueSnackbar}             = useSnackbar()
     const [sentenceVal, setSentenceVal] = useState(fieldVal);
-    const [newFieldVal, setNewFieldVal] = useState(NEW_FIELD_INIT_STATE);
+    const [newWordObj, setNewWordObj]   = useState(NEW_WORD_INIT_STATE);
     const [loading, setLoading]         = useState(false);
-    const isSentenceUpdate              = ["arabic", "english"].includes(field);
-    const wordRows = useSelector((rootState) => {
+    const notUpdatingWord               = SENTENCE_TRANSLATIONS.includes(field);
+    const wordRows                      = useSelector((rootState) => {
         const rows = rootState.dictionary[`${field}s`];
         return rows;
     })
+    const fieldArgErr                   = !SENTENCE_OBJ_FIELDS.includes(field) || (!notUpdatingWord && !wordRows);
+
 
     useEffect(() => {
         return () => {
-            setNewFieldVal(NEW_FIELD_INIT_STATE);
+            setNewWordObj(NEW_WORD_INIT_STATE);
             setSentenceVal(fieldVal);
             setLoading(false)
         }
-    }, [open])
+    }, [open]);
 
-    if (!wordRows && !isSentenceUpdate) return enqueueSnackbar("Could not get dictionary rows from state in edit sentence field component");
-    if (!editFields.includes(field)) {
+    if (fieldArgErr) {
         return enqueueSnackbar("Incorrect field applied to edit field component");
     }
 
@@ -63,18 +84,18 @@ const EditFieldForm = ({
         setLoading(true);
 
         let e1, newDoc, update;
-        if (isSentenceUpdate) {
-            update     = sentenceVal;
+        if (notUpdatingWord) {
+            update = sentenceVal;
         } else {
-            update = newFieldVal;
+            update = newWordObj;
         }
-        [e1, newDoc] = await to(applyDocumentUpdate(docId, sentenceLevel, "sentences", update, field))
+        [e1, newDoc] = await to(applySentenceUpdate(docId, collectionName, update, field, notUpdatingWord))
         if (e1) {
             enqueueSnackbar(e1, ERR_SNACKBAR);
         } else if (!newDoc) {
-            enqueueSnackbar("No updated document returned from applyDocumentUpdate")
-        } else if (isSentenceUpdate) {
-            replaceSentence(newDoc, sentenceLevel)
+            enqueueSnackbar("No updated document returned from applySentenceUpdate")
+        } else {
+            replaceSentence(newDoc, collectionName)
         }
         setLoading(false);
         handleClose();
@@ -87,26 +108,26 @@ const EditFieldForm = ({
         <Modal open={open} onClose={handleClose}>
             <Paper sx={style}>
                 <h2>{title}</h2>
-            {
-                !wordRows ? (
-                    <TextField
-                        value={sentenceVal}
-                        onChange={({ target }) => setSentenceVal(target.value)}
-                        label={field}
-                        dir="rtl"
-                        fullWidth
-                        sx={{margin: '0.5rem 0'}}
-                    />
-                ) : (
-                    <WordPicker
-                        rows={wordRows}
-                        wordType={field}
-                        state={newFieldVal}
-                        setState={setNewFieldVal}
-                    />
-                )
-            }
-            <LoadingButton variant="contained" loading={loading} onClick={updateSentence}>Update</LoadingButton>
+                {
+                    notUpdatingWord ? (
+                        <TextField
+                            value={sentenceVal}
+                            onChange={({ target }) => setSentenceVal(target.value)}
+                            label={field}
+                            dir="rtl"
+                            fullWidth
+                            sx={{margin: '0.5rem 0'}}
+                        />
+                    ) : (
+                        <WordPicker
+                            rows={wordRows}
+                            wordType={field}
+                            state={newWordObj}
+                            setState={setNewWordObj}
+                        />
+                    )
+                }
+                <LoadingButton variant="contained" loading={loading} onClick={updateSentence}>Update</LoadingButton>
             </Paper>
         </Modal>
     );
