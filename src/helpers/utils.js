@@ -168,13 +168,13 @@ export function getWord(wordType, data) {
     }
 }
 
-export function getColsFromRows(rows) {
+export function getColsFromRows(rows, defaultWidth=130) {
     const colArr = Object.keys(rows[0]).filter(key => key !== "id");
     return colArr
     .map(col => ({
         field: col,
         headerName: col,
-        width: col === "arabic" ? 90 : 130
+        width: col === "arabic" && defaultWidth === 130 ? 90 : defaultWidth
     }))
     .sort((a,b) => a.field.localeCompare(b.field))
 }
