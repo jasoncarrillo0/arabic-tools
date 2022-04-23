@@ -2,7 +2,7 @@ import { Button, Chip, Modal, Paper } from '@mui/material';
 import React, { useState } from 'react';
 import WordsDataTable from './WordsDataTable';
 
-const WordPicker = ({ rows, wordType, setState, state }) => {
+const WordPicker = ({ rows, wordType, initState, setState, state }) => {
     const style = {
         position: 'absolute',
         top: '50%',
@@ -11,9 +11,15 @@ const WordPicker = ({ rows, wordType, setState, state }) => {
         bgcolor: '#e2e2e2',
         boxShadow: 24,
         height: '80vh',
+        width: '40vw',
         p: 4,
     };
     const [open, setOpen] = useState(false);
+    function handleDelete() {
+        if (initState[wordType].id === state[wordType].id) return;
+        setState(initState);
+        setOpen(true);
+    }
     return (
 
         <div dir="rtl">
@@ -23,7 +29,7 @@ const WordPicker = ({ rows, wordType, setState, state }) => {
                     <Chip 
                         sx={{fontWeight: 'bold', fontSize: '15px'}} 
                         label={state[wordType].word}
-                        onDelete={() => setState(prev => ({ ...prev, [wordType]: {word: "", id: ""}}))}   
+                        onDelete={handleDelete}
                     />
                 )
             }
@@ -31,9 +37,11 @@ const WordPicker = ({ rows, wordType, setState, state }) => {
                 <Paper sx={style}>
                     <WordsDataTable 
                         rows={rows} 
-                        title={wordType} 
+                        title={`Select ${wordType}`}
+                        wordType={wordType}
                         setState={setState}
                         handleClose={() => setOpen(false)}
+                        disabledId={state[wordType].id}
                     />
                 </Paper>
             </Modal>

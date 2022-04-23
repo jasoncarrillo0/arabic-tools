@@ -16,11 +16,14 @@ const style = {
     bgcolor: '#e2e2e2',
     boxShadow: 24,
     p: 4,
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '1rem'
 };
 
 
 /*
-    docId: firebase doc id
+    docId: firebase sentence doc id
     field: must be within SENTENCE_OBJ_FIELDS ([arabic, english, ...all other singular word types (noun, verb, etc)])
     fieldVal: string (arabic word, or sentence (english or arabic))
     open: boolean
@@ -53,9 +56,10 @@ const EditFieldForm = ({
     open, 
     handleClose,
     collectionName,
-    title="", 
+    title="",
+    wordId=""
 }) => {
-    const NEW_WORD_INIT_STATE           = {[field]: { id: "", word: fieldVal}};
+    const NEW_WORD_INIT_STATE           = {[field]: { id: wordId, word: fieldVal}};
     const {enqueueSnackbar}             = useSnackbar()
     const [sentenceVal, setSentenceVal] = useState(fieldVal);
     const [newWordObj, setNewWordObj]   = useState(NEW_WORD_INIT_STATE);
@@ -107,7 +111,7 @@ const EditFieldForm = ({
     return (
         <Modal open={open} onClose={handleClose}>
             <Paper sx={style}>
-                <h2>{title}</h2>
+                {title && <h2>{title}</h2>}
                 {
                     notUpdatingWord ? (
                         <TextField
@@ -123,11 +127,17 @@ const EditFieldForm = ({
                             rows={wordRows}
                             wordType={field}
                             state={newWordObj}
+                            initState={NEW_WORD_INIT_STATE}
                             setState={setNewWordObj}
                         />
                     )
                 }
-                <LoadingButton variant="contained" loading={loading} onClick={updateSentence}>Update</LoadingButton>
+                <LoadingButton 
+                    variant="contained" 
+                    loading={loading} 
+                    onClick={updateSentence}
+                    disabled={newWordObj[field].id === NEW_WORD_INIT_STATE[field].id}
+                >Update</LoadingButton>
             </Paper>
         </Modal>
     );

@@ -7,19 +7,25 @@ import RtlProvider from '../reusable/RtlProvider';
 import { handleAddLevelOneSentence } from '../../helpers/sentence-utils';
 import WordPicker from '../reusable/WordPicker';
 import { LoadingButton } from '@mui/lab';
-import { SENTENCE_COLLECTION_NAMES, SENTENCE_INIT_STATE } from '../../helpers/constants';
+import { SENTENCE_COLLECTION_NAMES } from '../../helpers/constants';
 import SentenceTable from './SentenceTable';
 
-const INIT_STATE = {
-    sentence: SENTENCE_INIT_STATE,
-    verb: {word: "", id: ""},
+const SENTENCE_INIT_STATE = {
+    arabic: "",
+    english: ""
+}
+const VERB_INIT_STATE = {
+    verb: {word: "", id: ""}
+}
+const NOUN_INIT_STATE = {
     noun: {word: "", id: ""}
 }
 
 
-
 const LevelOneSentence = ({ verbs, nouns, levelOneSentences }) => {
-    const [state, setState]             = useState(INIT_STATE);
+    const [sentence, setSentences]       = useState(SENTENCE_INIT_STATE);
+    const [verbObj, setVerbObj]               = useState(VERB_INIT_STATE);
+    const [nounObj, setNounObj]               = useState(NOUN_INIT_STATE);
     const [loading, setLoading]         = useState(false);
     const [readyToPost, setReadyToPost] = useState(false);
     const { enqueueSnackbar }           = useSnackbar();
@@ -27,22 +33,34 @@ const LevelOneSentence = ({ verbs, nouns, levelOneSentences }) => {
 
     function handleSentenceChange({ target }) {
         const { value, name } = target;
-        setState(prev => ({
+        setSentences(prev => ({
             ...prev,
-            sentence: {
-                ...prev.sentence,
-                [name]: value
-            }
+            [name]: value
         }));
+    }
+
+    function resetState() {
+        setVerbObj(VERB_INIT_STATE);
+        setNounObj(NOUN_INIT_STATE);
+        setSentences(SENTENCE_INIT_STATE);
     }
 
 
 
     async function handleAddSentence() {
         setLoading(true)
-        await handleAddLevelOneSentence(state, setState, enqueueSnackbar, INIT_STATE);
+        const finalState = {
+            sentence,
+            ...verbObj,
+            ...nounObj
+        }
+        await handleAddLevelOneSentence(finalState, enqueueSnackbar);
+        resetState();
         setLoading(false);
     }
+
+
+    
 
     
     // cleanup
@@ -56,15 +74,16 @@ const LevelOneSentence = ({ verbs, nouns, levelOneSentences }) => {
 
     // make btn disabled
     useEffect(() => {
-        const { english, arabic } = state.sentence;
-        const { verb, noun } = state;
+        const { english, arabic } = sentence;
+        const { verb } = verbObj;
+        const { noun } = nounObj;
         if (english && arabic && verb.word && noun.word) {
             setReadyToPost(true);
         } else {
             setReadyToPost(false);
         }
 
-    }, [state])
+    }, [nounObj, verbObj, sentence])
 
 
 
@@ -78,22 +97,24 @@ const LevelOneSentence = ({ verbs, nouns, levelOneSentences }) => {
                     <WordPicker 
                         rows={verbs} 
                         wordType="verb" 
-                        setState={setState} 
-                        state={state}
+                        initState={VERB_INIT_STATE}
+                        setState={setVerbObj} 
+                        state={verbObj}
                     />
 
                     <WordPicker
                         rows={nouns}
                         wordType="noun"
-                        setState={setState}
-                        state={state}
+                        initState={NOUN_INIT_STATE}
+                        setState={setNounObj}
+                        state={nounObj}
                     />
                 </div>
                 <TextField
                     fullWidth
                     onChange={handleSentenceChange}
                     name="arabic"
-                    value={state.sentence.arabic}
+                    value={sentence.arabic}
                     label="enter arabic here"
                     dir="rtl"
                 />
@@ -102,7 +123,7 @@ const LevelOneSentence = ({ verbs, nouns, levelOneSentences }) => {
                     fullWidth
                     onChange={handleSentenceChange}
                     name="english"
-                    value={state.sentence.english}
+                    value={sentence.english}
                     label="enter english translation"
                     dir="rtl"
                     sx={{marginTop: '1rem'}}

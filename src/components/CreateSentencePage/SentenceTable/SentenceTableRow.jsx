@@ -26,6 +26,8 @@ const SentenceTableRow = ({ row, collectionName, wordTypes }) => {
     useEffect(() => {
         return () => {
             setDeleteLoading(false);
+            setEditFormOpenState(INIT_EDIT_FORM_OPEN_STATE);
+            setDeleteDialogOpen(false);
         }
     },[])
 
@@ -118,6 +120,7 @@ const SentenceTableRow = ({ row, collectionName, wordTypes }) => {
                         open={editFormOpenState[type]}
                         handleClose={() => setDynamicFieldOpen(type, false)}
                         collectionName={collectionName}
+                        wordId={row.words[type].id}
                     />
                 ))
             }

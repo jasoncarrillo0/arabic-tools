@@ -137,7 +137,3 @@ export const PARENT_COLLECTIONS = {
     SENTENCES: "sentences", 
     DICTIONARY: "dictionary"
 }
-export const SENTENCE_INIT_STATE = {
-    arabic: "",
-    english: ""
-}

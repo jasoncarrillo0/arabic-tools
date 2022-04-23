@@ -25,7 +25,7 @@ export function handleAddLevelTwoSentence(state, setState, enqueueSnackbar, INIT
 
 
 // change if else to object.values, check if empty 
-export async function handleAddLevelOneSentence(state, setState, enqueueSnackbar, INIT_STATE) {
+export async function handleAddLevelOneSentence(state, enqueueSnackbar) {
 
     try {
         const sentenceObj = {
@@ -59,7 +59,6 @@ export async function handleAddLevelOneSentence(state, setState, enqueueSnackbar
         dispatch(replaceVerb(updatedVerbDoc.id, updatedVerbDoc));
         dispatch(addLevelOneSentence(sentenceDoc))
         enqueueSnackbar("Successfully added new sentence.", SUCCESS_SNACKBAR);
-        setState(INIT_STATE);
     } catch (e) {
         enqueueSnackbar(e.message, ERR_SNACKBAR)
     }

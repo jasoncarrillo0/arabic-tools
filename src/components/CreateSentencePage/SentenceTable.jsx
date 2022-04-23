@@ -3,14 +3,6 @@ import React from "react";
 import SentenceTableRow from "./SentenceTable/SentenceTableRow";
 
 
-// const sentenceObj = {
-//     sentence: state.sentence,
-//     words: {
-//        noun: state.noun,
-//        verb: state.verb
-//    }
-// }
-
 const SentenceTable = ({ sentences, wordTypes, collectionName }) => {
     return (
         <TableContainer component={Paper} sx={{marginTop: '2rem'}}>
@@ -30,7 +22,7 @@ const SentenceTable = ({ sentences, wordTypes, collectionName }) => {
                     sentences.length > 0 && (
                         sentences.map((row, idx) => (
                             <SentenceTableRow 
-                                key={idx} 
+                                key={Number((Math.random() * 1000).toFixed(0))} 
                                 row={row} 
                                 wordTypes={wordTypes} 
                                 collectionName={collectionName}

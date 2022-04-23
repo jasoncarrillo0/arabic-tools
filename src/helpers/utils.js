@@ -174,7 +174,7 @@ export function getColsFromRows(rows) {
     .map(col => ({
         field: col,
         headerName: col,
-        width: col === "arabic" ? 90 : 110
+        width: col === "arabic" ? 90 : 130
     }))
     .sort((a,b) => a.field.localeCompare(b.field))
 }

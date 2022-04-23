@@ -3,7 +3,7 @@ import { DataGrid } from '@mui/x-data-grid';
 import { getColsFromRows } from '../../helpers/utils';
 import s from './WordsDataTable.module.scss';
 
-const WordsDataTable = ({ rows, title, handleClose=null, setState=null }) => {
+const WordsDataTable = ({ rows, title, wordType, handleClose=null, setState=null, disabledId="" }) => {
     const styles = {
         height: "400px",
         width: '100%'
@@ -12,8 +12,10 @@ const WordsDataTable = ({ rows, title, handleClose=null, setState=null }) => {
     // setState and Handleclose will be functions if used in a modal
     function handleRowClick(params) {
         if (typeof(setState === 'function')) {
+
+            if (disabledId && params.row.id === disabledId) return
             setState(prev => ({
-                ...prev, [title]: { 
+                ...prev, [wordType]: { 
                     word: params.row.arabic,
                     id: params.row.id
                 }
@@ -24,13 +26,14 @@ const WordsDataTable = ({ rows, title, handleClose=null, setState=null }) => {
     
     return (
         <div style={styles}>
-            <h2>{"Select " + title}</h2>
+            <h2>{title}</h2>
             <DataGrid 
                 rows={rows} 
                 columns={getColsFromRows(rows)}
                 onRowClick={handleRowClick}
                 disableSelectionOnClick
                 classes={{row: s.row}}
+                getRowClassName={(params) => params.row.id === disabledId ? s.disabled : s.row}
             />
         </div>
 
