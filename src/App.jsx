@@ -20,10 +20,10 @@ function App() {
         }
     }, [currUser])
     return (
-        <div className={s.wrap}>
+        <div>
             <CssBaseline/>
             <Header/>
-            <div style={{margin: '2rem'}}>
+            <div className={s.wrap}>
             {
                 userCheckLoading ? (
                     <CircularProgress/>

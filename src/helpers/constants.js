@@ -113,11 +113,11 @@ export const SENTENCE_COLLECTION_NAMES = {
 
 // firebase collection names (dictionary/DICT_FIREBASE_ID/verbs)
 export const WORD_COLLECTION_NAMES = {
+    NOUNS: "nouns",
     ADJECTIVES: "adjectives",
     VERBS: "verbs",
     PARTICLES: "particles",
     CONNECTORS: "connectors",
-    NOUNS: "nouns",
     PREPOSITIONS: "prepositions"
 }
 

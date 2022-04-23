@@ -12,9 +12,10 @@ const Header = () => {
 
     return (
         <Box sx={{ flexGrow: 1 }}>
-        <AppBar position="static" className={s.toolbarWrap}>
+        <AppBar position="static" classes={{root: s.toolbarWrap}}>
             <h2 onClick={() => history.push("/")}>Arabic Tools</h2>
           <Toolbar className={s.toolbar}>
+            <Button sx={{color: "white"}} onClick={() => history.push("/home/dictionary")}>Dictionary</Button>
             <Button sx={{color: "white"}} onClick={() => history.push("/home/verbpractice")}>Verb Practice</Button>
             <Button sx={{color: "white"}} onClick={() => history.push("/home/sentencepractice")}>Sentence Practice</Button>
             {
