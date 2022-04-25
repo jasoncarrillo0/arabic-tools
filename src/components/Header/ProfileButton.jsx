@@ -48,6 +48,7 @@ const ProfileButton = () => {
                 aria-haspopup="true"
                 aria-expanded={open ? "true" : undefined}
                 onClick={handleClick}
+                onMouseOver={handleClick}
             >
                 <AccountCircleIcon/>
             </IconButton>
@@ -55,6 +56,7 @@ const ProfileButton = () => {
                 anchorEl={anchorEl}
                 open={open}
                 onClose={handleClose}
+                MenuListProps={{ onMouseLeave: handleClose }}
             >
                 <MenuItem onClick={viewProfile}>
                     <ListItemIcon>

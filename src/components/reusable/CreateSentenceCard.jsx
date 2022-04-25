@@ -14,15 +14,18 @@ const CreateSentenceCard = ({ level, elements }) => {
     const levelPath = `${pathname}/${level.replace(/ /g, '').toLowerCase()}`
     return (
         <Card className={s.wrap}>
-            <h2>{level}</h2>
-            <ol>
-            {
-                elements.map((el, idx) => (<li key={idx}>{el}</li>))
-            }
-            </ol>
+            <h2>{level} Sentence</h2>
+            <div className={s.listWrap}>
+                <h5>Contains:</h5>
+                <ol>
+                {
+                    elements.map((el, idx) => (<li key={idx}>{el}</li>))
+                }
+                </ol>
+            </div>
             <CardContent className={s.content}>
             <div className={s.btnWrap}>
-                <Button onClick={() => history.push(levelPath)} variant="contained">
+                <Button onClick={() => history.push(levelPath)} sx={{backgroundColor: "#b7b7b7"}} variant="contained">
                     Create
                 </Button>
             </div>

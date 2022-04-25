@@ -18,6 +18,7 @@ import LevelOneSentence from './components/CreateSentencePage/LevelOneSentence'
 import { setAllSentences } from './redux/sentence/sentenceActionCreators';
 import DictionaryPage from "./components/DictionaryPage";
 import SentencePage from './components/SentencePage';
+import SentenceGrid from "./components/SentencePage/SentenceGrid";
 
 function AuthedApp({ setDictionary, setAllSentences }) {
 
@@ -78,6 +79,8 @@ function AuthedApp({ setDictionary, setAllSentences }) {
                     <Route exact path="/home/dictionary" component={DictionaryPage}/>
                     <Route exact path="/home/verbpractice" component={VerbsArea}/>
                     <Route exact path="/home/sentences" component={SentencePage}/>
+                    <Route exact path="/home/sentences/all" component={SentenceGrid}/>
+                    <Route exact path="/home/sentences/practice" component={() => <div>Nothing here yet...</div>}/>
                     <PrivateRoute exact path="/home/upload" component={UploadPage} authed={isAdminUser}/>
                     <PrivateRoute exact path="/home/create" component={CreateSentencePage} authed={isAdminUser}/>
                     <PrivateRoute exact path="/home/create/levelone" component={LevelOneSentence} authed={isAdminUser}/>

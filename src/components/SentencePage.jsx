@@ -1,17 +1,26 @@
-import { Paper } from '@mui/material';
+import { IconButton, Paper } from '@mui/material';
 import React from 'react';
-import SentenceGrid from './SentencePage/SentenceGrid';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import s from './SentencePage.module.scss';
+import { useHistory } from 'react-router-dom';
+
 
 const SentencePage = () => {
+    const history = useHistory();
     return (
         <div>
-            <Paper>
+            <Paper className={s.card} onClick={() => history.push("/home/sentences/all")}>
                 <h2>View All Sentences</h2>
-                <SentenceGrid/>
+                <IconButton>
+                    <ArrowForwardIcon fontSize="large"/>
+                </IconButton>
             </Paper>
 
-            <Paper>
+            <Paper className={s.card} onClick={() => history.push("/home/sentences/practice")}>
                 <h2>Practice Sentences</h2>
+                <IconButton>
+                    <ArrowForwardIcon fontSize="large"/>
+                </IconButton>
             </Paper>
         </div>
     );

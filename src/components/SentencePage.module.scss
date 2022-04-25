@@ -1,0 +1,20 @@
+.card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem;
+    margin: 2rem 0;
+    width: 300px;
+    cursor: pointer;
+    transition: background-color 0.4s !important;
+
+    &:hover {
+        background-color: rgb(240, 240, 240);
+    }
+
+    button {
+        &:hover {
+            background-color: inherit;
+        }
+    }
+}

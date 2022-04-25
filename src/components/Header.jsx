@@ -6,6 +6,9 @@ import { useAuth } from '../contexts/AuthContext';
 import s from './Header.module.scss';
 import ProfileButton from './Header/ProfileButton';
 import AuthedUsersButton from './Header/AuthedUsersButton'
+import SentencesButton from './Header/SentencesButton';
+
+
 const Header = () => {
     const history = useHistory();
     const { currUser, isAdminUser } = useAuth()
@@ -17,7 +20,7 @@ const Header = () => {
           <Toolbar className={s.toolbar}>
             <Button sx={{color: "white"}} onClick={() => history.push("/home/dictionary")}>Dictionary</Button>
             <Button sx={{color: "white"}} onClick={() => history.push("/home/verbpractice")}>Verb Practice</Button>
-            <Button sx={{color: "white"}} onClick={() => history.push("/home/sentences")}>Sentence Practice</Button>
+            <SentencesButton/>
             {
                 currUser && (
                     <ProfileButton/>

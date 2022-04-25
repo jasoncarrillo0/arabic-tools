@@ -94,10 +94,9 @@ export const SENTENCES_FIREBASE_ID = "R0PrMISyj24V56pqddmg";
 
 // must follow the rules: each entry contains only one colon
 export const SENTENCE_LEVELS = {
-    "Level One": ["verb only"], 
-    "Level Two": ["verb", "noun w/ taa marbutah"],
-    "Level Three": ["verb", "noun w/ taa marbutah + sun/moon letter"],
-    "Level Four": ["verb", "noun w/ taa marbutah or sun/moon letter", "adjective"]
+    "Level One": ["verb", "noun w/ taa marbutah"],
+    "Level Two": ["verb", "noun w/ taa marbutah + sun/moon letter"],
+    "Level Three": ["verb", "noun w/ taa marbutah or sun/moon letter", "adjective"]
 }
 
 
