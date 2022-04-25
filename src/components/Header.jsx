@@ -17,7 +17,7 @@ const Header = () => {
           <Toolbar className={s.toolbar}>
             <Button sx={{color: "white"}} onClick={() => history.push("/home/dictionary")}>Dictionary</Button>
             <Button sx={{color: "white"}} onClick={() => history.push("/home/verbpractice")}>Verb Practice</Button>
-            <Button sx={{color: "white"}} onClick={() => history.push("/home/sentencepractice")}>Sentence Practice</Button>
+            <Button sx={{color: "white"}} onClick={() => history.push("/home/sentences")}>Sentence Practice</Button>
             {
                 currUser && (
                     <ProfileButton/>

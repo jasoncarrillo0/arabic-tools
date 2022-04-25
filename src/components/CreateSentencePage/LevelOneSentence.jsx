@@ -151,7 +151,7 @@ const LevelOneSentence = ({ verbs, nouns, levelOneSentences }) => {
 
 const mapStateToProps = (rootState) => {
     const { verbs, nouns } = rootState.dictionary;
-    const { levelOneSentences } = rootState.sentence;
+    const { levelOneSentences } = rootState.sentences;
     return { verbs, nouns, levelOneSentences }
 }
 

@@ -111,6 +111,11 @@ export const SENTENCE_COLLECTION_NAMES = {
     LEVEL_SIX: "levelSixSentences"
 }
 
+export const SENTENCE_COLL_WORD_TYPES = {
+    "levelOneSentences": ["noun", "verb"]
+}
+
+
 // firebase collection names (dictionary/DICT_FIREBASE_ID/verbs)
 export const WORD_COLLECTION_NAMES = {
     NOUNS: "nouns",

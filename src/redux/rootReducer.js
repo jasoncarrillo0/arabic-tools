@@ -5,5 +5,5 @@ import { dictionaryReducer } from './dictionary/dictReducer';
 
 export const rootReducer = combineReducers({
     dictionary: dictionaryReducer,
-    sentence: sentenceReducer
+    sentences: sentenceReducer
 });

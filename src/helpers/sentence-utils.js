@@ -139,7 +139,7 @@ export async function applySentenceUpdate(id, collection, update, sentencePart, 
             const updatingWordOnly = wordCollection !== undefined && !notUpdatingWord;
 
             // get redux state, make copy, merge change
-            const currSentence = getState().sentence[collection].find(sentence => sentence.id === id);
+            const currSentence = getState().sentences[collection].find(sentence => sentence.id === id);
             if (!currSentence) throw new Error("Could not find sentence in redux store.");
 
 
