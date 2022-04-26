@@ -187,7 +187,7 @@ export async function applySentenceUpdate(id, collection, update, sentencePart, 
         }
     })
 }
-async function applyWordDocUpdate(id, collection, update) {
+export async function applyWordDocUpdate(id, collection, update) {
     return new Promise(async (resolve, reject) => {
         try {
             if (!WORD_COLLECTIONS.includes(collection)) throw new Error(`Incorrect collection ${collection} supplied to applySentenceUpdate`);
@@ -223,8 +223,58 @@ async function applyWordDocUpdate(id, collection, update) {
 
 
 
+/*
+    wordDoc: firebase document 
+    collectionName: "nouns" | "verbs" | "adjectives" etc.
 
+    RETURN TYPE: void
+*/
+export async function updateSentencesWith(wordDoc, collectionName) {
 
+    try {
+        const wordType        = collectionName.slice(0, -1);
+        const allSentences    = [];
+        const bigSentencesObj = getState().sentences;
+
+        for (const sentenceCollection of Object.values(SENTENCE_COLLECTION_NAMES)) {
+            for (const sentence of bigSentencesObj[sentenceCollection]) {
+                if (sentence.words[wordType]) {
+                    if (sentence.words[wordType].id === wordDoc.id) {
+                        allSentences.push({
+                            collection: sentenceCollection,
+                            sentence
+                        });
+                    }
+                }
+            }
+        }
+
+        // update sentences
+        for (const sentenceObj of allSentences) {
+            const { id, sentence, words } = sentenceObj.sentence;
+            const updatedSentence = { 
+                id,
+                sentence,
+                words: {
+                    ...words,
+                    [wordType]: {
+                        ...words[wordType],
+                        word: wordDoc.arabic
+                    }
+                }
+            };
+
+            // update sentence in db
+            const sentenceRef = doc(db, PARENT_COLLECTIONS.SENTENCES, SENTENCES_FIREBASE_ID, sentenceObj.collection, id);
+            await setDoc(sentenceRef, updatedSentence, { merge: true});
+            const updatedDoc = await getDoc(sentenceRef);      
+            const finalDoc   = {id: updatedDoc.id, ...updatedDoc.data()};
+            replaceSentence(finalDoc, sentenceObj.collection)
+        }
+    } catch (e) {
+        throw new Error(e)
+    }    
+}
 
 
 

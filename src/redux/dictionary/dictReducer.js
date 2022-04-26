@@ -39,12 +39,12 @@ export const dictionaryReducer = (state = {}, action) => {
         case DICT_ACTION_TYPES.REPLACE_NOUN:
             return {
                 ...state,
-                nouns: [...state.nouns.filter(noun => noun !== action.payload.id), action.payload.newNoun]
+                nouns: [...state.nouns.filter(noun => noun.id !== action.payload.id), action.payload.newNoun]
             }
         case DICT_ACTION_TYPES.REPLACE_VERB:
             return {
                 ...state,
-                verbs: [...state.verbs.filter(verb => verb !== action.payload.id), action.payload.newVerb]
+                verbs: [...state.verbs.filter(verb => verb.id !== action.payload.id), action.payload.newVerb]
             }
         default:
             return {

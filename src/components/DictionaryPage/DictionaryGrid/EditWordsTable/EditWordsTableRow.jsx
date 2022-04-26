@@ -37,7 +37,13 @@ const EditWordsTableRow = ({ row, collectionName }) => {
             }}
         >
             {
-                allKeys.map((field, idx) => <TableCell key={idx} style={field === "arabic" ? fontStyle : {}}>{row[field]}</TableCell>)
+                allKeys.map((field, idx) => (
+                    <TableCell 
+                        key={idx} 
+                        style={field === "arabic" ? fontStyle : {}}
+                        onClick={() => setEditFormOpen(field, true)}
+                    >{row[field]}</TableCell>
+                ))
             }
             {
                 allKeys.map((field, idx) => (

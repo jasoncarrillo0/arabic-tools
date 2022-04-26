@@ -37,12 +37,12 @@ const DictionaryGrid = ({ dictionary }) => {
                         {
                             isEditing ? (
                                 <EditWordsTable
-                                    wordDocs={dictionary[wordType]}
+                                    wordDocs={[...dictionary[wordType]].sort((a, b) => a.english.localeCompare(b.english))}
                                     wordType={wordType}
                                 />
                             ) : (
                                 <WordsDataTable
-                                    rows={dictionary[wordType]}
+                                    rows={[...dictionary[wordType]]}
                                     colWidth={150}
                                     height="600px"
                                 />

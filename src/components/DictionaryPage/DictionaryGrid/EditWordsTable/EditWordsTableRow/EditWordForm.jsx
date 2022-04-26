@@ -1,10 +1,11 @@
 import { useSnackbar } from 'notistack';
 import React, { useEffect, useState } from 'react';
-
-import { Modal, Paper } from '@mui/material';
+import { Modal, Paper, TextField } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
-import { useSelector } from 'react-redux';
-import WordPicker from '../../../../reusable/WordPicker';
+import { applyWordDocUpdate, getSentencesWith, replaceWord, applySentenceUpdate, updateSentencesWith } from '../../../../../helpers/sentence-utils'
+import RtlProvider from '../../../../reusable/RtlProvider';
+import to from 'await-to-js';
+import { ERR_SNACKBAR } from '../../../../../helpers/constants';
 
 
 
@@ -31,45 +32,67 @@ const EditWordForm = ({
     handleClose,
     collectionName,
 }) => {
-    const WORD_INIT_STATE = { field: wordDoc[field] }
     const {enqueueSnackbar}             = useSnackbar()
-    const [newWordObj, setNewWordObj]   = useState(WORD_INIT_STATE);
+    const [newVal, setNewVal]           = useState(wordDoc[field]);
     const [loading, setLoading]         = useState(false);
-    const wordRows                      = useSelector((rootState) => {
-        const rows = rootState.dictionary[collectionName];
-        return rows;
-    });
+
 
 
     useEffect(() => {
         return () => {
-            setNewWordObj(WORD_INIT_STATE);
+            setNewVal(wordDoc[field]);
             setLoading(false)
         }
     }, [open]);
 
-    function updateWord() {
+    async function updateWord() {
+        setLoading(true);
+        const update = { [field]: newVal };
+        try {
+            const [e1, newDoc] = await to(applyWordDocUpdate(wordDoc.id, collectionName, update))
+            if (e1) throw new Error(e1);
+            if (!newDoc) throw new Error("Failed to update word.");
+            replaceWord(newDoc, collectionName);
 
+            // update all sentences that contain a ref to word document (sentences only contain refs to id and arabic field)
+            const shouldUpdateSentence = newDoc.timesUsed > 0 && field === "arabic";
+            if (shouldUpdateSentence) {
+                await updateSentencesWith(newDoc, collectionName)
+            }
+        } catch (e) {
+            enqueueSnackbar(e.message, ERR_SNACKBAR)
+        }
+        setLoading(false);
     }
 
 
     return (
         <Modal open={open} onClose={handleClose}>
             <Paper sx={style}>
+                {
+                    field === "arabic" ? (
+                        <RtlProvider>
+                            <TextField
+                                label={field}
+                                value={newVal}
+                                onChange={(e) => setNewVal(e.target.value)}
+                            />
+                        </RtlProvider>
+                    ) : (
+                        <TextField
+                            label={field}
+                            value={newVal}
+                            onChange={(e) => setNewVal(e.target.value)}
+                        />
+                    )
+                }
                 
-                <WordPicker
-                    rows={wordRows}
-                    wordType={field}
-                    state={newWordObj}
-                    initState={WORD_INIT_STATE}
-                    setState={setNewWordObj}
-                />
                    
                 <LoadingButton 
                     variant="contained" 
                     loading={loading} 
                     onClick={updateWord}
-                    disabled={wordDoc.id === newWordObj.id}
+                    disabled={!newVal || newVal === wordDoc[field]}
                 >Update</LoadingButton>
             </Paper>
         </Modal>
