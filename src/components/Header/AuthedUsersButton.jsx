@@ -4,6 +4,8 @@ import BuildIcon from '@mui/icons-material/Build';
 import UploadIcon from '@mui/icons-material/Upload';
 import CreateIcon from '@mui/icons-material/Create';
 import { useHistory } from 'react-router-dom';
+
+import ChangeCircleIcon from '@mui/icons-material/ChangeCircle'
 const AuthedUsersButton = () => {
     const [anchorEl, setAnchorEl] = useState(null);
     const open                    = Boolean(anchorEl);
@@ -25,6 +27,11 @@ const AuthedUsersButton = () => {
     function handleToCreate() {
         handleClose();
         history.push('/home/create')
+    }
+
+    function handleToEditDict() {
+        handleClose();
+        history.push('/home/editdictionary')
     }
 
     return (
@@ -54,6 +61,12 @@ const AuthedUsersButton = () => {
                         <CreateIcon/>
                     </ListItemIcon>
                     <ListItemText>Create Sentences</ListItemText>
+                </MenuItem>
+                <MenuItem onClick={handleToEditDict}>
+                    <ListItemIcon>
+                        <ChangeCircleIcon/>
+                    </ListItemIcon>
+                    <ListItemText>Edit Dictionary</ListItemText>
                 </MenuItem>
             </Menu>
         </div>

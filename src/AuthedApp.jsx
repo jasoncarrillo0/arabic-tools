@@ -81,6 +81,7 @@ function AuthedApp({ setDictionary, setAllSentences }) {
                     <Route exact path="/home/sentences" component={SentencePage}/>
                     <Route exact path="/home/sentences/all" component={SentenceGrid}/>
                     <Route exact path="/home/sentences/practice" component={() => <div>Nothing here yet...</div>}/>
+                    <PrivateRoute exact path="/home/editdictionary" component={DictionaryPage} authed={isAdminUser}/>
                     <PrivateRoute exact path="/home/upload" component={UploadPage} authed={isAdminUser}/>
                     <PrivateRoute exact path="/home/create" component={CreateSentencePage} authed={isAdminUser}/>
                     <PrivateRoute exact path="/home/create/levelone" component={LevelOneSentence} authed={isAdminUser}/>

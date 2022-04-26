@@ -7,8 +7,6 @@ import BasicAlertConfirm from '../../reusable/BasicAlertConfirm';
 import s from './SentenceTableRow.module.scss';
 import { useAuth } from '../../../contexts/AuthContext';
 import { useLocation } from 'react-router-dom'
-
-;
 import SentenceCell from './SentenceTableRow/SentenceCell';
 const SentenceTableRow = ({ row, collectionName, wordTypes }) => {
     const { isAdminUser } = useAuth();
