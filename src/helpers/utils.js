@@ -3,7 +3,21 @@ import { db } from "../firebase/firebase";
 import { DICT_FIREBASE_ID } from "./constants";
 import to from 'await-to-js';
 import { store } from '../redux/store'
-import { setAllAdjectives } from "../redux/dictionary/dictActionCreators";
+import { 
+    addAdjective, 
+    addConnector, 
+    addNoun, 
+    addParticle, 
+    addPreposition, 
+    addVerb, 
+    setAllAdjectives, 
+    deleteAdjective,
+    deleteConnector,
+    deleteNoun,
+    deleteParticle,
+    deletePreposition,
+    deleteVerb
+} from "../redux/dictionary/dictActionCreators";
 import { setAllVerbs } from "../redux/dictionary/dictActionCreators";
 import { setAllParticles } from "../redux/dictionary/dictActionCreators";
 import { setAllConnectors } from "../redux/dictionary/dictActionCreators";
@@ -137,6 +151,60 @@ function handleNewDocs(newlyAddedDocs, collectionName) {
     }
 }
 
+
+
+export function addNewDocToRdx(newDoc, collectionName) {
+    const { dispatch } = store;
+    switch (collectionName) {
+        case "adjectives":
+            dispatch(addAdjective(newDoc))
+            break;
+        case "verbs":
+            dispatch(addVerb(newDoc))
+            break;
+        case "particles":
+            dispatch(addParticle(newDoc))
+            break;
+        case "connectors":
+            dispatch(addConnector(newDoc))
+            break;
+        case "nouns":
+            dispatch(addNoun(newDoc))
+            break;
+        case "prepositions":
+            dispatch(addPreposition(newDoc))
+            break;
+        default:
+            break;
+    }
+}
+
+
+export function deleteDocFromRdx(id, collectionName) {
+    const { dispatch } = store;
+    switch (collectionName) {
+        case "adjectives":
+            dispatch(deleteAdjective(id))
+            break;
+        case "verbs":
+            dispatch(deleteVerb(id))
+            break;
+        case "particles":
+            dispatch(deleteParticle(id))
+            break;
+        case "connectors":
+            dispatch(deleteConnector(id))
+            break;
+        case "nouns":
+            dispatch(deleteNoun(id))
+            break;
+        case "prepositions":
+            dispatch(deletePreposition(id))
+            break;
+        default:
+            break;
+    }
+}
 
 
 export function getWord(wordType, data) {

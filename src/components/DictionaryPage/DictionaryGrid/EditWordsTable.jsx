@@ -2,11 +2,11 @@ import React from 'react';
 import { Paper, Table, TableContainer, TableHead, TableBody, TableRow, TableCell } from "@mui/material";
 import { getColsFromRows } from '../../../helpers/utils';
 import EditWordsTableRow from './EditWordsTable/EditWordsTableRow'
+import AddWordButton from './EditWordsTable/AddWordButton';
 
 
 const EditWordsTable = ({ wordDocs, wordType }) => {
-    const cols = getColsFromRows(wordDocs);
-
+    const cols = getColsFromRows(wordDocs).filter(doc => !["id", "timesUsed"].includes(doc.field));
     return (
         <TableContainer component={Paper} sx={{marginTop: '2rem'}}>
             <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -15,6 +15,7 @@ const EditWordsTable = ({ wordDocs, wordType }) => {
                     {
                         cols.map((col, idx) => <TableCell key={idx}>{col.field}</TableCell>)
                     }
+                    <TableCell></TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -29,6 +30,7 @@ const EditWordsTable = ({ wordDocs, wordType }) => {
                         ))
                     )
                 }
+                <AddWordButton cols={cols.map(col => col.field)} collectionName={wordType}/>
                 </TableBody>
             </Table>
         </TableContainer>

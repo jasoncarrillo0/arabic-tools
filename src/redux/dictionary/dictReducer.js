@@ -46,6 +46,36 @@ export const dictionaryReducer = (state = {}, action) => {
                 ...state,
                 verbs: [...state.verbs.filter(verb => verb.id !== action.payload.id), action.payload.newVerb]
             }
+        case DICT_ACTION_TYPES.DELETE_ADJECTIVE:
+            return {
+                ...state,
+                adjectives: [...state.adjectives.filter(word => word.id !== action.payload)]
+            }
+        case DICT_ACTION_TYPES.DELETE_NOUN:
+            return {
+                ...state,
+                nouns: [...state.nouns.filter(word => word.id !== action.payload)]
+            }
+        case DICT_ACTION_TYPES.DELETE_VERB:
+            return {
+                ...state,
+                verbs: [...state.verbs.filter(word => word.id !== action.payload)]
+            }
+        case DICT_ACTION_TYPES.DELETE_CONNECTOR:
+            return {
+                ...state,
+                connectors: [...state.connectors.filter(word => word.id !== action.payload)]
+            }
+        case DICT_ACTION_TYPES.DELETE_PARTICLE:
+            return {
+                ...state,
+                particles: [...state.particles.filter(word => word.id !== action.payload)]
+            }
+        case DICT_ACTION_TYPES.DELETE_PREPOSITION:
+            return {
+                ...state,
+                prepositions: [...state.prepositions.filter(word => word.id !== action.payload)]
+            }
         default:
             return {
                 ...state,
