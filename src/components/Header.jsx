@@ -18,8 +18,8 @@ const Header = () => {
         <AppBar position="static" classes={{root: s.toolbarWrap}}>
             <h2 onClick={() => history.push("/")}>Arabic Tools</h2>
           <Toolbar className={s.toolbar}>
-            <Button sx={{color: "white"}} onClick={() => history.push("/home/dictionary")}>Dictionary</Button>
-            <Button sx={{color: "white"}} onClick={() => history.push("/home/verbpractice")}>Verb Practice</Button>
+            <Button onClick={() => history.push("/home/dictionary")}>Dictionary</Button>
+            <Button onClick={() => history.push("/home/verbpractice")}>Verb Practice</Button>
             <SentencesButton/>
             {
                 currUser && (

@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import ListIcon from '@mui/icons-material/List';
 import PsychologyIcon from '@mui/icons-material/Psychology';
+import { KeyboardArrowDown } from '@mui/icons-material';
 const SentencesButton = () => {
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
@@ -31,9 +32,8 @@ const SentencesButton = () => {
     return (
         <>
             <Button 
-                sx={{color: "white"}} 
-                onClick={() => history.push("/home/sentences")}
-                onMouseEnter={handleClick}
+                onClick={handleClick}
+                endIcon={<KeyboardArrowDown/>}
             >
                 Sentence Practice
             </Button>
@@ -41,7 +41,6 @@ const SentencesButton = () => {
                 anchorEl={anchorEl}
                 open={open}
                 onClose={handleClose}
-                MenuListProps={{ onMouseLeave: handleClose }}
             >
                 <MenuItem onClick={handleViewAll}>
                     <ListItemIcon>
