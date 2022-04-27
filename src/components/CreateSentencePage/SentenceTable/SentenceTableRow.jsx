@@ -2,7 +2,7 @@ import { TableRow, Button } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useSnackbar } from "notistack";
 import { handleDeleteLevelOneSentence } from '../../../helpers/sentence-utils';
-import EditFieldForm from './SentenceTableRow/EditFieldForm';
+import EditSentenceFieldForm from './SentenceTableRow/EditSentenceFieldForm';
 import BasicAlertConfirm from '../../reusable/BasicAlertConfirm';
 import s from './SentenceTableRow.module.scss';
 import { useAuth } from '../../../contexts/AuthContext';
@@ -100,7 +100,7 @@ const SentenceTableRow = ({ row, collectionName, wordTypes }) => {
                             handleConfirm={deleteSentence}
                             loading={deleteLoading}
                         />
-                        <EditFieldForm
+                        <EditSentenceFieldForm
                             docId={row.id}
                             field="arabic"
                             fieldVal={row.sentence.arabic}
@@ -110,7 +110,7 @@ const SentenceTableRow = ({ row, collectionName, wordTypes }) => {
                             collectionName={collectionName}
                             key={235}
                         />
-                        <EditFieldForm
+                        <EditSentenceFieldForm
                             docId={row.id}
                             field="english"
                             fieldVal={row.sentence.english}
@@ -122,7 +122,7 @@ const SentenceTableRow = ({ row, collectionName, wordTypes }) => {
                         />
                         {
                             wordTypes.map((type, idx) => (
-                                <EditFieldForm
+                                <EditSentenceFieldForm
                                     key={idx*20}
                                     docId={row.id}
                                     field={type}

@@ -1,8 +1,7 @@
 import { Button, Chip, Modal, Paper } from '@mui/material';
 import React, { useState } from 'react';
-import WordsDataTable from './WordsDataTable';
-
-const WordPicker = ({ rows, wordType, initState, setState, state }) => {
+import WordsDataTable from '../../reusable/WordsDataTable'
+const SentenceWordPicker = ({ rows, wordType, initState, setState, state }) => {
     const style = {
         position: 'absolute',
         top: '50%',
@@ -20,8 +19,9 @@ const WordPicker = ({ rows, wordType, initState, setState, state }) => {
         setState(initState);
         setOpen(true);
     }
-    return (
 
+    
+    return (
         <div dir="rtl">
             <Button onClick={() => setOpen(true)}>{`Choose ${wordType}`}</Button>
             {
@@ -49,4 +49,4 @@ const WordPicker = ({ rows, wordType, initState, setState, state }) => {
     );
 };
 
-export default WordPicker;
+export default SentenceWordPicker;

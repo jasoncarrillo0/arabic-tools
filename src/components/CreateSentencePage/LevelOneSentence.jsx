@@ -5,10 +5,10 @@ import s from './Sentence.module.scss';
 import { useSnackbar } from 'notistack'
 import RtlProvider from '../reusable/RtlProvider';
 import { handleAddLevelOneSentence } from '../../helpers/sentence-utils';
-import WordPicker from '../reusable/WordPicker';
 import { LoadingButton } from '@mui/lab';
 import { SENTENCE_COLLECTION_NAMES } from '../../helpers/constants';
 import SentenceTable from './SentenceTable';
+import SentenceWordPicker from './SentenceTable/SentenceWordPicker';
 
 const SENTENCE_INIT_STATE = {
     arabic: "",
@@ -94,7 +94,7 @@ const LevelOneSentence = ({ verbs, nouns, levelOneSentences }) => {
                     <span className={s.title}>Verb + Noun <span className={s.example}>(Example: "he eats meat")</span> </span>
                 </div>
                 <div className={s.dropdownWrap}>
-                    <WordPicker 
+                    <SentenceWordPicker 
                         rows={verbs} 
                         wordType="verb" 
                         initState={VERB_INIT_STATE}
@@ -102,7 +102,7 @@ const LevelOneSentence = ({ verbs, nouns, levelOneSentences }) => {
                         state={verbObj}
                     />
 
-                    <WordPicker
+                    <SentenceWordPicker
                         rows={nouns}
                         wordType="noun"
                         initState={NOUN_INIT_STATE}

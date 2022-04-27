@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useSnackbar } from 'notistack'
 import { Modal, Paper, TextField } from '@mui/material';
-import WordPicker from '../../../reusable/WordPicker';
 import { useSelector } from 'react-redux';
 import { LoadingButton } from '@mui/lab';
 import to from 'await-to-js';
 import { applySentenceUpdate, replaceSentence } from '../../../../helpers/sentence-utils'
 import { SENTENCE_TRANSLATIONS, ERR_SNACKBAR, SENTENCE_OBJ_FIELDS } from '../../../../helpers/constants';
+import SentenceWordPicker from '../SentenceWordPicker';
 
 const style = {
     position: 'absolute',
@@ -49,7 +49,7 @@ const style = {
     }
 */
 
-const EditFieldForm = ({ 
+const EditSentenceFieldForm = ({ 
     docId, 
     field, 
     fieldVal, 
@@ -123,7 +123,7 @@ const EditFieldForm = ({
                             sx={{margin: '0.5rem 0'}}
                         />
                     ) : (
-                        <WordPicker
+                        <SentenceWordPicker
                             rows={wordRows}
                             wordType={field}
                             state={newWordObj}
@@ -143,4 +143,4 @@ const EditFieldForm = ({
     );
 };
 
-export default EditFieldForm;
+export default EditSentenceFieldForm;
