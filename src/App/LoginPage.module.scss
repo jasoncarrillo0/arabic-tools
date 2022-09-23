@@ -1,6 +1,6 @@
 .wrap {
     width: 350px;
-    margin: 0 auto;
+    margin: 3rem auto;
     
     .innerWrap {
         padding: 1rem;
@@ -22,6 +22,7 @@
 
             a {
                 color: blue;
+                text-decoration: none;
             }
         }
     }
