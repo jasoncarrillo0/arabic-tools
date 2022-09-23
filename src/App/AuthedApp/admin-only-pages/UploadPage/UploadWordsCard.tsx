@@ -79,7 +79,7 @@ const UploadWordsCard = ({ expectedCols, wordType, wordsInState }: Props) => {
                         <CheckCircleIcon sx={{fontSize: '40px', color: "#28dd31"}}/>
                     ) : (
                         <IconButton size="large" onClick={() => setOpen(true)}>
-                            <FileUploadIcon fontSize="large"/>
+                            <FileUploadIcon sx={{fontSize: "50px", fill: "#62ce67"}}/>
                         </IconButton>
                     )
                 }

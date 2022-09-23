@@ -1,6 +1,7 @@
 .wrap {
     display: flex;
-    flex-direction: wrap;
     flex-wrap: wrap;
-    gap: 2rem;
+    justify-content: space-between;
+    align-items: center;
+    gap: 4rem;
 }
