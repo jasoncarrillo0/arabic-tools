@@ -1,0 +1,17 @@
+.row {
+    cursor: pointer;
+}
+
+.disabled {
+    cursor: inherit;
+    background-color: #17a10021;
+    font-style: italic;
+    &:hover {
+        background-color: #17a10021 !important;
+    }
+}
+
+.arabic {
+    font-size: 20px;
+    font-weight: bold;
+}

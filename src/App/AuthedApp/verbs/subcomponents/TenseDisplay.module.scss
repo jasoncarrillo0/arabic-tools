@@ -1,0 +1,31 @@
+@import '../../../../sass-vars.scss';
+
+.wrap {
+    width: 300px;
+    height: $verb-util-height;
+    padding: 2rem;
+    border-radius: 5px;
+    background-color: beige;
+
+    .choicesWrap {
+        
+
+        .top {
+            display: flex;
+            flex-direction: row;
+            grid-gap: 1rem;
+            align-items: center;
+            
+            button {
+                align-self:initial;
+            }
+        }
+        .tense {
+            padding: 1rem;
+            border: 1px solid grey;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+    }
+    
+}

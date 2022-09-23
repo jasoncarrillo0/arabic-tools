@@ -1,0 +1,27 @@
+@import '../sass-vars.scss';
+
+.toolbarWrap {
+    flex-direction: row !important;
+    align-items: center;
+    position: relative;
+    justify-content: space-between;
+    padding: 0 $app-spacing-non-mobile;
+    height: 65px;
+
+    h2 {
+        cursor: pointer;
+    }
+    .toolbar {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        width: 57%;
+    }
+
+    button {
+        color: white;
+        &:hover {
+            background-color: #1e4bb2;
+        }
+    }
+}

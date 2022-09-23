@@ -1,0 +1,28 @@
+.wrap {
+    width: 350px;
+    margin: 0 auto;
+    
+    .innerWrap {
+        padding: 1rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+
+        section {
+            margin: 1rem 0;
+        }
+
+        .btmMsg {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+
+            a {
+                color: blue;
+            }
+        }
+    }
+}
