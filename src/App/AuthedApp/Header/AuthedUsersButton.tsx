@@ -79,7 +79,7 @@ const AuthedUsersButton = () => {
                     <ListItemIcon>
                         <CreateIcon/>
                     </ListItemIcon>
-                    <ListItemText>Create Sentences</ListItemText>
+                    <ListItemText>Add/Edit Sentences</ListItemText>
                     
                     {innerOpen ? <ExpandLess /> : <ExpandMore />}
                 </MenuItem>
