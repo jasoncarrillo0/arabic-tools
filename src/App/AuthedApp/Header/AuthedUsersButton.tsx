@@ -36,13 +36,13 @@ const AuthedUsersButton = () => {
 
     function handleToEditDict() {
         handleClose();
-        BROWSER_HISTORY.push('/home/editdictionary')
+        BROWSER_HISTORY.push('/home/dictionary/edit')
     }
 
     function toSentence(level: "levelone" | "leveltwo") {
         return () => {
             handleClose();
-            BROWSER_HISTORY.push(`/home/create/${level}`)
+            BROWSER_HISTORY.push(`/home/sentences/edit/${level}`)
         }
     }
 

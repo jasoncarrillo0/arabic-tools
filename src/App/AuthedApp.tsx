@@ -12,7 +12,6 @@ import CreateLevelOneSentence from "./AuthedApp/admin-only-pages/CreateSentenceP
 import UploadPage from "./AuthedApp/admin-only-pages/UploadPage";
 import DictionaryPage from "./AuthedApp/pages/DictionaryPage";
 import HomePage from "./AuthedApp/pages/HomePage";
-import SentencePage from "./AuthedApp/pages/SentencePage";
 import ProfilePage from "./AuthedApp/admin-only-pages/ProfilePage";
 import VerbsArea from "./AuthedApp/verbs/VerbsArea";
 import SentenceArea from "./AuthedApp/pages/SentencePage/SentenceArea";
@@ -58,10 +57,10 @@ const AuthedApp = () => {
                     <Route path="/home" element={<HomePage/>}/>
                     <Route path="/home/dictionary" element={<DictionaryPage/>}/>
                     <Route path="/home/verbpractice" element={<VerbsArea/>}/>
-                    <Route path="/home/sentences/all" element={<SentenceArea/>}/>
+                    <Route path="/home/sentences" element={<SentenceArea/>}/>
                     <Route path="/home/sentences/practice" element={<div>Nothing here yet...</div>}/>
                     <Route 
-                        path="/home/editdictionary" 
+                        path="/home/dictionary/edit" 
                         element={ 
                             isAdminUser ? (
                                 <DictionaryPage/>
@@ -85,10 +84,21 @@ const AuthedApp = () => {
 
 
                     <Route 
-                        path="/home/create/levelone" 
+                        path="/home/sentences/edit/levelone" 
                         element={ 
                             isAdminUser ? (
                                 <CreateLevelOneSentence/>
+                            ) : (
+                                <Navigate to="/login" replace/>
+                            )
+                        }
+                    />
+
+                    <Route 
+                        path="/home/sentences/edit/leveltwo" 
+                        element={ 
+                            isAdminUser ? (
+                                <div>Level Two coming soon...</div>
                             ) : (
                                 <Navigate to="/login" replace/>
                             )

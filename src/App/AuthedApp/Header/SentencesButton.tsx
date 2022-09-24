@@ -17,7 +17,7 @@ const SentencesButton = () => {
     };
 
     function handleViewAll() {
-        BROWSER_HISTORY.push('/home/sentences/all')
+        BROWSER_HISTORY.push('/home/sentences')
         handleClose();
     }
 
