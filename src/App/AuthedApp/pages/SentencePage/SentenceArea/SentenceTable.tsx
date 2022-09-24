@@ -21,18 +21,21 @@ type Props = {
 
 const SentencesArea = ({ sentences, level, collectionName }: Props) => {
     const { isAdminUser } = useAuth();
+    const containsUnresolved = sentences.some(sentence => sentence.isUnresolved === true);
+
     return (
         <TableContainer component={Paper}>
             <SentenceTableLegend/>
             <Table sx={{ minWidth: 650 }} aria-label="simple table">
                 <TableHead>
                     <TableRow sx={{background: "#f2f2f2"}}>
-                        <TableCell>Sentence</TableCell>
-                        <TableCell>Translation</TableCell>
+                        <TableCell width={"400px"}>Sentence</TableCell>
+                        <TableCell width={"400px"}>Translation</TableCell>
                         {
                             level.wordTypesUsed.sort((a,b) => a.localeCompare(b)).map((type, idx) => <TableCell key={idx}>{type}</TableCell>)
                         }
                         { isAdminUser && (<TableCell></TableCell>)}
+                        { containsUnresolved && (<TableCell size="small"></TableCell>)}
                     </TableRow>
                 </TableHead>
                 <TableBody>

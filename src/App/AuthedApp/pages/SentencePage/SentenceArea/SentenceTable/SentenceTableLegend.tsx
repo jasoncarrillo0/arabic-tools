@@ -2,10 +2,7 @@ import { Box, List, ListItem, ListItemText, ListItemIcon, Paper } from '@mui/mat
 import s from './SentenceTableLegend.module.scss';
 import ListSubheader from '@mui/material/ListSubheader';
 import { UNRESOLVED_TABLE_ROW_COLOR } from './SentenceTableRow';
-
-type Props = {
-
-}
+import { useAuth } from 'src/contexts/AuthContext';
 
 const shapeStyles = { 
     width: 20, 
@@ -20,8 +17,9 @@ const NormalSentence = () => (
     <Box component="span" sx={{ ...shapeStyles  }} />
   );
 
-const SentenceTableLegend = ({}: Props) => {
+const SentenceTableLegend = () => {
 
+    const { isAdminUser } = useAuth()
     return (
         <Paper className={s.wrap}>
             <List dense subheader={<ListSubheader>Legend</ListSubheader>}>
@@ -36,7 +34,15 @@ const SentenceTableLegend = ({}: Props) => {
                     <ListItemIcon>
                         <UnresolvedSentence/>
                     </ListItemIcon>
-                    <ListItemText>Words in sentence changed by admin user - don't use</ListItemText>
+                    <ListItemText>
+                    {
+                        isAdminUser ? (
+                            "Contains out of sync words - update arabic/english words and mark resolved"
+                        ) : (
+                            "Words in sentence changed by admin user - don't use"
+                        )
+                    }    
+                    </ListItemText>
                     
                 </ListItem>
                 

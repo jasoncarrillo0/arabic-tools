@@ -11,6 +11,7 @@ import { SentenceCollectionNames, Sentence } from 'src/redux/sentence/interfaces
 import { deleteSentenceInDb } from 'src/db-ops/sentences/general-sentence-ops';
 import { ERR_SNACKBAR } from 'src/helpers/constants';
 import { SentenceFormState } from '../SentenceTable';
+import ResolveSentenceBtn from './SentenceTableRow/ResolveSentenceBtn';
 
 
 type Props = {
@@ -18,7 +19,7 @@ type Props = {
     collectionName: SentenceCollectionNames
 }
 
-export const UNRESOLVED_TABLE_ROW_COLOR = "#ffadad";
+export const UNRESOLVED_TABLE_ROW_COLOR = "#ffd2d2";
 
 const SentenceTableRow = ({ row, collectionName }: Props) => {
     
@@ -102,6 +103,7 @@ const SentenceTableRow = ({ row, collectionName }: Props) => {
             {
                 isEditing && (
                     <>
+                        
                         <SentenceCell 
                             onClick={() => setDeleteDialogOpen(true)} 
                             isEditing={true} 
@@ -113,6 +115,17 @@ const SentenceTableRow = ({ row, collectionName }: Props) => {
                             >Delete Sentence</Button>
                         </SentenceCell>
                         
+                        {
+                            row.isUnresolved && (
+                                <SentenceCell isEditing={true} onClick={() => null}>
+                                    <ResolveSentenceBtn 
+                                        sentence={row}
+                                        collection={collectionName}
+                                    />
+                                </SentenceCell>
+                            )
+                        }
+
                         <BasicAlertConfirm
                             open={deleteDialogOpen}
                             title="Are you sure you want to delete this sentence?"

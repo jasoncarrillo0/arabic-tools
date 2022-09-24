@@ -138,14 +138,18 @@ export async function updateAllSentencesIncluding(updatedWordDoc: Word, wordType
     }    
 }
 
-function getUpdatedSentence(sentence: Sentence, update: "english" | "arabic", updatedWordDoc: Word) {
-    const updatedWord   = updatedWordDoc[update];
-    const sentenceWords = sentence[update].split(' ');
-    const updatedSentenceWords = sentenceWords.map(word => word === updatedWord ? updatedWord : word);
-    return updatedSentenceWords.join(' ');
+
+
+export async function markSentenceResolved(sentence: Sentence, collection: SentenceTypes) {
+    const updatedSentence: Sentence = {...sentence, isUnresolved: false };
+    const sentenceRef = doc(db, collection, sentence.id);
+    await setDoc(sentenceRef, updatedSentence, { merge: true});
+    const updatedDoc = await getDoc(sentenceRef);      
+    const finalDoc   = {id: updatedDoc.id, ...updatedDoc.data() as SentenceDocument };
+    dispatch(
+        replaceSentenceInState(finalDoc, collection)
+    )
 }
-
-
 
 
 
