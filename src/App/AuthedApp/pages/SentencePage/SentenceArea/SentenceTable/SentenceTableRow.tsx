@@ -27,7 +27,7 @@ const SentenceTableRow = ({ row, collectionName }: Props) => {
     const fontStyle                         = {fontSize: '20px'};
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
     const location = useLocation();
-    const isEditing = isAdminUser && location.pathname.includes("/home/create/");
+    const isEditing = isAdminUser && location.pathname.includes("/home/sentences/edit/");
     const INIT_EDIT_FORM_OPEN_STATE: SentenceFormState = Object.assign(
         {}, 
         {
