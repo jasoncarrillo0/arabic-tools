@@ -1,4 +1,4 @@
-@import '../sass-vars.scss';
+@import '../../sass-vars.scss';
 
 .toolbarWrap {
     flex-direction: row !important;
@@ -15,7 +15,7 @@
         display: flex;
         flex-direction: row;
         justify-content: space-between;
-        width: 57%;
+        width: 40%;
     }
 
     button {
