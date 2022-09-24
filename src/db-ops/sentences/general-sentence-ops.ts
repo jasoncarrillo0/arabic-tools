@@ -122,19 +122,7 @@ export async function updateAllSentencesIncluding(updatedWordDoc: Word, wordType
         // update sentences
         for (const { sentence, collection } of allSentences) {
             
-            const updatedSentence = { ...sentence };
-
-            // get updated array of words, replacing only the field value
-            updatedSentence.words = sentence.words.map(word => word.id === updatedWordDoc.id ? (
-                {
-                    ...word,
-                    [update]: updatedWordDoc[update]
-                }
-            ) : (
-                word
-            ));
-            updatedSentence[update] = getUpdatedSentence(updatedSentence, update, updatedWordDoc);
-
+            const updatedSentence: Sentence = { ...sentence, isUnresolved: true };
 
             // update sentence in db
             const sentenceRef = doc(db, collection, sentence.id);

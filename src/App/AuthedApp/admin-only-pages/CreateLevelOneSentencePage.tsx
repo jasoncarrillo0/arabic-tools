@@ -38,7 +38,8 @@ const SENTENCE_INIT_STATE: InitialSentenceOne = {
     english: "",
     nounsLimit: 1,
     verbsLimit: 1,
-    words: [INITIAL_VERB, INITIAL_NOUN]
+    words: [INITIAL_VERB, INITIAL_NOUN],
+    isUnresolved: false
 }
 
 const selectLevelOneSentenceState = (rootState: RootState) => {
