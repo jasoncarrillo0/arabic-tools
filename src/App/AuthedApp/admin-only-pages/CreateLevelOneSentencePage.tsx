@@ -4,13 +4,13 @@ import { useSelector } from 'react-redux';
 import s from './CreateSentence.module.scss';
 import { useSnackbar } from 'notistack'
 import { LoadingButton } from '@mui/lab';
-import SentenceTable from '../../pages/SentencePage/SentenceArea/SentenceTable';
+import SentenceTable from '../pages/SentencePage/SentenceArea/SentenceTable';
 import { RootState } from 'src/redux/rootReducer';
 import { handleAddLevelOneSentence } from 'src/db-ops/sentences/level-one';
 import RtlProvider from 'src/App/reusable/RtlProvider';
 import { ERR_SNACKBAR, SENTENCE_COLLECTION_INFO, WARN_SNACKBAR } from 'src/helpers/constants';
 import { LevelOneSentence, SentenceWord } from 'src/redux/sentence/interfaces';
-import SentenceWordPicker from '../../pages/SentencePage/SentenceArea/SentenceTable/SentenceWordPicker';
+import SentenceWordPicker from '../pages/SentencePage/SentenceArea/SentenceTable/SentenceWordPicker';
 
 
 

@@ -1,10 +1,10 @@
 import { AppBar, Button, Toolbar } from "@mui/material";
 import { Box } from "@mui/system";
 import { BROWSER_HISTORY } from "src/helpers/constants";
-import { useAuth } from "../contexts/AuthContext";
-import AuthedUsersButton from "./AuthedApp/Header/AuthedUsersButton";
-import ProfileButton from "./AuthedApp/Header/ProfileButton";
-import SentencesButton from "./AuthedApp/Header/SentencesButton";
+import { useAuth } from "../../contexts/AuthContext";
+import AuthedUsersButton from "./Header/AuthedUsersButton";
+import ProfileButton from "./Header/ProfileButton";
+import SentencesButton from "./Header/SentencesButton";
 import s from "./Header.module.scss";
 
 const Header = () => {

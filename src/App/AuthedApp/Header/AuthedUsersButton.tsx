@@ -5,9 +5,7 @@ import UploadIcon from '@mui/icons-material/Upload';
 import CreateIcon from '@mui/icons-material/Create';
 import ChangeCircleIcon from '@mui/icons-material/ChangeCircle'
 import { BROWSER_HISTORY } from 'src/helpers/constants';
-import { ExpandLess, ExpandMore, LooksOne, LooksTwo, StarBorder } from '@mui/icons-material';
-import LooksOneIcon from '@mui/icons-material/LooksOne';
-import LooksTwoIcon from '@mui/icons-material/LooksTwo';
+import { ExpandLess, ExpandMore, LooksOne, LooksTwo } from '@mui/icons-material';
 import s from './AuthedUsersButton.module.scss';
 
 const AuthedUsersButton = () => {

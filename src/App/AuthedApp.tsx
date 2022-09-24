@@ -8,14 +8,14 @@ import { ERR_SNACKBAR } from "src/helpers/constants";
 import { getAllSentences, getDictionary } from "src/helpers/utils";
 import { setDictionary } from "src/redux/dictionary/dictActionCreators";
 import { setAllSentences } from "src/redux/sentence/sentenceActionCreators";
-import CreateLevelOneSentence from "./AuthedApp/admin-only-pages/CreateSentencePage/CreateLevelOneSentence";
+import CreateLevelOneSentencePage from "./AuthedApp/admin-only-pages/CreateLevelOneSentencePage";
 import UploadPage from "./AuthedApp/admin-only-pages/UploadPage";
 import DictionaryPage from "./AuthedApp/pages/DictionaryPage";
 import HomePage from "./AuthedApp/pages/HomePage";
 import ProfilePage from "./AuthedApp/admin-only-pages/ProfilePage";
 import VerbsArea from "./AuthedApp/verbs/VerbsArea";
 import SentenceArea from "./AuthedApp/pages/SentencePage/SentenceArea";
-import Header from "./Header";
+import Header from "./AuthedApp/Header";
 
 
 const AuthedApp = () => {
@@ -87,7 +87,7 @@ const AuthedApp = () => {
                         path="/home/sentences/edit/levelone" 
                         element={ 
                             isAdminUser ? (
-                                <CreateLevelOneSentence/>
+                                <CreateLevelOneSentencePage/>
                             ) : (
                                 <Navigate to="/login" replace/>
                             )
