@@ -46,7 +46,7 @@ export function getColsFromRows(rows: Word[], defaultWidth: number = 130) {
     return colArr
     .map(col => ({
         field: col,
-        headerName: col,
+        headerName: camelCase2Title(col),
         width: col === "arabic" && defaultWidth === 130 ? 90 : defaultWidth
     }))
     .sort((a,b) => a.field.localeCompare(b.field))
@@ -102,4 +102,11 @@ export async function getAllSentences(): Promise<SentenceState> {
         levelTwoSentences
     };
     return sentences;
+}
+
+
+export function camelCase2Title(camelCase: string){
+    return camelCase.replace(/([A-Z])/g, (match) => ` ${match}`)
+            .replace(/^./, (match) => match.toUpperCase())
+            .trim()
 }

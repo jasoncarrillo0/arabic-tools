@@ -1,5 +1,6 @@
 import { TableCell, Tooltip } from '@mui/material';
 import React, { ReactNode } from 'react';
+import s from './SentenceCell.module.scss';
 
 type Props = {
     children: ReactNode | ReactNode[]
@@ -27,8 +28,8 @@ const SentenceCell = ({
         <>
         {
             isEditing && typeof(children) === "string" ? (
-                <Tooltip title="edit" arrow>
-                    <TableCell onClick={onClick} sx={style} component="th" scope="row">
+                <Tooltip placement="bottom-end" title="edit" arrow>
+                    <TableCell classes={{root: s.cell}} onClick={onClick} sx={style} component="th" scope="row">
                     {children}
                     </TableCell>
                 </Tooltip>
