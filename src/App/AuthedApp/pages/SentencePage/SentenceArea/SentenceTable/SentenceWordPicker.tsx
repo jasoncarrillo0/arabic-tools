@@ -64,6 +64,7 @@ const SentenceWordPicker = ({
                         setState={setState}
                         handleClose={() => setOpen(false)}
                         disabledArabic={state.arabic}
+                        height="90%"
                     />
                 </Paper>
             </Modal>
