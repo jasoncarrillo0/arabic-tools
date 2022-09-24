@@ -37,6 +37,7 @@ const SentenceWordPicker = ({
 } : Props) => {
     
     const [open, setOpen] = useState(false);
+    const sortedRows = rows.map(row => row).sort((a,b) => a.english.localeCompare(b.english));
     function handleDelete() {
         if (initState.wordType === state.wordType) return;
         setState(initState);
@@ -59,7 +60,7 @@ const SentenceWordPicker = ({
             <Modal open={open} onClose={() => setOpen(false)}>
                 <Paper sx={style}>
                     <WordsDataTable 
-                        rows={rows.sort((a,b) => a.english.localeCompare(b.english))} 
+                        rows={sortedRows} 
                         title={`Select ${wordType}`}
                         setState={setState}
                         handleClose={() => setOpen(false)}
