@@ -18,6 +18,7 @@ type Props = {
     collectionName: SentenceCollectionNames
 }
 
+export const UNRESOLVED_TABLE_ROW_COLOR = "#ffadad";
 
 const SentenceTableRow = ({ row, collectionName }: Props) => {
     
@@ -71,7 +72,7 @@ const SentenceTableRow = ({ row, collectionName }: Props) => {
                 "&:last-child td, &:last-child th": {
                     border: 0,
                 },
-                backgroundColor: row.isUnresolved ? "#ffadad" : ""
+                backgroundColor: row.isUnresolved ? UNRESOLVED_TABLE_ROW_COLOR : ""
             }}
         >
             <SentenceCell
