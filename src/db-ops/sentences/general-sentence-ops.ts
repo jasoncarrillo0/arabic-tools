@@ -95,9 +95,7 @@ type SentenceUpdateInfo = {
     sentence: Sentence
     collection: SentenceTypes
 }
-export async function updateAllSentencesIncluding(updatedWordDoc: Word, wordType: WordTypes, shouldUpdateSentence: boolean, update: "english" | "arabic") {
-
-    if (shouldUpdateSentence === false) return
+export async function updateAllSentencesIncluding(updatedWordDoc: Word, wordType: WordTypes) {
 
     try {
         const allSentences: SentenceUpdateInfo[]    = [];
@@ -133,6 +131,8 @@ export async function updateAllSentencesIncluding(updatedWordDoc: Word, wordType
                 replaceSentenceInState(finalDoc, collection)
             )
         }
+
+        return allSentences.length;
     } catch (e: any) {
         throw new Error(e.message)
     }    
