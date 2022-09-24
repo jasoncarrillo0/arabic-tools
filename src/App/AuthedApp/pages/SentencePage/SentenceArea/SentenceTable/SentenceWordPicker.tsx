@@ -59,7 +59,7 @@ const SentenceWordPicker = ({
             <Modal open={open} onClose={() => setOpen(false)}>
                 <Paper sx={style}>
                     <WordsDataTable 
-                        rows={rows} 
+                        rows={rows.sort((a,b) => a.english.localeCompare(b.english))} 
                         title={`Select ${wordType}`}
                         setState={setState}
                         handleClose={() => setOpen(false)}
