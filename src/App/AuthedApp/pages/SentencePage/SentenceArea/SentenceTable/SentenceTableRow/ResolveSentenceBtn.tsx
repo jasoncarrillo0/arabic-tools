@@ -29,7 +29,14 @@ const ResolveSentenceBtn = ({ sentence, collection }: Props) => {
 
     return (
         <>
-            <LoadingButton variant="outlined" onClick={() => setOpen(true)} startIcon={<BookmarkRemoveIcon/>}>
+            <LoadingButton 
+                fullWidth 
+                size="small" 
+                variant="outlined" 
+                onClick={() => setOpen(true)} 
+                startIcon={<BookmarkRemoveIcon/>}
+                sx={{marginTop: '0.5rem'}}
+            >
                 Mark Resolved
             </LoadingButton>
             <BasicAlertConfirm

@@ -1,4 +1,5 @@
 import { Paper, Table, TableContainer, TableHead, TableBody, TableRow, TableCell } from "@mui/material";
+import { useLocation } from "react-router";
 import { useAuth } from "src/contexts/AuthContext";
 import { WordTypes } from "src/redux/dictionary/interfaces";
 import { Sentence, SentenceCollectionNames, SentenceLevel } from "src/redux/sentence/interfaces";
@@ -21,8 +22,7 @@ type Props = {
 
 const SentencesArea = ({ sentences, level, collectionName }: Props) => {
     const { isAdminUser } = useAuth();
-    const containsUnresolved = sentences.some(sentence => sentence.isUnresolved === true);
-
+    const pathname        = useLocation().pathname;
     return (
         <TableContainer component={Paper}>
             <SentenceTableLegend/>
@@ -34,8 +34,7 @@ const SentencesArea = ({ sentences, level, collectionName }: Props) => {
                         {
                             level.wordTypesUsed.sort((a,b) => a.localeCompare(b)).map((type, idx) => <TableCell key={idx}>{type}</TableCell>)
                         }
-                        { isAdminUser && (<TableCell></TableCell>)}
-                        { containsUnresolved && (<TableCell size="small"></TableCell>)}
+                        { isAdminUser && pathname.includes("/home/sentences/edit") && (<TableCell></TableCell>)}
                     </TableRow>
                 </TableHead>
                 <TableBody>

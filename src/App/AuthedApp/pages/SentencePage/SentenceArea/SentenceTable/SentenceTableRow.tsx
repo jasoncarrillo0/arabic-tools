@@ -19,7 +19,7 @@ type Props = {
     collectionName: SentenceCollectionNames
 }
 
-export const UNRESOLVED_TABLE_ROW_COLOR = "#ffd2d2";
+export const UNRESOLVED_TABLE_ROW_COLOR = "#ffdbdb";
 
 const SentenceTableRow = ({ row, collectionName }: Props) => {
     
@@ -27,6 +27,7 @@ const SentenceTableRow = ({ row, collectionName }: Props) => {
     const [deleteLoading, setDeleteLoading] = useState(false);
     const { enqueueSnackbar }               = useSnackbar();
     const fontStyle                         = {fontSize: '20px'};
+    const wordStyle                         = {width: '90px'}
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
     const location = useLocation();
     const isEditing = isAdminUser && location.pathname.includes("/home/sentences/edit/");
@@ -94,7 +95,7 @@ const SentenceTableRow = ({ row, collectionName }: Props) => {
                 row.words.sort((a,b) => a.wordType.localeCompare(b.wordType)).map((wordObj, idx) => (
                     <SentenceCell
                         key={idx}
-                        style={fontStyle}
+                        style={{ ...fontStyle, ...wordStyle}}
                         onClick={() => setDynamicFieldOpen(wordObj.wordType, true)}
                         isEditing={isEditing}
                     >{wordObj.arabic}</SentenceCell>
@@ -105,26 +106,28 @@ const SentenceTableRow = ({ row, collectionName }: Props) => {
                     <>
                         
                         <SentenceCell 
-                            onClick={() => setDeleteDialogOpen(true)} 
+                            onClick={() => null} 
                             isEditing={true} 
                             style={{width: "195px"}}
                         >
                             <Button 
+                                size="small"
                                 variant="outlined" 
-                                color="error" 
-                            >Delete Sentence</Button>
-                        </SentenceCell>
-                        
-                        {
-                            row.isUnresolved && (
-                                <SentenceCell isEditing={true} onClick={() => null}>
+                                color="error"
+                                onClick={() => setDeleteDialogOpen(true)}
+                                fullWidth
+                            >Delete</Button>
+                            {
+                                row.isUnresolved && (
                                     <ResolveSentenceBtn 
                                         sentence={row}
                                         collection={collectionName}
                                     />
-                                </SentenceCell>
-                            )
-                        }
+                                )
+                            }
+                        </SentenceCell>
+                        
+                        
 
                         <BasicAlertConfirm
                             open={deleteDialogOpen}

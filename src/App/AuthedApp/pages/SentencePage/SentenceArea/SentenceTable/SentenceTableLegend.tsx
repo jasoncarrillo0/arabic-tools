@@ -37,9 +37,9 @@ const SentenceTableLegend = () => {
                     <ListItemText>
                     {
                         isAdminUser ? (
-                            "Contains out of sync words - update arabic/english words and mark resolved"
+                            "Contains out of sync words - resolve english and/or arabic sentence."
                         ) : (
-                            "Words in sentence changed by admin user - don't use"
+                            "Contains unresolved changes by an admin user. Don't use."
                         )
                     }    
                     </ListItemText>

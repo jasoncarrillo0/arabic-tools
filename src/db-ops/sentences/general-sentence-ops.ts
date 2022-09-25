@@ -1,4 +1,3 @@
-import to from "await-to-js";
 import { deleteDoc, doc, getDoc, setDoc } from "firebase/firestore";
 import { db } from "src/firebase/firebase";
 import { SENTENCE_COLLECTION_INFO } from "src/helpers/constants";
@@ -119,14 +118,26 @@ export async function updateAllSentencesIncluding(updatedWordDoc: Word, wordType
 
         // update sentences
         for (const { sentence, collection } of allSentences) {
-            
-            const updatedSentence: Sentence = { ...sentence, isUnresolved: true };
+            const wordAsSentenceWord: SentenceWord = { 
+                arabic: updatedWordDoc.arabic,
+                english: updatedWordDoc.english,
+                id: updatedWordDoc.id,
+                wordType: wordType
+            };
+            const newWords = [...sentence.words.filter(word => word.id !== updatedWordDoc.id), wordAsSentenceWord];
+            const updatedSentence: Sentence = { 
+                ...sentence, 
+                isUnresolved: true,
+                words: newWords
+            };
 
             // update sentence in db
             const sentenceRef = doc(db, collection, sentence.id);
             await setDoc(sentenceRef, updatedSentence, { merge: true});
             const updatedDoc = await getDoc(sentenceRef);      
             const finalDoc   = {id: updatedDoc.id, ...updatedDoc.data() as SentenceDocument };
+
+            // update in state
             dispatch(
                 replaceSentenceInState(finalDoc, collection)
             )
