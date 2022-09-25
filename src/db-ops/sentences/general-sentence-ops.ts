@@ -1,4 +1,3 @@
-import to from "await-to-js";
 import { deleteDoc, doc, getDoc, setDoc } from "firebase/firestore";
 import { db } from "src/firebase/firebase";
 import { SENTENCE_COLLECTION_INFO } from "src/helpers/constants";
@@ -95,9 +94,7 @@ type SentenceUpdateInfo = {
     sentence: Sentence
     collection: SentenceTypes
 }
-export async function updateAllSentencesIncluding(updatedWordDoc: Word, wordType: WordTypes, shouldUpdateSentence: boolean, update: "english" | "arabic") {
-
-    if (shouldUpdateSentence === false) return
+export async function updateAllSentencesIncluding(updatedWordDoc: Word, wordType: WordTypes) {
 
     try {
         const allSentences: SentenceUpdateInfo[]    = [];
@@ -121,43 +118,49 @@ export async function updateAllSentencesIncluding(updatedWordDoc: Word, wordType
 
         // update sentences
         for (const { sentence, collection } of allSentences) {
-            
-            const updatedSentence = { ...sentence };
-
-            // get updated array of words, replacing only the field value
-            updatedSentence.words = sentence.words.map(word => word.id === updatedWordDoc.id ? (
-                {
-                    ...word,
-                    [update]: updatedWordDoc[update]
-                }
-            ) : (
-                word
-            ));
-            updatedSentence[update] = getUpdatedSentence(updatedSentence, update, updatedWordDoc);
-
+            const wordAsSentenceWord: SentenceWord = { 
+                arabic: updatedWordDoc.arabic,
+                english: updatedWordDoc.english,
+                id: updatedWordDoc.id,
+                wordType: wordType
+            };
+            const newWords = [...sentence.words.filter(word => word.id !== updatedWordDoc.id), wordAsSentenceWord];
+            const updatedSentence: Sentence = { 
+                ...sentence, 
+                isUnresolved: true,
+                words: newWords
+            };
 
             // update sentence in db
             const sentenceRef = doc(db, collection, sentence.id);
             await setDoc(sentenceRef, updatedSentence, { merge: true});
             const updatedDoc = await getDoc(sentenceRef);      
             const finalDoc   = {id: updatedDoc.id, ...updatedDoc.data() as SentenceDocument };
+
+            // update in state
             dispatch(
                 replaceSentenceInState(finalDoc, collection)
             )
         }
+
+        return allSentences.length;
     } catch (e: any) {
         throw new Error(e.message)
     }    
 }
 
-function getUpdatedSentence(sentence: Sentence, update: "english" | "arabic", updatedWordDoc: Word) {
-    const updatedWord   = updatedWordDoc[update];
-    const sentenceWords = sentence[update].split(' ');
-    const updatedSentenceWords = sentenceWords.map(word => word === updatedWord ? updatedWord : word);
-    return updatedSentenceWords.join(' ');
+
+
+export async function markSentenceResolved(sentence: Sentence, collection: SentenceTypes) {
+    const updatedSentence: Sentence = {...sentence, isUnresolved: false };
+    const sentenceRef = doc(db, collection, sentence.id);
+    await setDoc(sentenceRef, updatedSentence, { merge: true});
+    const updatedDoc = await getDoc(sentenceRef);      
+    const finalDoc   = {id: updatedDoc.id, ...updatedDoc.data() as SentenceDocument };
+    dispatch(
+        replaceSentenceInState(finalDoc, collection)
+    )
 }
-
-
 
 
 

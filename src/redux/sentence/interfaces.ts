@@ -5,6 +5,7 @@ export interface BaseSentence {
     arabic: string
     english: string
     words: SentenceWord[]
+    isUnresolved: boolean
 }
 export interface SentenceWord {
     id: string // maintain a ref for updating timesUsed

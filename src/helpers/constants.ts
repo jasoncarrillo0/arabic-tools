@@ -92,7 +92,8 @@ export const WARN_SNACKBAR: OptionsObject = {
     anchorOrigin: {
         horizontal: "center",
         vertical: "top"
-    }
+    },
+    persist: true
 }
 
 
