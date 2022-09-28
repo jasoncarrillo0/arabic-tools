@@ -33,7 +33,7 @@ const AddWordButton = ({ cols, wordType, addWordInState }: Props) => {
     const [wordState, setWordState] = useState(INIT_STATE);
     const [loading, setLoading]     = useState(false);
     const { enqueueSnackbar }       = useSnackbar();
-
+    const wordTypeSingular          = wordType.slice(0, wordType.length - 1);
     useEffect(() => {
         return () => {
             setOpen(false);
@@ -61,12 +61,13 @@ const AddWordButton = ({ cols, wordType, addWordInState }: Props) => {
     }
 
     return (
-        <TableRow classes={{root: s.wrap}}>
-            <TableCell>
-                <Button variant="contained" color="success" onClick={() => setOpen(true)} endIcon={<AddCircleIcon/>}>Add {wordType}</Button>
+            <>
+                <Button className={s.btn} variant="contained" color="info" onClick={() => setOpen(true)} endIcon={<AddCircleIcon/>}>
+                    Add {wordTypeSingular}
+                </Button>
                 <Modal open={open} onClose={() => setOpen(false)}>
                     <Paper className={s.paperWrap}>
-                        <h2>Add {wordType}</h2>
+                        <h2>Add {wordTypeSingular}</h2>
                         {
                             Object.keys(INIT_STATE).map((col, idx) => (
                                 <section key={idx}>
@@ -84,11 +85,12 @@ const AddWordButton = ({ cols, wordType, addWordInState }: Props) => {
                             onClick={handleCreate} 
                             loading={loading}
                             disabled={!wordState.arabic || !wordState.english}
-                        >Create {wordType}</LoadingButton>
+                        >Create {wordTypeSingular}</LoadingButton>
                     </Paper>
                 </Modal>
-            </TableCell>
-        </TableRow>
+            </>
+                
+
     );
 };
 

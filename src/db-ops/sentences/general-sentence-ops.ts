@@ -55,12 +55,23 @@ export async function applySentenceUpdate(
         if (!foundWord) throw new Error("couldn't match update value word with sentence in redux state.");
         if (foundWord.arabic === updateVal.arabic) throw new Error('Update value is the same as the existing sentence.');
  
-        // decrement existing word's timesUsed count
-        updatedOldWord = await applyWordDocUpdate(foundWord.id, foundWord.wordType, "decrement");
-        if (!updatedOldWord) throw new Error("Word to decrement was undefined on update.");
-        dispatch(
-            replaceWordInState(updatedOldWord.id, updatedOldWord, updateVal.wordType)
-        )
+        
+        /*
+             handle the edge case where an admin user updated a word in the dictionary, 
+             left the corresponding sentence(s) unresolved, 
+             and deleted the word in the dictionary; there may be an orphaned SentenceWord within
+             the sentence
+        */
+        const foundWordExistsInDb = getState().dictionary[foundWord.wordType].some(word => word.id === foundWord.id);
+        if (foundWordExistsInDb) {
+            // decrement existing word's timesUsed count
+            updatedOldWord = await applyWordDocUpdate(foundWord.id, foundWord.wordType, "decrement");
+            if (!updatedOldWord) throw new Error("Word to decrement was undefined on update.");
+            dispatch(
+                replaceWordInState(updatedOldWord.id, updatedOldWord, updateVal.wordType)
+            )
+        }
+       
 
         // increment new word's timesUsed count
         updatedNewWord = await applyWordDocUpdate(updateVal.id, updateVal.wordType, "increment");
