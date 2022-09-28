@@ -9,8 +9,8 @@ import { Word, EditableWordField, WordTypes } from 'src/redux/dictionary/interfa
 import { db } from 'src/firebase/firebase';
 import { ERR_SNACKBAR } from 'src/helpers/constants';
 import { addWordInState } from 'src/redux/dictionary/dictActionCreators';
-import { ReduxAction } from 'src/redux/rootReducer';
-import { connect } from 'react-redux';
+import { ReduxAction, RootState } from 'src/redux/rootReducer';
+import { connect, useSelector } from 'react-redux';
 
 
 type Props = {
@@ -32,7 +32,13 @@ const AddWordButton = ({ cols, wordType, addWordInState }: Props) => {
     const [open, setOpen]           = useState(false);
     const [wordState, setWordState] = useState(INIT_STATE);
     const [loading, setLoading]     = useState(false);
+    const [isDuplicate, setIsDuplicate] = useState(false);
     const { enqueueSnackbar }       = useSnackbar();
+    const allWords                  = useSelector((rootState: RootState) => {
+        const words = rootState.dictionary[wordType];
+        return words;
+    });
+
     const wordTypeSingular          = wordType.slice(0, wordType.length - 1);
     useEffect(() => {
         return () => {
@@ -43,11 +49,26 @@ const AddWordButton = ({ cols, wordType, addWordInState }: Props) => {
     }, [])
 
 
+    useEffect(() => {
+        let isDuplicate = false;
+        if (wordState.arabic && wordState.english) {
+            for (const word of allWords) {
+                if (word.arabic === wordState.arabic && word.english === wordState.english) {
+                    isDuplicate = true;
+                }
+            }
+        }
+        setIsDuplicate(isDuplicate);
+    }, [wordState.arabic, wordState.english])
+
     async function handleCreate() {
         setLoading(true);
         
         try {
             if (!wordState.arabic || !wordState.english) throw new Error("Arabic and English must be filled out.");
+            // check if word exists
+            
+
             const newWord   = {...wordState, timesUsed: 0};
             const coll      = collection(db, wordType);
             const newDocRef = await addDoc(coll, newWord);
@@ -75,6 +96,8 @@ const AddWordButton = ({ cols, wordType, addWordInState }: Props) => {
                                         label={col}
                                         value={wordState[col as EditableWordField]}
                                         onChange={({ target }) => setWordState(prev => ({ ...prev, [col]: target.value}))}
+                                        error={["arabic", "english"].includes(col) ? isDuplicate : false}
+                                        helperText={isDuplicate && "word taken"}
                                         fullWidth
                                     />
                                 </section>
@@ -84,7 +107,7 @@ const AddWordButton = ({ cols, wordType, addWordInState }: Props) => {
                             variant="contained" 
                             onClick={handleCreate} 
                             loading={loading}
-                            disabled={!wordState.arabic || !wordState.english}
+                            disabled={(!wordState.arabic || !wordState.english) || isDuplicate === true}
                         >Create {wordTypeSingular}</LoadingButton>
                     </Paper>
                 </Modal>
@@ -96,5 +119,9 @@ const AddWordButton = ({ cols, wordType, addWordInState }: Props) => {
 
 const mapDispatch = {
     addWordInState: (newWord: Word, wordType: WordTypes) => addWordInState(newWord, wordType)
+}
+const mapStateToProps = (rootState: RootState) => {
+    const {dictionary} = rootState;
+
 }
 export default connect(null, mapDispatch)(AddWordButton);
