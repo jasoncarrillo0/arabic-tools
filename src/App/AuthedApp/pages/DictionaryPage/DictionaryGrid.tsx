@@ -37,7 +37,7 @@ const DictionaryGrid = ({ dictionary }: Props) => {
                     wordTypes.map((wordType, idx) => (
                         <TabPanel 
                             value={wordType} 
-                            key={Number((Math.random() * 1000).toFixed(0))}
+                            key={idx}
                         >
                         {
                             isEditing ? (

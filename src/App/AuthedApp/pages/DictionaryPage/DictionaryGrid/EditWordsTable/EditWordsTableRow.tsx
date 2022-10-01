@@ -44,6 +44,9 @@ const EditWordsTableRow = ({ row, collectionName, deleteWordInState }: Props) =>
         }
     }, []);
 
+    useEffect(() => {
+        setEditingFieldOpen(false);
+    }, [row])
 
 
     async function handleDelete() {
