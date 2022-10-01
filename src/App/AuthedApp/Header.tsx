@@ -14,15 +14,15 @@ type Props = {
 
 const Header = ({ loading } : Props) => {
     const { currUser, isAdminUser } = useAuth();
-
+    const authed = !!currUser && isAdminUser === true;
     return (
         <Box sx={{ flexGrow: 1 }}>
             <AppBar position="static" classes={{ root: s.toolbarWrap }}>
                 <h2 onClick={() => BROWSER_HISTORY.push("/home")}>
                     Arabic Tools
                 </h2>
-                <Toolbar className={s.toolbar}>
-                    {currUser && isAdminUser && <AuthedUsersButton stateLoading={loading} />}
+                <Toolbar className={ authed ? s.adminToolbar : s.toolbar}>
+                    {authed && <AuthedUsersButton stateLoading={loading} />}
                     <LoadingButton
                         onClick={() => BROWSER_HISTORY.push("/home/dictionary")}
                         loading={loading}

@@ -1,6 +1,6 @@
-import { CircularProgress, Collapse, IconButton, List, ListItemButton, ListItemIcon, ListItemText, Menu, MenuItem } from '@mui/material';
-import React, { useState } from 'react';
-import BuildIcon from '@mui/icons-material/Build';
+import { Button, CircularProgress, Collapse, List, ListItemButton, ListItemIcon, ListItemText, Menu, MenuItem } from '@mui/material';
+import { useState } from 'react';
+import BuildCircleIcon from '@mui/icons-material/BuildCircle';
 import UploadIcon from '@mui/icons-material/Upload';
 import CreateIcon from '@mui/icons-material/Create';
 import ChangeCircleIcon from '@mui/icons-material/ChangeCircle'
@@ -49,15 +49,20 @@ const AuthedUsersButton = ({ stateLoading } : Props) => {
 
     return (
         <div>
-            <IconButton
-                id="basic-button"
-                aria-controls={open ? "basic-menu" : undefined}
-                aria-haspopup="true"
-                aria-expanded={open ? "true" : undefined}
+            <Button
                 onClick={handleClick}
+                endIcon={<BuildCircleIcon />}
+                variant="contained"
+                disableElevation
+                sx={{
+                    backgroundColor: "#0ebdbd",
+                    "&:hover": {
+                        backgroundColor: "#12a98e !important"
+                    }
+                }}
             >
-                <BuildIcon sx={{color: "#62ce67"}}/>
-            </IconButton>
+                Admin Actions
+            </Button>
             <Menu
                 anchorEl={anchorEl}
                 open={open}

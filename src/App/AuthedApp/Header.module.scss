@@ -11,11 +11,19 @@
     h2 {
         cursor: pointer;
     }
+
     .toolbar {
         display: flex;
         flex-direction: row;
         justify-content: space-between;
         width: 40%;
+    }
+
+    .adminToolbar {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        width: 50%;
     }
 
     button {
@@ -25,3 +33,5 @@
         }
     }
 }
+
+
