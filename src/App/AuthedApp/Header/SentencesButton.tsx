@@ -1,10 +1,14 @@
-import { Button, ListItemIcon, ListItemText, Menu, MenuItem } from '@mui/material';
+import { Button, CircularProgress, ListItemIcon, ListItemText, Menu, MenuItem } from '@mui/material';
 import React, { useState } from 'react';
 import ListIcon from '@mui/icons-material/List';
 import PsychologyIcon from '@mui/icons-material/Psychology';
 import { KeyboardArrowDown } from '@mui/icons-material';
 import { BROWSER_HISTORY } from 'src/helpers/constants';
-const SentencesButton = () => {
+
+type Props = {
+    stateLoading: boolean
+}
+const SentencesButton = ({ stateLoading } : Props) => {
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
 
@@ -42,15 +46,27 @@ const SentencesButton = () => {
                 onClose={handleClose}
             >
                 <MenuItem onClick={handleViewAll}>
-                    <ListItemIcon>
-                        <ListIcon/>
-                    </ListItemIcon>
+                    {
+                        stateLoading ? (
+                            <CircularProgress size="20px" sx={{marginRight: '16px'}} color="primary"/>
+                        ) : (
+                            <ListItemIcon>
+                                <ListIcon/>
+                            </ListItemIcon>
+                        )
+                    }
                     <ListItemText>View All Sentences</ListItemText>
                 </MenuItem>
                 <MenuItem onClick={handlePractice}>
-                    <ListItemIcon>
-                        <PsychologyIcon/>
-                    </ListItemIcon>
+                    {
+                        stateLoading ? (
+                            <CircularProgress size="20px" sx={{marginRight: '16px'}} color="primary"/>
+                        ) : (
+                            <ListItemIcon>
+                                <PsychologyIcon/>
+                            </ListItemIcon>
+                        )
+                    }
                     <ListItemText>Practice</ListItemText>
                 </MenuItem>
             </Menu>

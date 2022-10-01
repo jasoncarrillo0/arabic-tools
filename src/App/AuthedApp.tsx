@@ -51,7 +51,7 @@ const AuthedApp = () => {
     }, []);
     return (
         <div>
-            <Header/>
+            <Header loading={loading}/>
             <div style={{margin: "2rem"}}>
                 <Routes>
                     <Route path="/home" element={<HomePage/>}/>

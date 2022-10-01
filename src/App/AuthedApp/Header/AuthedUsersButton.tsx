@@ -1,4 +1,4 @@
-import { Collapse, IconButton, List, ListItemButton, ListItemIcon, ListItemText, Menu, MenuItem } from '@mui/material';
+import { CircularProgress, Collapse, IconButton, List, ListItemButton, ListItemIcon, ListItemText, Menu, MenuItem } from '@mui/material';
 import React, { useState } from 'react';
 import BuildIcon from '@mui/icons-material/Build';
 import UploadIcon from '@mui/icons-material/Upload';
@@ -8,7 +8,10 @@ import { BROWSER_HISTORY } from 'src/helpers/constants';
 import { ExpandLess, ExpandMore, LooksOne, LooksTwo } from '@mui/icons-material';
 import s from './AuthedUsersButton.module.scss';
 
-const AuthedUsersButton = () => {
+type Props = {
+    stateLoading: boolean
+}
+const AuthedUsersButton = ({ stateLoading } : Props) => {
     const [anchorEl, setAnchorEl] = useState(null);
     const open                    = Boolean(anchorEl);
     const [innerOpen, setInnerOpen] = useState(false);
@@ -69,18 +72,29 @@ const AuthedUsersButton = () => {
                     <ListItemText>Upload CSV files</ListItemText>
                 </MenuItem>
                 
-                <MenuItem onClick={handleToEditDict}>
-                    <ListItemIcon>
-                        <ChangeCircleIcon/>
-                    </ListItemIcon>
+                <MenuItem disabled={stateLoading} onClick={handleToEditDict}>
+                    {
+                        stateLoading ? (
+                            <CircularProgress size="20px" sx={{marginRight: '16px'}} color="primary"/>
+                        ) : (
+                            <ListItemIcon>
+                                <ChangeCircleIcon/>
+                            </ListItemIcon>
+                        )
+                    }
                     <ListItemText>Edit Dictionary</ListItemText>
                 </MenuItem>
-                <MenuItem onClick={handleToCreate}>
-                    <ListItemIcon>
-                        <CreateIcon/>
-                    </ListItemIcon>
+                <MenuItem disabled={stateLoading} onClick={handleToCreate}>
+                    {
+                        stateLoading ? (
+                            <CircularProgress size="20px" sx={{marginRight: '16px'}} color="primary"/>
+                        ) : (
+                            <ListItemIcon>
+                                <CreateIcon/>
+                            </ListItemIcon>
+                        )
+                    }
                     <ListItemText>Add/Edit Sentences</ListItemText>
-                    
                     {innerOpen ? <ExpandLess /> : <ExpandMore />}
                 </MenuItem>
                 <Collapse in={innerOpen} timeout="auto" unmountOnExit>

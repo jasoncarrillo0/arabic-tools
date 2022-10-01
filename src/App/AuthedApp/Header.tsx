@@ -6,8 +6,13 @@ import AuthedUsersButton from "./Header/AuthedUsersButton";
 import ProfileButton from "./Header/ProfileButton";
 import SentencesButton from "./Header/SentencesButton";
 import s from "./Header.module.scss";
+import { LoadingButton } from "@mui/lab";
 
-const Header = () => {
+type Props = {
+    loading: boolean
+}
+
+const Header = ({ loading } : Props) => {
     const { currUser, isAdminUser } = useAuth();
 
     return (
@@ -17,20 +22,22 @@ const Header = () => {
                     Arabic Tools
                 </h2>
                 <Toolbar className={s.toolbar}>
-                    {currUser && isAdminUser && <AuthedUsersButton />}
-                    <Button
+                    {currUser && isAdminUser && <AuthedUsersButton stateLoading={loading} />}
+                    <LoadingButton
                         onClick={() => BROWSER_HISTORY.push("/home/dictionary")}
+                        loading={loading}
                     >
                         Dictionary
-                    </Button>
-                    <Button
+                    </LoadingButton>
+                    <LoadingButton
+                        loading={loading}
                         onClick={() =>
                             BROWSER_HISTORY.push("/home/verbpractice")
                         }
                     >
                         Verb Practice
-                    </Button>
-                    <SentencesButton />
+                    </LoadingButton>
+                    <SentencesButton stateLoading={loading}/>
                     {currUser && <ProfileButton />}
                 </Toolbar>
             </AppBar>
