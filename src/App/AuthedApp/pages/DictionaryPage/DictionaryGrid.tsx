@@ -47,7 +47,7 @@ const DictionaryGrid = ({ dictionary }: Props) => {
                                 />
                             ) : (
                                 <WordsDataTable
-                                    rows={[...dictionary[wordType]]}
+                                    rows={[...dictionary[wordType]].sort((a, b) => a.english.localeCompare(b.english))}
                                     title="Select word"
                                     colWidth={150}
                                     height="600px"
