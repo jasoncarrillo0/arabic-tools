@@ -1,7 +1,7 @@
 @import '../../../../sass-vars.scss';
 
 .wrap {
-    width: 360px;
+    width: $verb-util-width;
     height: $verb-util-height;
     padding: 2rem;
     border-radius: 5px;
@@ -13,7 +13,7 @@
             flex-direction: row;
             grid-gap: 1rem;
             align-items: center;
-            
+            justify-content: space-between;
             button {
                 align-self:initial;
             }

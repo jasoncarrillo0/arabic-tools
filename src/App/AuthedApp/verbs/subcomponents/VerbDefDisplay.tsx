@@ -27,7 +27,7 @@ const VerbDefDisplay = () => {
              <div className={s.choicesWrap}>
                 <div className={s.top}>
                     <h3>Verbs ({Object.keys(verbDict).length}/64)</h3>
-                    <Button variant="contained" onClick={handleClick}>Get Verb</Button>
+                    <Button size="small" variant="contained" onClick={handleClick}>Get Verb</Button>
                 </div>
                 <hr/>
                 <div className={s.verb}>

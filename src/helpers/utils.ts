@@ -47,7 +47,8 @@ export function getColsFromRows(rows: Word[], defaultWidth: number = 130) {
     .map(col => ({
         field: col,
         headerName: camelCase2Title(col),
-        width: col === "arabic" && defaultWidth === 130 ? 90 : defaultWidth
+        width: col === "arabic" && defaultWidth === 130 ? 90 : defaultWidth,
+        searchable: true
     }))
     .sort((a,b) => a.field.localeCompare(b.field))
 }

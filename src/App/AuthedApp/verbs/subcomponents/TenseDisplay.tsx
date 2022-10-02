@@ -26,7 +26,7 @@ const TenseDisplay = () => {
             <div className={s.choicesWrap}>
                 <div className={s.top}>
                     <h3>Tenses ({currTenses.length}/9)</h3>
-                    <Button variant="contained" onClick={handleClick}>Get Tense</Button>
+                    <Button size="small" variant="contained" onClick={handleClick}>Get Tense</Button>
                 </div>
                 <hr/>
                 <div className={s.tense}>{tense ? tense : "none chosen"}</div>

@@ -23,7 +23,7 @@ const ConjugationsDisplay = ({}) => {
             <div className={s.choicesWrap}>
                 <div className={s.top}>
                     <h3>Conjugations ({currConjugations.length}/8)</h3>
-                    <Button variant="contained" onClick={handleClick}>Get Choice</Button>
+                    <Button size="small" variant="contained" onClick={handleClick}>Get Choice</Button>
                 </div>
                 <hr/>
                 <div className={s.conjugation}>{conjugation ? conjugation : "none chosen"}</div>
