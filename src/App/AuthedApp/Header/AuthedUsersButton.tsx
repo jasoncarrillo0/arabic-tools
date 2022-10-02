@@ -89,7 +89,7 @@ const AuthedUsersButton = ({ stateLoading } : Props) => {
                     }
                     <ListItemText>Edit Dictionary</ListItemText>
                 </MenuItem>
-                <MenuItem disabled={stateLoading} onClick={handleToCreate}>
+                <MenuItem disabled={stateLoading} onClick={() => setInnerOpen(!innerOpen)}>
                     {
                         stateLoading ? (
                             <CircularProgress size="20px" sx={{marginRight: '16px'}} color="primary"/>
