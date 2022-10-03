@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { RootState } from 'src/redux/rootReducer';
 import { SentenceCollectionNames, SentenceState } from 'src/redux/sentence/interfaces';
 import s from './PracticeSentences.module.scss';
+import SentenceSetArea from './PracticeSentences/SentenceSetArea';
 
 type Props = {
     sentences: SentenceState
@@ -39,7 +40,7 @@ const PracticeSentences = ({ sentences }: Props) => {
                             value={sentenceType} 
                             key={Number((Math.random() * 1000).toFixed(0))}
                         >
-                           
+                           <SentenceSetArea sentences={sentences[sentenceType]} />
                         </TabPanel>
                     ))
                 }

@@ -1,0 +1,17 @@
+.wrap {
+    padding: 1.5rem;
+    display: inline-flex;
+    background-color: #75ead9 !important;
+    color: #494949 !important;
+    transition: all 0.3s !important;
+    cursor: pointer;
+
+    &:hover {
+        background-color: #5183f6 !important;
+        color: rgb(237, 237, 237) !important;
+    }
+
+    h3 {
+        margin: 1rem 0;
+    }
+}
