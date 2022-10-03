@@ -1,4 +1,4 @@
-import { Button } from '@mui/material';
+import { Button, Paper } from '@mui/material';
 import React, { useState } from 'react'
 import { ALL_VERBS } from 'src/helpers/constants';
 import { getVerbsObj } from 'src/helpers/utils';
@@ -23,23 +23,23 @@ const VerbDefDisplay = () => {
     }
 
     return (
-        <div className={s.wrap}>
+        <Paper className={s.wrap}>
              <div className={s.choicesWrap}>
                 <div className={s.top}>
                     <h3>Verbs ({Object.keys(verbDict).length}/64)</h3>
-                    <Button size="small" variant="contained" onClick={handleClick}>Get Verb</Button>
+                    <Button disableElevation size="small" variant="contained" onClick={handleClick}>Get Verb</Button>
                 </div>
                 <hr/>
                 <div className={s.verb}>
                     <div>
-                        <div className={s.arabic} style={currVerb.english ? {fontSize: '19px'} : {fontSize: '16px'}}>
+                        <div className={s.arabic} style={!currVerb.arabic ? { fontSize: "16px"} : {}} >
                             {currVerb.arabic ? currVerb.arabic : "none chosen"}
                         </div>
                         <div className={s.english}>
                             {currVerb.english && displayEng === true ? currVerb.english : null}
                         </div>
                     </div>
-                    <Button onClick={() => setDisplayEng(!displayEng)} disabled={currVerb.english ? false : true}>
+                    <Button size="small" variant="outlined" disableElevation onClick={() => setDisplayEng(!displayEng)} disabled={currVerb.english ? false : true}>
                         { displayEng ? "Hide English" : "Show English"}
                     </Button>
                 </div>
@@ -51,7 +51,7 @@ const VerbDefDisplay = () => {
                 </div>
                 
             </div>
-        </div>
+        </Paper>
     );
 };
 

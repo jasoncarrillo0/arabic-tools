@@ -4,7 +4,7 @@
 .wrap {
     width: $verb-util-width;
     height: $verb-util-height;
-    padding: 2rem;
+    padding: 1.5rem;
     border-radius: 5px;
     background-color: beige;
     .choicesWrap {
@@ -14,7 +14,10 @@
             flex-direction: row;
             grid-gap: 1rem;
             align-items: center;
-            
+            justify-content: space-between;
+            h3 {
+                font-size: 16px;
+            }
             button {
                 align-self:initial;
             }

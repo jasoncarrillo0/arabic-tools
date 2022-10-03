@@ -1,4 +1,4 @@
-import { Button } from '@mui/material';
+import { Button, Paper } from '@mui/material';
 import React, { useState } from 'react'
 import s from './TenseDisplay.module.scss'
 
@@ -21,12 +21,12 @@ const TenseDisplay = () => {
     }
 
     return (
-        <div className={s.wrap}>
+        <Paper className={s.wrap}>
 
             <div className={s.choicesWrap}>
                 <div className={s.top}>
                     <h3>Tenses ({currTenses.length}/9)</h3>
-                    <Button size="small" variant="contained" onClick={handleClick}>Get Tense</Button>
+                    <Button disableElevation size="small" variant="contained" onClick={handleClick}>Get Tense</Button>
                 </div>
                 <hr/>
                 <div className={s.tense}>{tense ? tense : "none chosen"}</div>
@@ -34,7 +34,7 @@ const TenseDisplay = () => {
                     currTenses.map((t, idx) => <div key={idx}>{t}</div>)
                 }
             </div>
-        </div>
+        </Paper>
     );
 };
 

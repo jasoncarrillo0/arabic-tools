@@ -3,7 +3,7 @@
 .wrap {
     width: $verb-util-width;
     height: $verb-util-height;
-    padding: 2rem;
+    padding: 1.5rem;
     border-radius: 5px;
     background-color: beige;
     .choicesWrap {
@@ -14,6 +14,7 @@
             grid-gap: 1rem;
             align-items: center;
             justify-content: space-between;
+
             button {
                 align-self:initial;
             }
@@ -27,9 +28,16 @@
             display: flex;
             justify-content: space-between;
             height: 80px;
+            margin-bottom: 10px;
+
 
             .arabic {
                 height: 30px;
+                font-size: 24px;
+
+                @media screen and (max-width: 430px) {
+                    font-size: 20px;
+                }
             }
 
             .english {
@@ -47,6 +55,8 @@
         .verbs {
             overflow: scroll;
             max-height: 265px;
+            
+            font-size: 20px;
         }
     }
 }
