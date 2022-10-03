@@ -1,4 +1,4 @@
-import { Button, Dialog, DialogContent, DialogTitle, IconButton, TableCell, TableRow } from '@mui/material';
+import { Button, Dialog, DialogContent, DialogContentText, DialogTitle, IconButton, TableCell, TableRow } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import EditWordForm from './EditWordsTableRow/EditWordForm';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -44,6 +44,9 @@ const EditWordsTableRow = ({ row, collectionName, deleteWordInState }: Props) =>
         }
     }, []);
 
+    useEffect(() => {
+        setEditingFieldOpen(false);
+    }, [row])
 
 
     async function handleDelete() {
@@ -94,10 +97,32 @@ const EditWordsTableRow = ({ row, collectionName, deleteWordInState }: Props) =>
                     <DeleteIcon/>
                 </IconButton>
                 <Dialog open={deleteFormOpen} onClose={() => setDeleteFormOpen(false)}>
-                    <DialogTitle>Are you sure you want to delete this word?</DialogTitle>
+                    <DialogTitle>
+                        { 
+                            row.timesUsed > 0 ? (
+                                "This word is being used in sentences."
+                            ) : (
+                                "Are you sure you want to delete this word?"
+                            )
+                        } 
+                    </DialogTitle>
                     <DialogContent sx={{display: "flex", marginLeft: "auto"}}>
-                        <Button onClick={() => setDeleteFormOpen(false)}>No</Button>
-                        <LoadingButton loading={deleteLoading} onClick={handleDelete}>Yes</LoadingButton>
+                        {
+                            row.timesUsed ? (
+                                <>
+                                    <DialogContentText>
+                                        Please update sentences before deleting this word.
+                                    </DialogContentText>
+                                    <Button onClick={() => setDeleteFormOpen(false)}>Cancel</Button>
+                                </>
+                            ) : (
+                                <>
+                                    <Button onClick={() => setDeleteFormOpen(false)}>No</Button>
+                                    <LoadingButton loading={deleteLoading} onClick={handleDelete}>Yes</LoadingButton>
+                                </>
+                            )
+                        }
+                        
                     </DialogContent>
                 </Dialog>
             </TableCell>

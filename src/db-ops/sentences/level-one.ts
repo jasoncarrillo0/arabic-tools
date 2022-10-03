@@ -1,5 +1,5 @@
 import { addDoc, collection, deleteDoc, doc, getDoc, updateDoc } from "firebase/firestore";
-import { InitialSentenceOne } from "src/App/AuthedApp/admin-only-pages/CreateSentencePage/CreateLevelOneSentence";
+import { InitialSentenceOne } from "src/App/AuthedApp/admin-only-pages/CreateLevelOneSentencePage";
 import { db } from "src/firebase/firebase";
 import { replaceWordInState } from "src/redux/dictionary/dictActionCreators";
 import { LevelOneSentence, Sentence, SentenceDocument, SentenceTypes } from "src/redux/sentence/interfaces";

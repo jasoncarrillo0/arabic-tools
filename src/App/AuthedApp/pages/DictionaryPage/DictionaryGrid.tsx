@@ -16,7 +16,7 @@ const DictionaryGrid = ({ dictionary }: Props) => {
     const wordTypes                           = Object.keys(dictionary) as WordTypes[];
     const [wordTypeActive, setWordTypeActive] = useState<WordTypes>("nouns");
     const location                            = useLocation();
-    const isEditing                           = location.pathname === "/home/editdictionary" ? true : false;
+    const isEditing                           = location.pathname === "/home/dictionary/edit" ? true : false;
 
 
     function handleChange(e: any, newValue: WordTypes) {
@@ -37,7 +37,7 @@ const DictionaryGrid = ({ dictionary }: Props) => {
                     wordTypes.map((wordType, idx) => (
                         <TabPanel 
                             value={wordType} 
-                            key={Number((Math.random() * 1000).toFixed(0))}
+                            key={idx}
                         >
                         {
                             isEditing ? (
@@ -47,8 +47,7 @@ const DictionaryGrid = ({ dictionary }: Props) => {
                                 />
                             ) : (
                                 <WordsDataTable
-                                    rows={[...dictionary[wordType]]}
-                                    title="Select word"
+                                    rows={[...dictionary[wordType]].sort((a, b) => a.english.localeCompare(b.english))}
                                     colWidth={150}
                                     height="600px"
                                 />

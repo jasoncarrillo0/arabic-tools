@@ -1,5 +1,5 @@
 import React from 'react';
-import { Paper, Table, TableContainer, TableHead, TableBody, TableRow, TableCell } from "@mui/material";
+import { Paper, Table, TableContainer, TableHead, TableBody, TableRow, TableCell, TableFooter, Button } from "@mui/material";
 import EditWordsTableRow from './EditWordsTable/EditWordsTableRow'
 import AddWordButton from './EditWordsTable/AddWordButton';
 import { Word, DictionaryState, WordTypes } from 'src/redux/dictionary/interfaces';
@@ -12,32 +12,35 @@ type Props = {
 const EditWordsTable = ({ wordDocs, wordType }: Props) => {
     const cols = getEditableColsFromRows(wordDocs);
     return (
-        <TableContainer component={Paper} sx={{marginTop: '2rem'}}>
-            <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                <TableHead>
-                    <TableRow sx={{background: "#f2f2f2"}}>
+        <>
+            <TableContainer component={Paper} sx={{marginTop: '2rem', overflow: "scroll", maxHeight: 500}}>
+                <Table size="small" stickyHeader sx={{ minWidth: 650 }} aria-label="simple table">
+                    <TableHead>
+                        <TableRow sx={{background: "#f2f2f2"}}>
+                        {
+                            cols.sort((a,b) => a.field.localeCompare(b.field)).map((col, idx) => <TableCell key={idx}>{col.field}</TableCell>)
+                        }
+                        <TableCell></TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
                     {
-                        cols.sort((a,b) => a.field.localeCompare(b.field)).map((col, idx) => <TableCell key={idx}>{col.field}</TableCell>)
+                        wordDocs.length > 0 && (
+                            wordDocs.map((row, idx) => (
+                                <EditWordsTableRow 
+                                    key={idx} 
+                                    row={row}
+                                    collectionName={wordType}
+                                />
+                            ))
+                        )
                     }
-                    <TableCell></TableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                {
-                    wordDocs.length > 0 && (
-                        wordDocs.map((row, idx) => (
-                            <EditWordsTableRow 
-                                key={idx} 
-                                row={row}
-                                collectionName={wordType}
-                            />
-                        ))
-                    )
-                }
-                <AddWordButton cols={cols.map(col => col.field)} wordType={wordType}/>
-                </TableBody>
-            </Table>
-        </TableContainer>
+                    </TableBody>
+                </Table>
+            </TableContainer>
+            <AddWordButton cols={cols.map(col => col.field)} wordType={wordType}/>
+        </>
+        
     );
 };
 

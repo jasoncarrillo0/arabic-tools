@@ -1,24 +1,20 @@
-import { Button, CircularProgress, ListItemIcon, ListItemText, Menu, MenuItem } from '@mui/material';
+import { Button, CircularProgress, Collapse, ListItemIcon, ListItemText, ListItem, List, ListItemButton } from '@mui/material';
 import React, { useState } from 'react';
 import ListIcon from '@mui/icons-material/List';
 import PsychologyIcon from '@mui/icons-material/Psychology';
-import { KeyboardArrowDown } from '@mui/icons-material';
+import { KeyboardArrowDown, LooksOne, LooksTwo } from '@mui/icons-material';
 import { BROWSER_HISTORY } from 'src/helpers/constants';
 
 type Props = {
     stateLoading: boolean
 }
-const SentencesButton = ({ stateLoading } : Props) => {
-    const [anchorEl, setAnchorEl] = useState(null);
-    const open = Boolean(anchorEl);
+const MobileSentencesButton = ({ stateLoading } : Props) => {
+    const [open, setOpen]           = useState(false);
 
 
-    const handleClick = (event: any) => {
-        setAnchorEl(event.currentTarget);
-    };
-    const handleClose = () => {
-        setAnchorEl(null);
-    };
+    function handleClose() {
+        setOpen(false);
+    }
 
     function handleViewAll() {
         BROWSER_HISTORY.push('/home/sentences')
@@ -31,21 +27,24 @@ const SentencesButton = ({ stateLoading } : Props) => {
         handleClose();
     }
 
+    function toSentence(level: "levelone" | "leveltwo") {
+        return () => {
+            setOpen(false);
+            BROWSER_HISTORY.push(`/home/sentences/edit/${level}`)
+        }
+    }
+
 
     return (
         <>
             <Button 
-                onClick={handleClick}
+                onClick={() => setOpen(!open)}
                 endIcon={<KeyboardArrowDown/>}
             >
                 Sentence Practice
             </Button>
-            <Menu
-                anchorEl={anchorEl}
-                open={open}
-                onClose={handleClose}
-            >
-                <MenuItem onClick={handleViewAll}>
+            <List>
+                <ListItem onClick={handleViewAll}>
                     {
                         stateLoading ? (
                             <CircularProgress size="20px" sx={{marginRight: '16px'}} color="primary"/>
@@ -56,8 +55,8 @@ const SentencesButton = ({ stateLoading } : Props) => {
                         )
                     }
                     <ListItemText>View All Sentences</ListItemText>
-                </MenuItem>
-                <MenuItem onClick={handlePractice}>
+                </ListItem>
+                <ListItem onClick={handlePractice}>
                     {
                         stateLoading ? (
                             <CircularProgress size="20px" sx={{marginRight: '16px'}} color="primary"/>
@@ -68,10 +67,11 @@ const SentencesButton = ({ stateLoading } : Props) => {
                         )
                     }
                     <ListItemText>Practice</ListItemText>
-                </MenuItem>
-            </Menu>
+                </ListItem>
+                
+            </List>w
         </>
     );
 };
 
-export default SentencesButton;
+export default MobileSentencesButton;

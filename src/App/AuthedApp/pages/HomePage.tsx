@@ -11,8 +11,10 @@ const HomePage = () => {
     
     return (
         <div className={s.wrap}>
-            <h1>Let's get to work!</h1>
-            <CoffeeTableSvg/>
+            <div className={s.svgWrap}>
+                <h1>Let's get to work!</h1>
+                <CoffeeTableSvg/>
+            </div>
         </div>
     )
 };

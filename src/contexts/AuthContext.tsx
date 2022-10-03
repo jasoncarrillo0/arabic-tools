@@ -9,18 +9,18 @@ type AuthData = {
     isAdminUser: boolean
     userCheckLoading: boolean
     setAuthed: Dispatch<SetStateAction<boolean>>
-    signup: (email: string, pass: string) => void
-    login: (email: string, pass: string) => void
-    logout: () => void
+    signup: (email: string, pass: string) => Promise<void>
+    login: (email: string, pass: string) => Promise<void>
+    logout: () => Promise<void>
     authed: boolean
 }
 const AuthContext = createContext<AuthData>({
     currUser: null,
     isAdminUser: false,
     userCheckLoading: false,
-    signup: () => {},
-    login: () => {},
-    logout: () => {},
+    signup: async () => {},
+    login: async () => {},
+    logout: async () => {},
     setAuthed: () => false,
     authed: false
 });
@@ -39,12 +39,12 @@ export default function AuthProvider({ children }: { children: ReactNode[] | Rea
     const [authed, setAuthed]                     = useState(false);
 
     const { enqueueSnackbar } = useSnackbar();
-    function signup(email: string, pass: string) {
-        return createUserWithEmailAndPassword(auth, email, pass);
+    async function signup(email: string, pass: string) {
+        await createUserWithEmailAndPassword(auth, email, pass);
     }
 
-    function login(email: string, pass: string) {
-        return signInWithEmailAndPassword(auth, email, pass);
+    async function login(email: string, pass: string) {
+        await signInWithEmailAndPassword(auth, email, pass);
     }
 
     async function logout() {

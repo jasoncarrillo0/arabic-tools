@@ -1,9 +1,9 @@
 @import '../../../../sass-vars.scss';
 
 .wrap {
-    width: 300px;
+    width: $verb-util-width;
     height: $verb-util-height;
-    padding: 2rem;
+    padding: 1.5rem;
     border-radius: 5px;
     background-color: beige;
 
@@ -15,7 +15,7 @@
             flex-direction: row;
             grid-gap: 1rem;
             align-items: center;
-            
+            justify-content: space-between;
             button {
                 align-self:initial;
             }
@@ -27,5 +27,4 @@
             font-weight: bold;
         }
     }
-    
 }

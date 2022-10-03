@@ -1,4 +1,3 @@
-import to from "await-to-js";
 import { deleteDoc, doc, getDoc, setDoc } from "firebase/firestore";
 import { db } from "src/firebase/firebase";
 import { SENTENCE_COLLECTION_INFO } from "src/helpers/constants";
@@ -56,12 +55,23 @@ export async function applySentenceUpdate(
         if (!foundWord) throw new Error("couldn't match update value word with sentence in redux state.");
         if (foundWord.arabic === updateVal.arabic) throw new Error('Update value is the same as the existing sentence.');
  
-        // decrement existing word's timesUsed count
-        updatedOldWord = await applyWordDocUpdate(foundWord.id, foundWord.wordType, "decrement");
-        if (!updatedOldWord) throw new Error("Word to decrement was undefined on update.");
-        dispatch(
-            replaceWordInState(updatedOldWord.id, updatedOldWord, updateVal.wordType)
-        )
+        
+        /*
+             handle the edge case where an admin user updated a word in the dictionary, 
+             left the corresponding sentence(s) unresolved, 
+             and deleted the word in the dictionary; there may be an orphaned SentenceWord within
+             the sentence
+        */
+        const foundWordExistsInDb = getState().dictionary[foundWord.wordType].some(word => word.id === foundWord.id);
+        if (foundWordExistsInDb) {
+            // decrement existing word's timesUsed count
+            updatedOldWord = await applyWordDocUpdate(foundWord.id, foundWord.wordType, "decrement");
+            if (!updatedOldWord) throw new Error("Word to decrement was undefined on update.");
+            dispatch(
+                replaceWordInState(updatedOldWord.id, updatedOldWord, updateVal.wordType)
+            )
+        }
+       
 
         // increment new word's timesUsed count
         updatedNewWord = await applyWordDocUpdate(updateVal.id, updateVal.wordType, "increment");
@@ -95,9 +105,7 @@ type SentenceUpdateInfo = {
     sentence: Sentence
     collection: SentenceTypes
 }
-export async function updateAllSentencesIncluding(updatedWordDoc: Word, wordType: WordTypes, shouldUpdateSentence: boolean, update: "english" | "arabic") {
-
-    if (shouldUpdateSentence === false) return
+export async function updateAllSentencesIncluding(updatedWordDoc: Word, wordType: WordTypes) {
 
     try {
         const allSentences: SentenceUpdateInfo[]    = [];
@@ -121,43 +129,49 @@ export async function updateAllSentencesIncluding(updatedWordDoc: Word, wordType
 
         // update sentences
         for (const { sentence, collection } of allSentences) {
-            
-            const updatedSentence = { ...sentence };
-
-            // get updated array of words, replacing only the field value
-            updatedSentence.words = sentence.words.map(word => word.id === updatedWordDoc.id ? (
-                {
-                    ...word,
-                    [update]: updatedWordDoc[update]
-                }
-            ) : (
-                word
-            ));
-            updatedSentence[update] = getUpdatedSentence(updatedSentence, update, updatedWordDoc);
-
+            const wordAsSentenceWord: SentenceWord = { 
+                arabic: updatedWordDoc.arabic,
+                english: updatedWordDoc.english,
+                id: updatedWordDoc.id,
+                wordType: wordType
+            };
+            const newWords = [...sentence.words.filter(word => word.id !== updatedWordDoc.id), wordAsSentenceWord];
+            const updatedSentence: Sentence = { 
+                ...sentence, 
+                isUnresolved: true,
+                words: newWords
+            };
 
             // update sentence in db
             const sentenceRef = doc(db, collection, sentence.id);
             await setDoc(sentenceRef, updatedSentence, { merge: true});
             const updatedDoc = await getDoc(sentenceRef);      
             const finalDoc   = {id: updatedDoc.id, ...updatedDoc.data() as SentenceDocument };
+
+            // update in state
             dispatch(
                 replaceSentenceInState(finalDoc, collection)
             )
         }
+
+        return allSentences.length;
     } catch (e: any) {
         throw new Error(e.message)
     }    
 }
 
-function getUpdatedSentence(sentence: Sentence, update: "english" | "arabic", updatedWordDoc: Word) {
-    const updatedWord   = updatedWordDoc[update];
-    const sentenceWords = sentence[update].split(' ');
-    const updatedSentenceWords = sentenceWords.map(word => word === updatedWord ? updatedWord : word);
-    return updatedSentenceWords.join(' ');
+
+
+export async function markSentenceResolved(sentence: Sentence, collection: SentenceTypes) {
+    const updatedSentence: Sentence = {...sentence, isUnresolved: false };
+    const sentenceRef = doc(db, collection, sentence.id);
+    await setDoc(sentenceRef, updatedSentence, { merge: true});
+    const updatedDoc = await getDoc(sentenceRef);      
+    const finalDoc   = {id: updatedDoc.id, ...updatedDoc.data() as SentenceDocument };
+    dispatch(
+        replaceSentenceInState(finalDoc, collection)
+    )
 }
-
-
 
 
 

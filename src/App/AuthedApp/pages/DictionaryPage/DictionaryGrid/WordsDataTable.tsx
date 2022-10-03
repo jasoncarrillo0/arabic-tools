@@ -1,5 +1,5 @@
 import React, { ChangeEvent, Dispatch, SetStateAction, useState } from 'react';
-import { DataGrid, GridRowParams } from '@mui/x-data-grid';
+import { DataGrid, GridRowParams, GridToolbar } from '@mui/x-data-grid';
 import s from './WordsDataTable.module.scss';
 import { Popover, Typography } from '@mui/material';
 import { Word } from 'src/redux/dictionary/interfaces';
@@ -7,11 +7,12 @@ import { useSnackbar } from 'notistack';
 import { ERR_SNACKBAR } from 'src/helpers/constants';
 import { SentenceWord } from 'src/redux/sentence/interfaces';
 import { getColsFromRows } from 'src/helpers/utils';
+import { CustomToolbar } from './CustomToolbar';
 
 
 type Props = {
     rows: Word[]
-    title: string
+    title?: string
     colWidth?: number
     height?: string
     setState?: Dispatch<SetStateAction<SentenceWord>> 
@@ -83,7 +84,7 @@ const WordsDataTable = ({
 
     return (
         <div style={styles}>
-            <h2>{title}</h2>
+            {title && <h2>{title}</h2>}
             <DataGrid 
                 rows={rows}
                 columns={getColsFromRows(rows, colWidth)}
@@ -92,6 +93,9 @@ const WordsDataTable = ({
                 classes={{row: s.row}}
                 getRowClassName={(params) => params.row.arabic === disabledArabic ? s.disabled : s.row}
                 getCellClassName={(params) => params.field === "arabic" ? s.arabic : ''}
+                components={{
+                    Toolbar: CustomToolbar
+                }}
                 componentsProps={{
                     cell: {
                         onMouseEnter: handleMouseEnter,

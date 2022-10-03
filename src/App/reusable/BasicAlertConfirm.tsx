@@ -6,7 +6,7 @@ type Props = {
     title: string
     content: string
     handleClose: () => void
-    handleConfirm: () => void
+    handleConfirm: () => void | Promise<void>
     loading: boolean
 }
 const BasicAlertConfirm = ({ 

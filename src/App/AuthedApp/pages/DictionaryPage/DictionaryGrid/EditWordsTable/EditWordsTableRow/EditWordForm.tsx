@@ -4,7 +4,7 @@ import { Modal, Paper, TextField } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import { Word, DictionaryState, EditableWordField, WordTypes } from 'src/redux/dictionary/interfaces';
 import RtlProvider from 'src/App/reusable/RtlProvider';
-import { ERR_SNACKBAR } from 'src/helpers/constants';
+import { ERR_SNACKBAR, WARN_SNACKBAR } from 'src/helpers/constants';
 import { applyWordDocUpdate, WordDocUpdate } from 'src/db-ops/dictionary';
 import { updateAllSentencesIncluding } from 'src/db-ops/sentences/general-sentence-ops';
 import { replaceWordInState } from 'src/redux/dictionary/dictActionCreators';
@@ -72,9 +72,13 @@ const EditWordForm = ({
             replaceWordInState(wordDoc.id, newDoc, collectionName);
 
             // update all sentences that contain a ref to word document
-            const shouldUpdateSentence = newDoc.timesUsed > 0 && (field === "arabic" || field === "english");
+            const shouldUpdateSentence = wordDoc.timesUsed > 0 && (field === "arabic" || field === "english");
             if (shouldUpdateSentence) {
-                await updateAllSentencesIncluding(newDoc, collectionName, shouldUpdateSentence, field)
+                const sentencesNum = await updateAllSentencesIncluding(newDoc, collectionName)
+                if (sentencesNum > 0) {
+                    const msg = `Note: ${sentencesNum} use the word just updated; they are flagged until marked resolved by an another admin user.`;
+                    enqueueSnackbar(msg, WARN_SNACKBAR);
+                }
             }
         } catch (e: any) {
             enqueueSnackbar(e.message, ERR_SNACKBAR)
@@ -104,7 +108,13 @@ const EditWordForm = ({
                     )
                 }
                 
-                   
+                {
+                    ((field === "arabic") || (field === "english")) && (
+                        <span style={{width: '200px'}}>
+                            Note: any sentences using this word will be flagged until resolved by an admin user.
+                        </span>
+                    )
+                }
                 <LoadingButton 
                     variant="contained" 
                     loading={loading} 

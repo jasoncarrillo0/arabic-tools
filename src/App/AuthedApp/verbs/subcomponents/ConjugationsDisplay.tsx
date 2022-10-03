@@ -1,4 +1,4 @@
-import { Button } from '@mui/material';
+import { Button, Paper } from '@mui/material';
 import React, { useState } from 'react'
 import s from './ConjugationsDisplay.module.scss'
 const conjugations = ['I', 'you(m)', 'you(f)', 'you(p)', 'we', 'he', 'she', 'they'];
@@ -18,12 +18,12 @@ const ConjugationsDisplay = ({}) => {
         
     }
     return (
-        <div className={s.wrap}>
+        <Paper className={s.wrap}>
 
             <div className={s.choicesWrap}>
                 <div className={s.top}>
                     <h3>Conjugations ({currConjugations.length}/8)</h3>
-                    <Button variant="contained" onClick={handleClick}>Get Choice</Button>
+                    <Button disableElevation size="small" variant="contained" onClick={handleClick}>Get Choice</Button>
                 </div>
                 <hr/>
                 <div className={s.conjugation}>{conjugation ? conjugation : "none chosen"}</div>
@@ -31,7 +31,7 @@ const ConjugationsDisplay = ({}) => {
                     currConjugations.map((t, idx) => <div key={idx}>{t}</div>)
                 }
             </div>
-        </div>
+        </Paper>
     );
 };
 
