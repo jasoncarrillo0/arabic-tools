@@ -16,7 +16,12 @@ import ProfilePage from "./AuthedApp/admin-only-pages/ProfilePage";
 import VerbsArea from "./AuthedApp/verbs/VerbsArea";
 import SentenceArea from "./AuthedApp/pages/SentencePage/SentenceArea";
 import Header from "./AuthedApp/Header";
+import PracticeSentences from "./AuthedApp/pages/PracticeSentences";
 
+/*
+*
+* 
+*/
 
 const AuthedApp = () => {
 
@@ -58,7 +63,7 @@ const AuthedApp = () => {
                     <Route path="/home/dictionary" element={<DictionaryPage/>}/>
                     <Route path="/home/verbpractice" element={<VerbsArea/>}/>
                     <Route path="/home/sentences" element={<SentenceArea/>}/>
-                    <Route path="/home/sentences/practice" element={<div>Nothing here yet...</div>}/>
+                    <Route path="/home/sentences/practice" element={<PracticeSentences/>}/>
                     <Route 
                         path="/home/dictionary/edit" 
                         element={ 
