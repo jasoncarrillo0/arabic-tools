@@ -4,24 +4,13 @@ import { collection, getDocs } from 'firebase/firestore';
 import { db } from 'src/firebase/firebase';
 
 
-export function getVerbsObj(verbs: string) {
-    let split = verbs.split(",");
-    let cleanedSplit = split.map(verb => verb.replace(/\t/g, " "));
-    let obj: {[key: string]: string} = {};
-    for (let verb of cleanedSplit) {
-        let splittedBySpace = verb.split(' ');
-        let english, arabic;
-        if (splittedBySpace.length === 3) {
-            english         = splittedBySpace[0] + ' ' + splittedBySpace[1];
-            arabic          = splittedBySpace[2];
-        } else {
-            arabic = splittedBySpace[splittedBySpace.length - 1];
-            english = verb.split(arabic)[0];
-        }
+export function getVerbsObj(verbs: Verb[]): {[key: string]: string} {
+    const finalObj: { [key: string]: string} = {};
 
-        obj[english.trim()] = arabic;
+    for (const verb of verbs) {
+        finalObj[verb.english] = verb.arabic;
     }
-    return obj;
+    return finalObj;
 }
 
 
