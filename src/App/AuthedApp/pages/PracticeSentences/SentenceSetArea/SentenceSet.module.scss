@@ -14,4 +14,27 @@
     h3 {
         margin: 1rem 0;
     }
+
+    
+}
+
+
+.practiceWrap {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    align-items: center;
+
+    .setting {
+        margin-top: 3rem;
+        text-align: center;
+    }
+
+    .setting, .accordionWrap {
+        width: 50%;
+
+        @media screen and (max-width: 430px) {
+            width: 90%
+        }
+    }
 }

@@ -4,15 +4,15 @@ import { Sentence } from "src/redux/sentence/interfaces";
 
 type Props = {
     sentence: Sentence
-    translateArabic: boolean
+    language: "arabic" | "english"
 }
 
-const SentenceAccordion = ({ sentence, translateArabic }: Props) => {
+const SentenceAccordion = ({ sentence, language }: Props) => {
 
-    const sentenceToTranslate = translateArabic ? sentence.arabic : sentence.english;
-    const sentenceAnswer      = translateArabic ? sentence.english : sentence.arabic;
+    const sentenceToTranslate     = language === "arabic" ? sentence.arabic : sentence.english;
+    const sentenceAnswer          = language === "english" ? sentence.english : sentence.arabic;
     return (
-        <Accordion TransitionProps={{ unmountOnExit: true }}>
+        <Accordion sx={{width: '100%'}} TransitionProps={{ unmountOnExit: true }}>
             <AccordionSummary expandIcon={<ExpandMore />}>
                 <Typography>{sentenceToTranslate}</Typography>
             </AccordionSummary>
