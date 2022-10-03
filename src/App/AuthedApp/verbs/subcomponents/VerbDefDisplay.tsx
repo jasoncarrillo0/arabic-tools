@@ -1,16 +1,22 @@
 import { Button, Paper } from '@mui/material';
 import React, { useState } from 'react'
-import { ALL_VERBS } from 'src/helpers/constants';
+import { connect } from 'react-redux';
 import { getVerbsObj } from 'src/helpers/utils';
+import { Verb } from 'src/redux/dictionary/interfaces';
+import { RootState } from 'src/redux/rootReducer';
 import s from './VerbDefDisplay.module.scss'
 
-const INIT_STATE = getVerbsObj(ALL_VERBS);
 
 
-const VerbDefDisplay = () => {
+
+type Props = {
+    verbs: Verb[]
+}
+const VerbDefDisplay = ({ verbs } : Props) => {
+
     const [currVerb, setCurrVerb]     = useState({ english: "", arabic: ""});
     const [displayEng, setDisplayEng] = useState(false);
-    const [verbDict, setVerbDict] = useState(INIT_STATE);
+    const [verbDict, setVerbDict]     = useState(getVerbsObj(verbs));
 
     function handleClick() {
         let englishWords = Object.keys(verbDict);
@@ -55,4 +61,9 @@ const VerbDefDisplay = () => {
     );
 };
 
-export default VerbDefDisplay;
+const mapStateToProps = (rootState: RootState) => {
+    const { verbs } = rootState.dictionary;
+    return { verbs }
+}
+
+export default connect(mapStateToProps)(VerbDefDisplay);
