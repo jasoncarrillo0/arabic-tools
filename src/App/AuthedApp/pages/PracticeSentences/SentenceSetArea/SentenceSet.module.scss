@@ -1,0 +1,55 @@
+.wrap {
+    padding: 1.5rem;
+    display: inline-flex;
+    background-color: #5183f6 !important;
+    color: rgb(237, 237, 237) !important;
+    
+    transition: all 0.3s !important;
+    cursor: pointer;
+
+    &:hover {
+        background-color: #1ebca5 !important;
+    }
+
+    h3 {
+        margin: 1rem 0;
+    }
+
+    
+}
+
+
+.practiceWrap {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    align-items: center;
+
+    .directions {
+        padding: 1rem;
+        width: 53%;
+        margin-top: 2rem;
+    }
+
+    .practiceArea {
+        display: flex;
+        flex-direction: column;
+        width: 53%;
+        padding: 1rem;
+    
+        @media screen and (max-width: 430px) {
+            width: 90%
+        }
+
+
+        .setting {
+            text-align: center;
+        }
+    
+        .setting, .accordionWrap {
+            width: 100%;
+        }
+    }
+
+    
+}

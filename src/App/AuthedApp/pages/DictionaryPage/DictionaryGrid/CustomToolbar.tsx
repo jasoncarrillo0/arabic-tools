@@ -12,8 +12,8 @@ export const CustomToolbar = () => {
 
 
             <div>
-                <GridToolbarDensitySelector />
-                <GridToolbarExport />
+                <GridToolbarDensitySelector sx={{"& span": { margin: "0px"}}} />
+                <GridToolbarExport sx={{"& span": { margin: "0px"}}} />
             </div>
             
         </GridToolbarContainer>

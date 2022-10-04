@@ -38,25 +38,13 @@ const SentencesButton = ({ stateLoading } : Props) => {
                 onClick={handleClick}
                 endIcon={<KeyboardArrowDown/>}
             >
-                Sentence Practice
+                Sentences
             </Button>
             <Menu
                 anchorEl={anchorEl}
                 open={open}
                 onClose={handleClose}
             >
-                <MenuItem onClick={handleViewAll}>
-                    {
-                        stateLoading ? (
-                            <CircularProgress size="20px" sx={{marginRight: '16px'}} color="primary"/>
-                        ) : (
-                            <ListItemIcon>
-                                <ListIcon/>
-                            </ListItemIcon>
-                        )
-                    }
-                    <ListItemText>View All Sentences</ListItemText>
-                </MenuItem>
                 <MenuItem onClick={handlePractice}>
                     {
                         stateLoading ? (
@@ -68,6 +56,18 @@ const SentencesButton = ({ stateLoading } : Props) => {
                         )
                     }
                     <ListItemText>Practice</ListItemText>
+                </MenuItem>
+                <MenuItem onClick={handleViewAll}>
+                    {
+                        stateLoading ? (
+                            <CircularProgress size="20px" sx={{marginRight: '16px'}} color="primary"/>
+                        ) : (
+                            <ListItemIcon>
+                                <ListIcon/>
+                            </ListItemIcon>
+                        )
+                    }
+                    <ListItemText>View All</ListItemText>
                 </MenuItem>
             </Menu>
         </>
