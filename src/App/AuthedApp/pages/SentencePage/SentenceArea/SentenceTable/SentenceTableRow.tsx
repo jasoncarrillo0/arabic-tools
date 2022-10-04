@@ -65,6 +65,7 @@ const SentenceTableRow = ({ row, collectionName }: Props) => {
             enqueueSnackbar(e.message, ERR_SNACKBAR)
         }
         setDeleteLoading(false);
+        setDeleteDialogOpen(false);
     }
 
 

@@ -10,6 +10,7 @@ import {
     Paper,
     Slide,
     Box,
+    Divider,
 } from "@mui/material";
 import { forwardRef, MouseEvent, useState } from "react";
 import { Sentence } from "src/redux/sentence/interfaces";
@@ -35,7 +36,8 @@ const Transition = forwardRef(function Transition(
 const SentenceSet = ({ startIdx, sentences }: Props) => {
     const [open, setOpen] = useState(false);
     const [language, setLanguage] = useState<"arabic" | "english">("arabic");
-    const title = `Sentence set ${startIdx + 1} - ${startIdx + 8}`;
+    const endingNum = sentences.length === 8 ? 8 : sentences.length;
+    const title = `Sentence set ${startIdx + 1} - ${startIdx + endingNum}`;
 
 
 
@@ -54,7 +56,7 @@ const SentenceSet = ({ startIdx, sentences }: Props) => {
                 onClose={() => setOpen(false)}
                 TransitionComponent={Transition}
             >
-                <AppBar sx={{ position: "relative" }}>
+                <AppBar sx={{ position: "relative", backgroundColor: "#1ebca5" }}>
                     <Toolbar>
                         <IconButton
                             edge="start"
@@ -74,29 +76,39 @@ const SentenceSet = ({ startIdx, sentences }: Props) => {
                     </Toolbar>
                 </AppBar>
                 <Box className={s.practiceWrap}>
-                    <div className={s.setting}>
-                        <ToggleButtonGroup
-                            value={language}
-                            exclusive
-                            onChange={handleLanguageChange}
-                        >
-                            <ToggleButton value="arabic">
-                                Translate Arabic
-                            </ToggleButton>
-                            <ToggleButton value="english">
-                                Translate English
-                            </ToggleButton>
-                        </ToggleButtonGroup>
-                    </div>
-                    <div className={s.accordionWrap}>
-                    {sentences.map((sentence, idx) => (
-                        <SentenceAccordion
-                            key={idx}
-                            sentence={sentence}
-                            language={language}
-                        />
-                    ))}
-                    </div>
+                    <Paper classes={{ root: s.directions }}>
+                        <h3>Directions</h3>
+                        <Divider/>
+                        <div>- Write the translation of each language.</div>
+                        <div>- Click the sentence to see the translation.</div>
+                        <div>- Make sure to attempt to write the translation before viewing the answer!</div>
+                    </Paper>
+                    <Paper classes={{ root: s.practiceArea }}>
+                        <div className={s.setting}>
+                            <ToggleButtonGroup
+                                value={language}
+                                exclusive
+                                onChange={handleLanguageChange}
+                            >
+                                <ToggleButton value="arabic">
+                                    Translate Arabic
+                                </ToggleButton>
+                                <ToggleButton value="english">
+                                    Translate English
+                                </ToggleButton>
+                            </ToggleButtonGroup>
+                        </div>
+                        <div className={s.accordionWrap}>
+                        {sentences.map((sentence, idx) => (
+                            <SentenceAccordion
+                                key={idx}
+                                sentence={sentence}
+                                language={language}
+                            />
+                        ))}
+                        </div>
+                    </Paper>
+                    
                     
                 </Box>
             </Dialog>

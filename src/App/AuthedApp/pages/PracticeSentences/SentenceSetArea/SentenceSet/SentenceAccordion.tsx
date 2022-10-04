@@ -1,5 +1,6 @@
 import { ExpandMore } from "@mui/icons-material";
-import { Accordion, AccordionSummary, Typography, AccordionDetails } from "@mui/material";
+import { Accordion, AccordionSummary, Typography, AccordionDetails, Tooltip } from "@mui/material";
+import RtlProvider from "src/App/reusable/RtlProvider";
 import { Sentence } from "src/redux/sentence/interfaces";
 
 type Props = {
@@ -10,16 +11,20 @@ type Props = {
 const SentenceAccordion = ({ sentence, language }: Props) => {
 
     const sentenceToTranslate     = language === "arabic" ? sentence.arabic : sentence.english;
-    const sentenceAnswer          = language === "english" ? sentence.english : sentence.arabic;
+    const sentenceAnswer          = language === "arabic" ? sentence.english : sentence.arabic;
     return (
-        <Accordion sx={{width: '100%'}} TransitionProps={{ unmountOnExit: true }}>
-            <AccordionSummary expandIcon={<ExpandMore />}>
-                <Typography>{sentenceToTranslate}</Typography>
-            </AccordionSummary>
-            <AccordionDetails>
-                {sentenceAnswer}
-            </AccordionDetails>
-        </Accordion>
+        <RtlProvider>
+            <Accordion sx={{width: '100%'}} TransitionProps={{ unmountOnExit: true }}>
+                <AccordionSummary expandIcon={<ExpandMore />}>
+                    <Typography fontSize={language === "arabic" ? "30px" : "inherit"}>{sentenceToTranslate}</Typography>
+                </AccordionSummary>
+                <AccordionDetails sx={{fontSize: language === "arabic" ? "inherit" : "30px"}}>
+                    {sentenceAnswer}
+                </AccordionDetails>
+                
+            </Accordion>
+        </RtlProvider>
+
     )
 }
 

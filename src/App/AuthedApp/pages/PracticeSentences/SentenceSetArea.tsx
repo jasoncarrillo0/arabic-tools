@@ -15,12 +15,12 @@ function createSetsOfEight(sentences: Sentence[]) {
     for (const sentence of sortedCopy) {
         if (counter < 8) {
             currentSet.push(sentence);
+            counter++;
         } else {
             sets.push(currentSet);
             currentSet = [];
             counter = 0;
         }
-        counter++;
     }
     if (counter !== 0) sets.push(currentSet)
     return sets;
@@ -40,6 +40,7 @@ const SentenceSetArea = ({ sentences }: Props) => {
                 />
             ))
         }
+        
         </div>
     )
 }
