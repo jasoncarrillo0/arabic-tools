@@ -76,7 +76,7 @@ const EditWordForm = ({
             if (shouldUpdateSentence) {
                 const sentencesNum = await updateAllSentencesIncluding(newDoc, collectionName)
                 if (sentencesNum > 0) {
-                    const msg = `Note: ${sentencesNum} use the word just updated; they are flagged until marked resolved by an another admin user.`;
+                    const msg = `Note: ${sentencesNum} sentence(s) are flagged until marked resolved by an another admin user.`;
                     enqueueSnackbar(msg, WARN_SNACKBAR);
                 }
             }

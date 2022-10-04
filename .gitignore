@@ -32,3 +32,4 @@ firestore.indexes.json
 database.rules.json
 firebase-debug.log
 tasks.txt
+/build

@@ -27,7 +27,7 @@ export const WARN_SNACKBAR: OptionsObject = {
         horizontal: "center",
         vertical: "top"
     },
-    persist: true
+    persist: false
 }
 
 
