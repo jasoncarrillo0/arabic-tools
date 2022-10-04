@@ -32,7 +32,7 @@ const VerbDefDisplay = ({ verbs } : Props) => {
         <Paper className={s.wrap}>
              <div className={s.choicesWrap}>
                 <div className={s.top}>
-                    <h3>Verbs ({Object.keys(verbDict).length}/64)</h3>
+                    <h3>Verbs ({Object.keys(verbDict).length}/{Object.keys(verbDict).length})</h3>
                     <Button disableElevation size="small" variant="contained" onClick={handleClick}>Get Verb</Button>
                 </div>
                 <hr/>
