@@ -35,7 +35,7 @@ const Transition = forwardRef(function Transition(
 
 const SentenceSet = ({ startIdx, sentences }: Props) => {
     const [open, setOpen] = useState(false);
-    const [language, setLanguage] = useState<"arabic" | "english">("arabic");
+    const [language, setLanguage] = useState<"arabic" | "english">("english");
     const endingNum = sentences.length === 8 ? 8 : sentences.length;
     const title = `Sentence set ${startIdx + 1} - ${startIdx + endingNum}`;
 
